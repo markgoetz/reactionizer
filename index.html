@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Divisionizer Tutorial</title>
+    <!-- Not present in the tutorial. Just for basic styling. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.16/browser.js"></script>
+    <link rel="stylesheet" href="css/reactionizer.css" />
+  </head>
+  <body>
+  		<div id="container"></div>
+  		<script type="text/babel">
+  		var allTeams = {
+  			conferences: [
+  				{
+  					name: "Eastern",
+  					divisions: [
+  						{
+  							name: "Atlantic",
+  							teams: [
+  								{name:'Florida'},
+  								{name:'Montreal'},
+  								{name:'Buffalo'},
+  							],
+  						},
+  						{
+  							name: "Metropolitan",
+  							teams: [
+  								{name:'New Jersey'},
+  								{name:'Washington'},
+  								{name:'Lumbus'}
+  							]
+  						}
+  					]
+  				},
+  				{
+  					name: "Western",
+  					divisions: [
+  						{
+  							name: "Central",
+  							teams: [
+  								{name:'Dallas'},
+  								{name:'Nashville'},
+  								{name:'Winnipeg'},
+  							],
+  						},
+  						{
+  							name: "Pacific",
+  							teams: [
+  								{name:'Shorks'},
+  								{name:'Vancouver'},
+  								{name:'Arizona'}
+  							]
+  						}
+  					]
+  				}
+  			]
+  		};
+
+
+  		var Header = React.createClass({
+  			render: function() {
+  				return <div id="header">Header!</div>
+  			}
+  		});	
+
+  		var SettingsMenu = React.createClass({
+        getInitialState: function() {
+          return {value:''};
+        },
+  			render: function() {
+  				return (<div id="settings_menu">
+              <form onSubmit={this.onAddTeamSubmit}>
+                <input type="text" name="" value={this.state.value} onChange={this.onTeamNameChange} />
+                <input type="submit" />
+              </form>
+            </div>);
+  			},
+        onTeamNameChange: function(e) {
+          this.setState({value:e.target.value});
+        },
+        onAddTeamSubmit: function(e) {
+          e.preventDefault();
+          this.props.onAddTeam(this.state.value);
+          this.setState({value:''});
+        }
+  		});	
+
+  		var Map = React.createClass({
+  			render: function() {
+  				return <div id="map">Map!</div>
+  			}
+  		});	
+
+  		var LeagueDisplay = React.createClass({
+  			render: function() {
+  				var nodes = this.props.league.conferences.map(function (conference) {
+  					return <div class="item" key={conference.name}><Conference conference={conference} /></div>
+  				});
+
+  				return <div id="league"><h2>Divisions in your league</h2>{nodes}</div>;
+  			}
+  		});	
+
+  		var Conference = React.createClass({
+  			render: function() {
+  				var division_nodes = this.props.conference.divisions.map(function (division) {
+  					return <div class="item" key={division.name}><Division division={division} /></div>
+  				});
+
+  				return <div class="conference"><h2>{this.props.conference.name}</h2>{division_nodes}</div>;
+  			}
+  		});
+
+  		 var Division = React.createClass({
+  			render: function() {
+  				var team_nodes = this.props.division.teams.map(function (team) {
+  					return <div class="item" key={team.name}><Team team={team} /></div>
+  				});
+
+  				return <div class="division"><h2>{this.props.division.name}</h2>{team_nodes}</div>;
+  			}
+  		});
+
+  		var Team = React.createClass({
+  			render: function() {
+  				return <div class="team">{this.props.team.name}</div>;
+  			}
+  		});
+
+  		var Footer = React.createClass({
+  			render: function() {
+  				return <div id="footer">Footer!</div>
+  			}
+  		});	
+
+  		var Divisionizer = React.createClass({
+        getInitialState: function() {
+          return {teams:allTeams};
+        },
+        onAddTeam: function(name) {
+          allTeams.conferences[0].divisions[0].teams.push({name:name});
+          this.setState({teams:allTeams});
+        },
+  			render: function() {
+  				return (
+  					<div id="divisionizer">
+  						<div id="top">
+  							<Header />
+  						</div>
+  						<div id="middle">
+  							<SettingsMenu onAddTeam={this.onAddTeam} />
+  							<Map />
+  							<LeagueDisplay league={this.state.teams} />
+  						</div>
+  						<div id="bottom">
+  							<Footer />
+  						</div>
+  					</div>
+  				);
+  			}
+
+  		});
+
+
+
+
+        ReactDOM.render(
+			<Divisionizer />,
+        	document.getElementById('container')
+  	    );			
+  		</script>
+  </body>

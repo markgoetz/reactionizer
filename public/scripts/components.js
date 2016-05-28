@@ -56,14 +56,18 @@
   			},
         conferenceUpdate: function(c) {
           this.setState({conferences:c});
+          var d = this.state.divisions;
 
           if (this.state.divisions % c != 0) {
-            this.setState({divisions:6});
+            d = 6;
+            this.setState({divisions:d});
           }
 
+          this.props.onConferenceChange(c, d);
         },
         divisionUpdate: function(d) {
           this.setState({divisions:d});
+          this.props.onConferenceChange(this.state.conferences, d);
         }
   		});	
 
@@ -149,6 +153,9 @@
           allTeams.conferences[0].divisions[0].teams.push({name:name});
           this.setState({teams:allTeams});
         },
+        onConferenceChange: function(c, d) {
+          this.setState({conference_count:c, division_count:d});
+        },
   			render: function() {
           var division_list = new DivisionList(this.state.string, this.state.conference_count, this.state.division_count);
 
@@ -158,7 +165,12 @@
   							<Header />
   						</div>
   						<div id="middle">
-  							<SettingsMenu onAddTeam={this.onAddTeam} conferences={this.state.conference_count} divisions={this.state.division_count} />
+  							<SettingsMenu
+                  onAddTeam={this.onAddTeam}
+                  conferences={this.state.conference_count} 
+                  divisions={this.state.division_count}
+                  onConferenceChange={this.onConferenceChange}
+                  />
   							<Map />
   							<LeagueDisplay league={division_list.toArray()} />
   						</div>

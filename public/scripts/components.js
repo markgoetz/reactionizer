@@ -1,54 +1,6 @@
-var allTeams = {
-  			conferences: [
-  				{
-  					name: "Eastern",
-  					divisions: [
-  						{
-  							name: "Atlantic",
-  							teams: [
-  								{name:'Florida'},
-  								{name:'Montreal'},
-  								{name:'Buffalo'},
-  							],
-  						},
-  						{
-  							name: "Metropolitan",
-  							teams: [
-  								{name:'New Jersey'},
-  								{name:'Washington'},
-  								{name:'Lumbus'}
-  							]
-  						}
-  					]
-  				},
-  				{
-  					name: "Western",
-  					divisions: [
-  						{
-  							name: "Central",
-  							teams: [
-  								{name:'Dallas'},
-  								{name:'Nashville'},
-  								{name:'Winnipeg'},
-  							],
-  						},
-  						{
-  							name: "Pacific",
-  							teams: [
-  								{name:'Shorks'},
-  								{name:'Vancouver'},
-  								{name:'Arizona'}
-  							]
-  						}
-  					]
-  				}
-  			]
-  		};
-
-
   		var Header = React.createClass({
   			render: function() {
-  				return <div id="logo">&nbsp;</div>
+  				return <div class="logo">&nbsp;</div>
   			}
   		});	
 
@@ -140,8 +92,8 @@ var allTeams = {
 
   		var LeagueDisplay = React.createClass({
   			render: function() {
-  				var nodes = this.props.league.conferences.map(function (conference) {
-  					return <div class="item" key={conference.name}><Conference conference={conference} /></div>
+  				var nodes = this.props.league.map(function (conference,index) {
+  					return <div class="item" key={index}><Conference conference={conference} /></div>
   				});
 
   				return <div id="league"><h2>Divisions in your league</h2>{nodes}</div>;
@@ -150,8 +102,8 @@ var allTeams = {
 
   		var Conference = React.createClass({
   			render: function() {
-  				var division_nodes = this.props.conference.divisions.map(function (division) {
-  					return <div class="item" key={division.name}><Division division={division} /></div>
+  				var division_nodes = this.props.conference.map(function (division,index) {
+  					return <div class="item" key={index}><Division division={division} /></div>
   				});
 
   				return <div class="conference"><h2>{this.props.conference.name}</h2>{division_nodes}</div>;
@@ -160,7 +112,7 @@ var allTeams = {
 
   		 var Division = React.createClass({
   			render: function() {
-  				var team_nodes = this.props.division.teams.map(function (team) {
+  				var team_nodes = this.props.division.map(function (team) {
   					return <div class="item" key={team.name}><Team team={team} /></div>
   				});
 
@@ -170,7 +122,7 @@ var allTeams = {
 
   		var Team = React.createClass({
   			render: function() {
-  				return <div class="team">{this.props.team.name}</div>;
+  				return <div class="team">{this.props.team.city} {this.props.team.name}</div>;
   			}
   		});
 
@@ -187,22 +139,28 @@ var allTeams = {
 
   		var Divisionizer = React.createClass({
         getInitialState: function() {
-          return {teams:allTeams};
+          return {
+            conference_count:this.props.initConferences,
+            division_count:this.props.initDivisions,
+            string:this.props.initString
+          };
         },
         onAddTeam: function(name) {
           allTeams.conferences[0].divisions[0].teams.push({name:name});
           this.setState({teams:allTeams});
         },
   			render: function() {
+          var division_list = new DivisionList(this.state.string, this.state.conference_count, this.state.division_count);
+
   				return (
   					<div id="divisionizer">
   						<div id="top">
   							<Header />
   						</div>
   						<div id="middle">
-  							<SettingsMenu onAddTeam={this.onAddTeam} conferences={this.props.conferences} divisions={this.props.divisions} />
+  							<SettingsMenu onAddTeam={this.onAddTeam} conferences={this.state.conference_count} divisions={this.state.division_count} />
   							<Map />
-  							<LeagueDisplay league={this.state.teams} />
+  							<LeagueDisplay league={division_list.toArray()} />
   						</div>
   						<div id="bottom">
   							<Footer />
@@ -211,10 +169,13 @@ var allTeams = {
   				);
   			}
 
+
+
   		});
 
+    initData();
 
     ReactDOM.render(
-      <Divisionizer conferences="1" divisions="4" />,
+      <Divisionizer initConferences="1" initDivisions="4" teams={global_teams} initString={"IJCGRQFH9T72DEBOAPSNLKM1468053UVWXYZ"} />,
         document.getElementById('container')
     );  

@@ -64,7 +64,7 @@ var allTeams = {
                 key={"conference"+conference}
                 value={conference}
                 selected={conference==this.state.conferences}
-                disabled={this.state.divisions % conference != 0}
+                disabled={false}
                 onButtonClick={this.conferenceUpdate} />
               )
             },
@@ -104,6 +104,11 @@ var allTeams = {
   			},
         conferenceUpdate: function(c) {
           this.setState({conferences:c});
+
+          if (this.state.divisions % c != 0) {
+            this.setState({divisions:6});
+          }
+
         },
         divisionUpdate: function(d) {
           this.setState({divisions:d});

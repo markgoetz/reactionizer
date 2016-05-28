@@ -4,12 +4,26 @@
     <meta charset="utf-8">
     <title>Divisionizer Tutorial</title>
     <!-- Not present in the tutorial. Just for basic styling. -->
+    <link href="css/layout.css" type="text/css" rel="stylesheet" />
+<link href="css/style.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="scripts/interface.js"></script>
+<script type="text/javascript" src="scripts/ga.js"></script>
+<script type="text/javascript" src="scripts/division.class.js"></script>
+<script type="text/javascript" src="scripts/data.js"></script>
+<script type="text/javascript" src="scripts/jquery-ui-1.8.14.custom.min.js"></script>
+<meta name="viewport" content="initial-scale=1.0" />
+<link rel="shortcut icon" href="http://divisionizer.com/favicon.ico" />
+<link rel="icon" type="image/ico" href="http://divisionizer.com/favicon.ico" />
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.16/browser.js"></script>
-    <link rel="stylesheet" href="css/reactionizer.css" />
+    <script src=""></script>
+    <!--<link rel="stylesheet" href="css/reactionizer.css" />-->
   </head>
-  <body>
+  <body onload="initialize()">
   		<div id="container"></div>
   		<script type="text/babel">
   		var allTeams = {
@@ -62,7 +76,7 @@
 
   		var Header = React.createClass({
   			render: function() {
-  				return <div id="header">Header!</div>
+  				return <div id="logo">&nbsp;</div>
   			}
   		});	
 

@@ -1,0 +1,78 @@
+body {
+	margin: 0;
+	height: 100vh;
+}
+
+#container {
+	display: flex;
+	flex-direction: column;
+}
+
+#settings_menu {
+	display: none;
+	transition: 1s;
+}
+
+.team .city, .team .name {
+	display: none;
+}
+
+.team {
+	min-height: 44px;
+	min-width: 44px;
+	margin: auto;
+}
+
+.conference {
+	display: flex;
+	flex-direction: column;
+}
+
+.division {
+	display: flex;
+	flex-direction: column;
+}
+
+.division .list {
+	display: flex;
+	flex-direction: row;
+
+}
+
+
+
+
+@media (min-width: 700px) {
+	.conference {
+		flex-direction: row;
+	}
+}
+
+@media (min-width: 1025px) {
+	.division .list {
+		display: flex;
+		flex-direction: column;
+	}
+
+
+	.team .city, .team .name {
+		display: inline;
+	}
+
+	#settings_menu {
+		display: block;
+	}
+
+	#settings_header {
+		display: none;
+	}
+
+	.row {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.team {
+		min-height: auto;
+	}
+}

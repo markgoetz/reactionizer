@@ -1,10 +1,28 @@
   		var Header = React.createClass({
   			render: function() {
-  				return <div class="logo">&nbsp;</div>
+  				return <div id="head-logo">header</div>;
   			}
   		});	
 
-  		var SettingsMenu = React.createClass({
+      var SettingsMenu = React.createClass({
+        render: function() {
+          return (<div id="settings_container">
+            <div id="settings_header">
+              Settings
+              <button>open</button>
+            </div>
+            <div id="settings_menu">
+              <ConferenceSelector conferences={this.props.conferences} divisions={this.props.divisions} onConferenceChange={this.onConferenceChange} />
+              <Relocationizer teams={this.props.teams} cities={this.props.cities} />
+            </div>
+          </div>);  
+        },
+        onConferenceChange: function(c,d) {
+          this.props.onConferenceChange(c,d);
+        }
+      });
+
+  		var ConferenceSelector = React.createClass({
         getInitialState: function() {
           return {conferences:this.props.conferences,divisions:this.props.divisions};
         },
@@ -36,17 +54,17 @@
             this
           );
 
-  				return (<div class="fieldgroup">
-            <div class="title">Organize teams into:</div>
+  				return (<div className="fieldgroup">
+            <div className="title">Organize teams into:</div>
             
-            <div class="formfield">
+            <div className="formfield">
               <label>Conferences</label>
               <div>
                 {conference_nodes}
               </div>
             </div>
             
-            <div class="formfield">
+            <div className="formfield">
               <label>Divisions</label>
               <div>
                 {division_nodes}
@@ -88,52 +106,84 @@
         }
       });
 
+      var Relocationizer = React.createClass({
+        render: function() {
+          var team_nodes = this.props.teams.map(function(team) {
+            return <option key={team.name}>{team.name}</option>
+          });
+
+          var city_nodes = this.props.cities.map(function(city) {
+            return <option key={city.city}>{city.city}</option>
+          });
+
+          return (<div>
+            <div className="field">
+                <label>Move team</label>
+                <div>
+                    Move <select>{team_nodes}</select> to <select>{city_nodes}</select><button>Move</button>
+                </div>
+              </div>
+
+              <div className="field">
+                <label>Expansion team</label>
+                <div>
+                   Create new team in <select>{city_nodes}</select><button>Create</button>
+                </div>
+              </div>
+            </div>);
+        }
+      });
+
   		var Map = React.createClass({
   			render: function() {
-  				return <div id="map"></div>
+  				return <div id="map">This is a map.</div>;
   			}
   		});	
 
   		var LeagueDisplay = React.createClass({
   			render: function() {
   				var nodes = this.props.league.map(function (conference,index) {
-  					return <div class="item" key={index}><Conference conference={conference} /></div>
+  					return <Conference conference={conference} key={index} />;
   				});
 
-  				return <div id="league"><h2>Divisions in your league</h2>{nodes}</div>;
+  				return <div id="teams">{nodes}</div>;
   			}
   		});	
 
   		var Conference = React.createClass({
   			render: function() {
   				var division_nodes = this.props.conference.map(function (division,index) {
-  					return <div class="item" key={index}><Division division={division} /></div>
+  					return <Division division={division} key={index} />
   				});
 
-  				return <div class="conference"><h2>{this.props.conference.name}</h2>{division_nodes}</div>;
+  				return <div className="conference">{division_nodes}</div>;
   			}
   		});
 
   		 var Division = React.createClass({
   			render: function() {
   				var team_nodes = this.props.division.map(function (team) {
-  					return <div class="item" key={team.name}><Team team={team} /></div>
+  					return <Team team={team} key={team.name} />
   				});
 
-  				return <div class="division"><h2>{this.props.division.name}</h2>{team_nodes}</div>;
+  				return <div className="division"><div class="name">{this.props.division.name}</div><div class="list">{team_nodes}</div></div>;
   			}
   		});
 
   		var Team = React.createClass({
   			render: function() {
-  				return <div class="team">{this.props.team.city} {this.props.team.name}</div>;
+          var source=getLogoURL(this.props.team);
+          return (<div className="team">
+              <span className="team-logo"><img src={source}/></span>
+              <span className="city">{this.props.team.city}</span>&nbsp;
+              <span className="name">{this.props.team.name}</span>
+            </div>);
   			}
   		});
 
   		var Footer = React.createClass({
   			render: function() {
-  				return <div id="copyright"><div class="gutter">Divisionizer &copy; 2011 <a href="http://markandrewgoetz.com/">Mark Goetz</a>.  All team names and logos are &copy; National Hockey League.  This site is not affiliated with the NHL.<br/></div>
-</div>
+  				return <div id="footer">footer</div>
 
   			}
   		});	
@@ -158,23 +208,32 @@
         },
   			render: function() {
           var division_list = new DivisionList(this.state.string, this.state.conference_count, this.state.division_count);
+          var teams=division_list.toArray();
 
   				return (
   					<div id="divisionizer">
-  						<div id="top">
+  						<div className="row">
   							<Header />
   						</div>
-  						<div id="middle">
+  						<div className="row">
+                <div className="window">
   							<SettingsMenu
-                  onAddTeam={this.onAddTeam}
                   conferences={this.state.conference_count} 
                   divisions={this.state.division_count}
+                  teams={this.props.teams}
+                  cities={this.props.cities}
+                  onRelocateTeam={this.onRelocateTeam}
+                  onAddTeam={this.onAddTeam}
                   onConferenceChange={this.onConferenceChange}
                   />
-  							<Map />
-  							<LeagueDisplay league={division_list.toArray()} />
+                </div>
+
+                <div className="window">
+  							 <Map />
+  							 <LeagueDisplay league={teams} />
+                </div>
   						</div>
-  						<div id="bottom">
+  						<div className="row">
   							<Footer />
   						</div>
   					</div>
@@ -188,6 +247,6 @@
     initData();
 
     ReactDOM.render(
-      <Divisionizer initConferences="1" initDivisions="4" teams={global_teams} initString={"IJCGRQFH9T72DEBOAPSNLKM1468053UVWXYZ"} />,
+      <Divisionizer initConferences="1" initDivisions="4" teams={global_teams} cities={global_cities} initString={"IJCGRQFH9T72DEBOAPSNLKM1468053UVWXYZ"} />,
         document.getElementById('container')
     );  

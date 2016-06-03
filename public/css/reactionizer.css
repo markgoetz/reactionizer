@@ -20,7 +20,7 @@ body {
 .team {
 	min-height: 44px;
 	min-width: 44px;
-	margin: auto;
+	display: inline-block;
 }
 
 .conference {
@@ -41,26 +41,25 @@ body {
 
 
 
-
+/* Tablet Portrait */
 @media (min-width: 700px) {
 	.conference {
 		flex-direction: row;
 	}
+
+	.list {
+		flex-wrap: wrap;
+	}
 }
 
-@media (min-width: 1025px) {
-	.division .list {
-		display: flex;
-		flex-direction: column;
-	}
-
-
-	.team .city, .team .name {
-		display: inline;
-	}
-
+/* Tablet Landscape */
+@media (min-width: 900px) {
 	#settings_menu {
 		display: block;
+	}
+
+	.window {
+
 	}
 
 	#settings_header {
@@ -71,8 +70,21 @@ body {
 		display: flex;
 		flex-direction: row;
 	}
+}
+
+/* Desktop */
+@media (min-width: 1025px) {
+	.team .city, .team .name {
+		display: inline;
+	}
 
 	.team {
 		min-height: auto;
+		text-align: left;
+		margin: 0px;
+	}
+
+	.division .list {
+		flex-direction: column;
 	}
 }

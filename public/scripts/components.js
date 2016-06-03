@@ -166,7 +166,7 @@
   					return <Team team={team} key={team.name} />
   				});
 
-  				return <div className="division"><div class="name">{this.props.division.name}</div><div class="list">{team_nodes}</div></div>;
+  				return <div className="division"><div className="name">{this.props.division.name}</div><div className="list">{team_nodes}</div></div>;
   			}
   		});
 

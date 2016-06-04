@@ -212,11 +212,9 @@
 
   				return (
   					<div id="divisionizer">
-  						<div className="row">
-  							<Header />
-  						</div>
-  						<div className="row">
-                <div className="window">
+  						<Header />
+
+  						<div className="application">
   							<SettingsMenu
                   conferences={this.state.conference_count} 
                   divisions={this.state.division_count}
@@ -226,16 +224,13 @@
                   onAddTeam={this.onAddTeam}
                   onConferenceChange={this.onConferenceChange}
                   />
-                </div>
 
-                <div className="window">
+                <div className="content">
   							 <Map />
   							 <LeagueDisplay league={teams} />
                 </div>
   						</div>
-  						<div className="row">
-  							<Footer />
-  						</div>
+  						<Footer />
   					</div>
   				);
   			}

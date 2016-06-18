@@ -8,6 +8,7 @@ var global_cities;
 var global_teams;
 var global_next_empty_division = -4;
 var global_relocated_teams = new Array();
+var static_teams;
 
 var DIVISION_WEIGHT_MODIFIER = 1;
 var RIVALRY_WEIGHT_MODIFIER  = 2;

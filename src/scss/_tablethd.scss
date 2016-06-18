@@ -1,0 +1,30 @@
+/* Tablet Landscape */
+@media (min-width: 900px) {
+	#settings_menu {
+		display: block;
+		min-width: 250px;
+		align-self: stretch;
+	}
+
+	.window {
+
+	}
+
+	#settings_header {
+		display: none;
+	}
+
+	.row {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.row.stretch {
+		flex-grow: 1;
+	}
+
+	.team {
+		min-height: 54px;
+		min-width: 54px;
+	}
+}

@@ -1,0 +1,58 @@
+#divisionizer {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	align-items: stretch;
+	justify-content:space-between;
+}
+
+#settings_menu {
+	display: none;
+	transition: 1s;
+}
+
+.application {
+	flex-grow: 1;
+	display: flex;
+	align-items:stretch;
+	flex-direction: column;
+}
+
+.content {
+	flex-grow: 1;
+	align-items:stretch;
+	display: flex;
+	flex-direction: column;
+}
+
+.conference {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: space-around;
+}
+
+.division {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	align-items: space-around;
+}
+
+.division .list {
+	display: flex;
+	flex-direction: row;
+}
+
+.team {
+	flex-grow: 1;
+	text-align: center;
+}
+
+.team .city, .team .name {
+	display: none;
+}
+
+#map {
+	flex-grow: 1;
+}

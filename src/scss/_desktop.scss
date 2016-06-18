@@ -1,0 +1,14 @@
+@media (min-width: 1025px) {
+	.team .city, .team .name {
+		display: inline;
+	}
+
+	.team {
+		min-height: auto;
+		text-align: left;
+	}
+
+	.division .list {
+		flex-direction: column;
+	}
+}

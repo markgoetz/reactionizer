@@ -1,0 +1,26 @@
+/* Tablet Portrait */
+@media (min-width: 700px) {
+	.conference {
+		flex-direction: row;
+	}
+
+	.application {
+		flex-direction:row;	
+	}
+
+	.list {
+		flex-wrap: wrap;
+	}
+
+	#map {
+		flex-grow: 1;
+	}
+
+	.team {
+		flex-grow: 0;
+	}
+
+	.division {
+		align-items: center;
+	}
+}

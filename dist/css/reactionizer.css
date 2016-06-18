@@ -1,17 +1,13 @@
-body {
-  margin: 0;
-  font-family: "Bebas Neue", "Helvetica", "sans-serif";
-  background: #ECF3FF; }
-
-input {
-  font-family: "Bebase Neue", "Helvetica", "sans-serif"; }
-
 #divisionizer {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   align-items: stretch;
   justify-content: space-between; }
+
+#settings_menu {
+  display: none;
+  transition: 1s; }
 
 .application {
   flex-grow: 1;
@@ -24,18 +20,6 @@ input {
   align-items: stretch;
   display: flex;
   flex-direction: column; }
-
-#settings_menu {
-  display: none;
-  transition: 1s; }
-
-.team .city, .team .name {
-  display: none; }
-
-.team {
-  min-height: 44px;
-  min-width: 44px;
-  display: inline-block; }
 
 .conference {
   display: flex;
@@ -57,14 +41,11 @@ input {
   flex-grow: 1;
   text-align: center; }
 
+.team .city, .team .name {
+  display: none; }
+
 #map {
   flex-grow: 1; }
-
-.field {
-  margin-top: 20px; }
-
-.field label {
-  font-size: 16pt; }
 
 /* Tablet Portrait */
 @media (min-width: 700px) {
@@ -89,7 +70,8 @@ input {
 @media (min-width: 900px) {
   #settings_menu {
     display: block;
-    min-width: 250px; }
+    min-width: 250px;
+    align-self: stretch; }
 
   #settings_header {
     display: none; }
@@ -104,7 +86,6 @@ input {
   .team {
     min-height: 54px;
     min-width: 54px; } }
-/* Desktop */
 @media (min-width: 1025px) {
   .team .city, .team .name {
     display: inline; }
@@ -115,5 +96,44 @@ input {
 
   .division .list {
     flex-direction: column; } }
+.team .city, .team .name {
+  font-size: 20pt; }
+
+body {
+  font-family: "Bebas Neue", "Helvetica", "sans-serif";
+  background: #ECF3FF; }
+
+input {
+  font-family: "Bebase Neue", "Helvetica", "sans-serif"; }
+
+.team {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-block;
+  background: linear-gradient(to bottom, #CCD1D6 0%, #CCD1D6 50%, #B9BEC4 50%);
+  font-size: 15px;
+  padding: 5px;
+  border-radius: 3px;
+  margin: 4px;
+  vertical-align: middle; }
+
+.field {
+  margin-top: 20px; }
+
+.field label {
+  font-size: 16pt;
+  color: #ECF3FF; }
+
+#head-logo {
+  color: #ECF3FF;
+  text-align: center;
+  font-size: 28px;
+  background: #3061B7;
+  height: 44px;
+  vertical-align: middle; }
+
+#settings_container {
+  padding: 15px;
+  background: #082049; }
 
 /*# sourceMappingURL=reactionizer.css.map */

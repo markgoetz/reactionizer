@@ -1,0 +1,44 @@
+
+body {
+	font-family: $font-primary;
+	background: $lightest-blue;
+}
+
+input {
+	font-family: $font-ui;
+}
+
+.team {
+	min-height: 44px;
+	min-width: 44px;
+	display: inline-block;
+	background: linear-gradient(to bottom, $light-grey 0%, $light-grey 50%, $light-grey-shadow 50%);
+	font-size: 15px;
+	padding: 5px;
+	border-radius: 3px;
+	margin: 4px;
+	vertical-align: middle;
+}
+
+.field {
+	margin-top: 20px;
+}
+
+.field label {
+	font-size: 16pt;
+	color: $lightest-blue;
+}
+
+#head-logo {
+	color: $lightest-blue;
+	text-align: center;
+	font-size: 28px;
+	background: $medium-blue;
+	height: 44px;
+	vertical-align: middle;
+}
+
+#settings_container {
+	padding: 15px;
+	background: $primary-blue;
+}

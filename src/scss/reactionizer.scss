@@ -1,11 +1,14 @@
+@import 'variables';
+
+
 body {
 	margin: 0;
-	font-family: "Bebas Neue";
-	background: #ECF3FF;
+	font-family: $font-primary;
+	background: $lightest-blue;
 }
 
 input {
-	font-family: "Bebas Neue"
+	font-family: $font-ui;
 }
 
 #divisionizer {

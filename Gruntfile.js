@@ -23,8 +23,14 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['src/js/*'],
-      tasks: ['babel', 'concat', 'uglify']
+      js: {
+        files: ['src/js/*'],
+        tasks: ['babel', 'concat', 'uglify']
+      },
+      scss: {
+        files: ['src/scss/*'],
+        tasks: ['sass', 'cssmin']
+      }
     },
     babel: {
       options: {
@@ -58,7 +64,18 @@ module.exports = function(grunt) {
           }
         ]
       }
-    }
+    },
+    cssmin: { // Begin CSS Minify Plugin
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'dist/css',
+          src: ['*.css', '!*.min.css'],
+          dest: 'dist/css',
+          ext: '.min.css'
+    }]
+      }
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -66,8 +83,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
  
 
   // Default task(s).
   grunt.registerTask('default', ['watch']);
+  grunt.registerTask('compilejs', ['babel', 'concat', 'uglify']);
+  grunt.registerTask('compilescss', ['sass', 'cssmin']);
 };

@@ -6,6 +6,7 @@
 	.team {
 		min-height: 0;
 		text-align: left;
+		justify-content: flex-start;
 	}
 
 	.division .list {
@@ -16,9 +17,8 @@
 	.team-logo, .team-logo img {
 		min-height: 0;
 		min-width: 0;
-		max-height: 34px;
-		max-width: 34px;
+		max-height: 25px;
+		max-width: 25px;
 		display: inline-block;
-		margin: auto;
 	}
 }

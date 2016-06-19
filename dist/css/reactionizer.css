@@ -43,7 +43,11 @@ div, span {
 
 .team {
   flex-grow: 1;
-  text-align: center; }
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around; }
 
 .team .city, .team .name {
   display: none; }
@@ -107,7 +111,8 @@ input {
 
   .team {
     flex-grow: 0;
-    text-align: left; }
+    text-align: left;
+    justify-content: flex-start; }
 
   .division {
     align-items: stretch; }
@@ -134,10 +139,11 @@ input {
   .team .city, .team .name {
     display: none; }
 
-  .team-logo, .team-logo img {
+  .team-logo {
     display: block;
     min-height: 100%;
-    min-width: 100%; }
+    min-width: 100%;
+    flex-grow: 0; }
 
   .division .list {
     flex-direction: row;
@@ -149,7 +155,8 @@ input {
 
   .team {
     min-height: 0;
-    text-align: left; }
+    text-align: left;
+    justify-content: flex-start; }
 
   .division .list {
     flex-direction: column;
@@ -158,10 +165,9 @@ input {
   .team-logo, .team-logo img {
     min-height: 0;
     min-width: 0;
-    max-height: 34px;
-    max-width: 34px;
-    display: inline-block;
-    margin: auto; } }
+    max-height: 25px;
+    max-width: 25px;
+    display: inline-block; } }
 @media (min-width: 1281px) {
   .team .city, .team .name {
     font-size: 20pt; }

@@ -188,7 +188,7 @@ var Team = React.createClass({
 	render: function() {
     var source=getLogoURL(this.props.team);
     return (<div className="team">
-        <span className="team-logo"><img src={source}/></span><span className="city">{this.props.team.city}</span> <span className="name">{this.props.team.name}</span>
+        <img className="team-logo" src={source} /><span className="city">{this.props.team.city}</span><span className="name">&nbsp;{this.props.team.name}</span>
       </div>);
 	}
 });

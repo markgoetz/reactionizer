@@ -52,6 +52,11 @@ div, span {
 .team {
 	flex-grow: 1;
 	text-align: center;
+ 	
+ 	display: flex;
+ 	flex-direction: row;
+ 	align-items: center;
+ 	justify-content: space-around;
 }
 
 .team .city, .team .name {

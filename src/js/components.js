@@ -342,20 +342,16 @@ var Team = React.createClass({
     return React.createElement(
       "div",
       { className: "team" },
-      React.createElement(
-        "span",
-        { className: "team-logo" },
-        React.createElement("img", { src: source })
-      ),
+      React.createElement("img", { className: "team-logo", src: source }),
       React.createElement(
         "span",
         { className: "city" },
         this.props.team.city
       ),
-      " ",
       React.createElement(
         "span",
         { className: "name" },
+        " ",
         this.props.team.name
       )
     );

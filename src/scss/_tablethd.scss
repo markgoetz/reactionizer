@@ -22,10 +22,11 @@
 		display: none;
 	}
 
-	.team-logo, .team-logo img {
+	.team-logo {
 		display: block;
 		min-height: 100%;
 		min-width: 100%;
+		flex-grow: 0;
 	}
 
 	.division .list {

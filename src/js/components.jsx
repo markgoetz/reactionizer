@@ -8,10 +8,10 @@ var Header = React.createClass({
 var SettingsMenu = React.createClass({
   render: function() {
     return (<div id="settings_container">
-      <div id="settings_header">
+      <h2 id="settings_header">
         Settings
         <button>open</button>
-      </div>
+      </h2>
       <div id="settings_menu">
         <ConferenceSelector conferences={this.props.conferences} divisions={this.props.divisions} onConferenceChange={this.onConferenceChange} />
         <Relocationizer teams={this.props.teams} cities={this.props.cities} />
@@ -57,18 +57,18 @@ var ConferenceSelector = React.createClass({
     );
 
 		return (<div className="field">
-      <label>Organize teams into:</label>
+      <h3>Organize teams into:</h3>
       
       <div className="subfield">
-        <label>Conferences</label>
-        <div>
+        <h4>Conferences</h4>
+        <div className="selector-container">
           {conference_nodes}
         </div>
       </div>
       
       <div className="subfield">
-        <label>Divisions</label>
-        <div>
+        <h4>Divisions</h4>
+        <div className="selector-container">
           {division_nodes}
         </div>
       </div>
@@ -95,7 +95,7 @@ var ConferenceSelector = React.createClass({
 
 var SelectorButton = React.createClass({
   render: function() {
-    var className = "div_button" + (this.props.selected ? ' selected' : '') + (this.props.disabled ? ' disabled' : '');
+    var className = "div_button selector " + (this.props.selected ? ' selected' : '') + (this.props.disabled ? ' disabled' : '');
     var id = this.props.type + '_count_selector_' + this.props.value;
     return (<button
       className={className}
@@ -128,7 +128,7 @@ var Relocationizer = React.createClass({
           <div>
               <div><label>from</label><select>{team_nodes}</select></div>
               <div><label>to</label><select>{city_nodes}</select></div>
-              <div><button>Relocate Team</button></div>
+              <div><button className="action">Relocate Team</button></div>
           </div>
         </div>
 
@@ -137,7 +137,7 @@ var Relocationizer = React.createClass({
           <div>
               <div><label>city</label><select>{city_nodes}</select></div>
               <div><label>name</label><input type="text" /></div>
-              <div><button>Create Team</button></div>
+              <div><button className="action">Create Team</button></div>
           </div>
         </div>
       </div>);

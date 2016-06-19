@@ -18,7 +18,7 @@ var SettingsMenu = React.createClass({
       "div",
       { id: "settings_container" },
       React.createElement(
-        "div",
+        "h2",
         { id: "settings_header" },
         "Settings",
         React.createElement(
@@ -70,7 +70,7 @@ var ConferenceSelector = React.createClass({
       "div",
       { className: "field" },
       React.createElement(
-        "label",
+        "h3",
         null,
         "Organize teams into:"
       ),
@@ -78,13 +78,13 @@ var ConferenceSelector = React.createClass({
         "div",
         { className: "subfield" },
         React.createElement(
-          "label",
+          "h4",
           null,
           "Conferences"
         ),
         React.createElement(
           "div",
-          null,
+          { className: "selector-container" },
           conference_nodes
         )
       ),
@@ -92,13 +92,13 @@ var ConferenceSelector = React.createClass({
         "div",
         { className: "subfield" },
         React.createElement(
-          "label",
+          "h4",
           null,
           "Divisions"
         ),
         React.createElement(
           "div",
-          null,
+          { className: "selector-container" },
           division_nodes
         )
       )
@@ -125,7 +125,7 @@ var SelectorButton = React.createClass({
   displayName: "SelectorButton",
 
   render: function () {
-    var className = "div_button" + (this.props.selected ? ' selected' : '') + (this.props.disabled ? ' disabled' : '');
+    var className = "div_button selector " + (this.props.selected ? ' selected' : '') + (this.props.disabled ? ' disabled' : '');
     var id = this.props.type + '_count_selector_' + this.props.value;
     return React.createElement(
       "button",
@@ -209,7 +209,7 @@ var Relocationizer = React.createClass({
             null,
             React.createElement(
               "button",
-              null,
+              { className: "action" },
               "Relocate Team"
             )
           )
@@ -255,7 +255,7 @@ var Relocationizer = React.createClass({
             null,
             React.createElement(
               "button",
-              null,
+              { className: "action" },
               "Create Team"
             )
           )

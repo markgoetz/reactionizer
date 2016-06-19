@@ -4,10 +4,6 @@ body {
 	background: $lightest-blue;
 }
 
-input {
-	font-family: $font-ui;
-}
-
 .team {
 	min-height: 44px;
 	min-width: 44px;
@@ -15,7 +11,7 @@ input {
 	background: linear-gradient(to bottom, $light-grey 0%, $light-grey 50%, $light-grey-shadow 50%);
 	font-size: 18px;
 	padding: 5px;
-	border-radius: 3px;
+	border-radius: $radius;
 	margin: 2px;
 	color: $black;
 }
@@ -25,7 +21,8 @@ input {
 }
 
 .field label {
-	font-size: 16pt;
+	font-size: 14pt;
+	font-family: $font-ui;
 	color: $lightest-blue;
 }
 
@@ -49,4 +46,56 @@ input {
 
 .team-logo {
 	display: inline-block;
+}
+
+input[type=text], select {
+	font-family: $font-ui;
+	background: $light-grey;
+	font-size: 14px;
+	border: 0;
+	padding: 15px;
+}
+
+button {
+	font-family: $font-primary;
+	text-align: center;
+	border: 0;
+
+	&.action {
+		font-size: 30px;
+		background: $primary-red;
+		color: $lightest-blue;
+		width: 100%;
+		border-radius: $radius;
+		@include button-shadow($primary-red-shadow);
+	}
+
+	&.selector {
+		height: 44px;
+		width: 44px;
+		color: $black;
+		font-size: 22px;
+		@include button-shadow($light-grey-shadow);
+
+		&.selected {
+			background: $primary-red;
+			color: $lightest-blue;
+			@include button-shadow($primary-red-shadow);
+		}
+
+		&.disabled {
+			background: $disabled-bg-color;
+			color: $disabled-text-color;
+			@include button-shadow($disabled-shadow-color);
+		}
+
+		&:first-child {
+			border-radius: $radius 0 0 $radius;
+		}
+
+		&:last-child {
+			border-radius: 0 $radius $radius 0;
+		}
+	}
+
 }

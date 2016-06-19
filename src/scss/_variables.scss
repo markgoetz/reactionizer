@@ -1,10 +1,22 @@
 $font-primary: 'Bebas Neue', 'Helvetica', 'sans-serif';
-$font-ui: 'Bebase Neue', 'Helvetica', 'sans-serif';
+$font-ui: 'Roboto', 'Helvetica', 'sans-serif';
 
 $primary-blue:  #082049;
 $medium-blue:   #3061B7;
 $lightest-blue: #ECF3FF;
 $primary-red:   #B40405;
+$primary-red-shadow: #860A2C;
 $black:         #2A2F38;
 $light-grey:    #CCD1D6;
 $light-grey-shadow: #B9BEC4;
+
+$disabled-bg-color: #CACACA;
+$disabled-text-color: #a9a9a9;
+$disabled-shadow-color: #848484;
+
+$radius: 3px;
+
+$shadow-height: 2px;
+@mixin button-shadow($color) {
+	box-shadow: 0px 2px 0px $color;
+}

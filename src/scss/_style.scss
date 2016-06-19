@@ -17,7 +17,8 @@ body {
 }
 
 .field {
-	margin-top: 20px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 .field label {
@@ -54,12 +55,14 @@ input[type=text], select {
 	font-size: 14px;
 	border: 0;
 	padding: 15px;
+	border-radius: $radius;
 }
 
 button {
 	font-family: $font-primary;
 	text-align: center;
 	border: 0;
+	@include button-hover($light-grey);
 
 	&.action {
 		font-size: 30px;
@@ -68,6 +71,7 @@ button {
 		width: 100%;
 		border-radius: $radius;
 		@include button-shadow($primary-red-shadow);
+		@include button-hover($primary-red);
 	}
 
 	&.selector {
@@ -81,12 +85,14 @@ button {
 			background: $primary-red;
 			color: $lightest-blue;
 			@include button-shadow($primary-red-shadow);
+			@include button-hover($primary-red);
 		}
 
 		&.disabled {
 			background: $disabled-bg-color;
 			color: $disabled-text-color;
 			@include button-shadow($disabled-shadow-color);
+			/* do not put the hover here, it's disabled. */
 		}
 
 		&:first-child {
@@ -98,4 +104,10 @@ button {
 		}
 	}
 
+}
+
+h3 {
+	font-size: 30px;
+	margin-top: 50px;
+	margin-bottom: 0px;
 }

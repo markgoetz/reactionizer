@@ -70,15 +70,10 @@ var ConferenceSelector = React.createClass({
       "div",
       { className: "field" },
       React.createElement(
-        "h3",
-        null,
-        "Organize teams into:"
-      ),
-      React.createElement(
         "div",
         { className: "subfield" },
         React.createElement(
-          "h4",
+          "h3",
           null,
           "Conferences"
         ),
@@ -92,7 +87,7 @@ var ConferenceSelector = React.createClass({
         "div",
         { className: "subfield" },
         React.createElement(
-          "h4",
+          "h3",
           null,
           "Divisions"
         ),

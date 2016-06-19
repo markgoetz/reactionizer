@@ -57,17 +57,15 @@ var ConferenceSelector = React.createClass({
     );
 
 		return (<div className="field">
-      <h3>Organize teams into:</h3>
-      
       <div className="subfield">
-        <h4>Conferences</h4>
+        <h3>Conferences</h3>
         <div className="selector-container">
           {conference_nodes}
         </div>
       </div>
       
       <div className="subfield">
-        <h4>Divisions</h4>
+        <h3>Divisions</h3>
         <div className="selector-container">
           {division_nodes}
         </div>

@@ -18,5 +18,11 @@ $radius: 3px;
 
 $shadow-height: 2px;
 @mixin button-shadow($color) {
-	box-shadow: 0px 2px 0px $color;
+	box-shadow: 0px $shadow-height 0px $color;
+}
+
+@mixin button-hover($color) {
+	&:hover {
+		background-color: lighten($color, 5%);
+	}
 }

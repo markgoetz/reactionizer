@@ -352,7 +352,7 @@ var Team = React.createClass({
         { className: "city" },
         this.props.team.city
       ),
-      " ",
+      " ",
       React.createElement(
         "span",
         { className: "name" },

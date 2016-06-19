@@ -1,1 +1,0 @@
-body:before{white-space:pre;font-family:monospace;content:"Error: Undefined variable: \"$font-primary\".\A         on line 4 of src/scss/style.scss\A \A 1: \A 2: body {\A 3: 	margin: 0;\A 4: 	font-family: $font-primary;\A 5: 	background: $lightest-blue;\A 6: }\A 7: \A 8: input {\A 9: 	font-family: $font-ui;"}

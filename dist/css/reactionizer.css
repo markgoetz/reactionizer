@@ -1,3 +1,6 @@
+div, span {
+  box-sizing: border-box; }
+
 #divisionizer {
   display: flex;
   flex-direction: column;
@@ -35,7 +38,8 @@
 
 .division .list {
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  flex-wrap: wrap; }
 
 .team {
   flex-grow: 1;
@@ -46,58 +50,6 @@
 
 #map {
   flex-grow: 1; }
-
-/* Tablet Portrait */
-@media (min-width: 700px) {
-  .conference {
-    flex-direction: row; }
-
-  .application {
-    flex-direction: row; }
-
-  .list {
-    flex-wrap: wrap; }
-
-  #map {
-    flex-grow: 1; }
-
-  .team {
-    flex-grow: 0; }
-
-  .division {
-    align-items: center; } }
-/* Tablet Landscape */
-@media (min-width: 900px) {
-  #settings_menu {
-    display: block;
-    min-width: 250px;
-    align-self: stretch; }
-
-  #settings_header {
-    display: none; }
-
-  .row {
-    display: flex;
-    flex-direction: row; }
-
-  .row.stretch {
-    flex-grow: 1; }
-
-  .team {
-    min-height: 54px;
-    min-width: 54px; } }
-@media (min-width: 1025px) {
-  .team .city, .team .name {
-    display: inline; }
-
-  .team {
-    min-height: auto;
-    text-align: left; }
-
-  .division .list {
-    flex-direction: column; } }
-.team .city, .team .name {
-  font-size: 20pt; }
 
 body {
   font-family: "Bebas Neue", "Helvetica", "sans-serif";
@@ -111,11 +63,11 @@ input {
   min-width: 44px;
   display: inline-block;
   background: linear-gradient(to bottom, #CCD1D6 0%, #CCD1D6 50%, #B9BEC4 50%);
-  font-size: 15px;
+  font-size: 18px;
   padding: 5px;
   border-radius: 3px;
-  margin: 4px;
-  vertical-align: middle; }
+  margin: 2px;
+  color: #2A2F38; }
 
 .field {
   margin-top: 20px; }
@@ -135,5 +87,90 @@ input {
 #settings_container {
   padding: 15px;
   background: #082049; }
+
+#settings_menu {
+  color: #ECF3FF; }
+
+.team-logo {
+  display: inline-block; }
+
+/* Tablet Portrait */
+@media (min-width: 700px) {
+  .conference {
+    flex-direction: row; }
+
+  .list {
+    flex-wrap: wrap; }
+
+  #map {
+    flex-grow: 1; }
+
+  .team {
+    flex-grow: 0;
+    text-align: left; }
+
+  .division {
+    align-items: stretch; }
+
+  .team .city, .team .name {
+    display: inline; }
+
+  .division .list {
+    flex-direction: column;
+    align-items: strech; } }
+/* Tablet Landscape */
+@media (min-width: 900px) {
+  .application {
+    flex-direction: row; }
+
+  #settings_menu {
+    display: block;
+    min-width: 250px;
+    align-self: stretch; }
+
+  #settings_header {
+    display: none; }
+
+  .team .city, .team .name {
+    display: none; }
+
+  .team-logo, .team-logo img {
+    display: block;
+    min-height: 100%;
+    min-width: 100%; }
+
+  .division .list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start; } }
+@media (min-width: 1025px) {
+  .team .city, .team .name {
+    display: inline; }
+
+  .team {
+    min-height: 0;
+    text-align: left; }
+
+  .division .list {
+    flex-direction: column;
+    align-items: stretch; }
+
+  .team-logo, .team-logo img {
+    min-height: 0;
+    min-width: 0;
+    max-height: 34px;
+    max-width: 34px;
+    display: inline-block;
+    margin: auto; } }
+@media (min-width: 1281px) {
+  .team .city, .team .name {
+    font-size: 20pt; }
+
+  .team-logo, .team-logo img {
+    min-height: 0;
+    min-width: 0;
+    max-height: none;
+    max-width: none;
+    display: inline-block; } }
 
 /*# sourceMappingURL=reactionizer.css.map */

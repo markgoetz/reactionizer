@@ -1,3 +1,13 @@
-.team .city, .team .name {
-	font-size: 20pt;
+@media (min-width: 1281px) {
+	.team .city, .team .name {
+		font-size: 20pt;
+	}
+
+	.team-logo, .team-logo img {
+		min-height: 0;
+		min-width: 0;
+		max-height: none;
+		max-width: none;
+		display: inline-block;
+	}
 }

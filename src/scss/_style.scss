@@ -13,11 +13,11 @@ input {
 	min-width: 44px;
 	display: inline-block;
 	background: linear-gradient(to bottom, $light-grey 0%, $light-grey 50%, $light-grey-shadow 50%);
-	font-size: 15px;
+	font-size: 18px;
 	padding: 5px;
 	border-radius: 3px;
-	margin: 4px;
-	vertical-align: middle;
+	margin: 2px;
+	color: $black;
 }
 
 .field {
@@ -41,4 +41,12 @@ input {
 #settings_container {
 	padding: 15px;
 	background: $primary-blue;
+}
+
+#settings_menu {
+	color: $lightest-blue;
+}
+
+.team-logo {
+	display: inline-block;
 }

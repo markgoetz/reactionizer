@@ -1,3 +1,7 @@
+div, span {
+	box-sizing: border-box;
+}
+
 #divisionizer {
 	display: flex;
 	flex-direction: column;
@@ -42,6 +46,7 @@
 .division .list {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 }
 
 .team {

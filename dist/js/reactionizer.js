@@ -3,8 +3,8 @@ var Header = React.createClass({
 
   render: function () {
     return React.createElement(
-      "div",
-      { id: "head-logo" },
+      "header",
+      null,
       "header"
     );
   }
@@ -264,11 +264,34 @@ var Map = React.createClass({
   displayName: "Map",
 
   render: function () {
-    return React.createElement(
-      "div",
-      { id: "map" },
-      "This is a map."
-    );
+    return React.createElement("div", { id: "map" });
+  },
+  componentDidMount: function () {
+    global_polygons = new Array();
+    global_markers = new Array();
+
+    var latlng = new google.maps.LatLng(41, -96);
+    var myOptions = {
+      zoom: 4,
+      center: latlng,
+      maxZoom: 6,
+      minZoom: 3,
+      streetViewControl: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+    for (var i = 0; i < global_teams.length; i++) {
+      var team = global_teams[i];
+
+      var ll = new google.maps.LatLng(team.lat, team.lon);
+      global_markers[i] = new google.maps.Marker({
+        position: ll,
+        title: team.city + ' ' + team.name,
+        icon: getLogoURL(team)
+      });
+      global_markers[i].setMap(map);
+    }
   }
 });
 
@@ -358,8 +381,8 @@ var Footer = React.createClass({
 
   render: function () {
     return React.createElement(
-      "div",
-      { id: "footer" },
+      "footer",
+      null,
       "footer"
     );
   }
@@ -1078,14 +1101,14 @@ function moveTeamMarker(team, lat, lon) {
 	global_markers[team].setAnimation(google.maps.Animation.DROP);
 }
 
-function initialize(defaultString) {
+function initialize(container_id, defaultString) {
 	initData();
 	//initMap();
 	processBookmark();
 
 	//updateCosts();
 
-	ReactDOM.render(React.createElement(Divisionizer, { initConferences: '1', initDivisions: '4', teams: global_teams, cities: global_cities, initString: defaultString }), document.getElementById('container'));
+	ReactDOM.render(React.createElement(Divisionizer, { initConferences: '1', initDivisions: '4', teams: global_teams, cities: global_cities, initString: defaultString }), document.getElementById(container_id));
 	//updateTableFormat(divisions);
 	//setBookmark(divisions.string);
 }

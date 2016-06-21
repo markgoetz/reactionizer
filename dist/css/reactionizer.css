@@ -132,7 +132,7 @@ body {
   font-family: "Roboto", "Helvetica", "sans-serif";
   color: #ECF3FF; }
 
-#head-logo {
+header {
   color: #ECF3FF;
   text-align: center;
   font-size: 28px;
@@ -142,9 +142,7 @@ body {
 
 #settings_container {
   padding: 15px;
-  background: #082049; }
-
-#settings_menu {
+  background: #082049;
   color: #ECF3FF; }
 
 .team-logo {
@@ -156,7 +154,8 @@ input[type=text], select {
   font-size: 14px;
   border: 0;
   padding: 15px;
-  border-radius: 3px; }
+  border-radius: 3px;
+  color: #3061B7; }
 
 button {
   font-family: "Bebas Neue", "Helvetica", "sans-serif";
@@ -232,8 +231,10 @@ h3 {
 
   #settings_menu {
     display: block;
-    min-width: 250px;
     align-self: stretch; }
+
+  #settings_container {
+    min-width: 180px; }
 
   #settings_header {
     display: none; }
@@ -267,9 +268,17 @@ h3 {
   .team-logo, .team-logo img {
     min-height: 0;
     min-width: 0;
-    max-height: 25px;
-    max-width: 25px;
-    display: inline-block; } }
+    max-height: 22px;
+    max-width: 22px;
+    display: inline-block; }
+
+  #teams {
+    display: flex;
+    flex-direction: row;
+    width: 100%; }
+
+  .conference {
+    flex-grow: 1; } }
 @media (min-width: 1281px) {
   .team .city, .team .name {
     font-size: 20pt; }

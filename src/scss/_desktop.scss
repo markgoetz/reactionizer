@@ -17,8 +17,18 @@
 	.team-logo, .team-logo img {
 		min-height: 0;
 		min-width: 0;
-		max-height: 25px;
-		max-width: 25px;
+		max-height: 22px;
+		max-width: 22px;
 		display: inline-block;
+	}
+
+	#teams {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+	}
+
+	.conference {
+		flex-grow: 1;
 	}
 }

@@ -135,14 +135,14 @@ function moveTeamMarker(team, lat, lon) {
 	global_markers[team].setAnimation(google.maps.Animation.DROP);
 }
 
-function initialize(defaultString) {
+function initialize(container_id, defaultString) {
 	initData();
 	//initMap();
 	processBookmark();
 
 	//updateCosts();
 
-	ReactDOM.render(React.createElement(Divisionizer, { initConferences: '1', initDivisions: '4', teams: global_teams, cities: global_cities, initString: defaultString }), document.getElementById('container'));
+	ReactDOM.render(React.createElement(Divisionizer, { initConferences: '1', initDivisions: '4', teams: global_teams, cities: global_cities, initString: defaultString }), document.getElementById(container_id));
 	//updateTableFormat(divisions);
 	//setBookmark(divisions.string);
 }

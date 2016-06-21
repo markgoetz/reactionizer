@@ -27,7 +27,7 @@ body {
 	color: $lightest-blue;
 }
 
-#head-logo {
+header {
 	color: $lightest-blue;
 	text-align: center;
 	font-size: 28px;
@@ -39,9 +39,6 @@ body {
 #settings_container {
 	padding: 15px;
 	background: $primary-blue;
-}
-
-#settings_menu {
 	color: $lightest-blue;
 }
 
@@ -56,6 +53,7 @@ input[type=text], select {
 	border: 0;
 	padding: 15px;
 	border-radius: $radius;
+	color: $medium-blue;
 }
 
 button {

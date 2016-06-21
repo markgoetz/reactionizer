@@ -1,6 +1,6 @@
 var Header = React.createClass({
 	render: function() {
-		return <div id="head-logo">header</div>;
+		return <header>header</header>;
 	}
 });	
 
@@ -146,8 +146,37 @@ var Relocationizer = React.createClass({
 
 var Map = React.createClass({
 	render: function() {
-		return <div id="map">This is a map.</div>;
-	}
+		return <div id="map"></div>;
+	},
+  componentDidMount: function() {
+    global_polygons = new Array();
+    global_markers = new Array();
+  
+    var latlng = new google.maps.LatLng(41,-96);
+    var myOptions = {
+      zoom: 4,
+      center: latlng,
+      maxZoom: 6,
+      minZoom: 3,
+      streetViewControl: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map"), myOptions);
+  
+    for (var i = 0; i < global_teams.length; i++) {
+      var team = global_teams[i];
+
+      var ll = new google.maps.LatLng(team.lat,team.lon);
+      global_markers[i] = new google.maps.Marker(
+        {
+          position:ll,
+          title:team.city + ' ' + team.name,
+          icon:getLogoURL(team)
+        }
+      );
+      global_markers[i].setMap(map);
+    }
+  }
 });
 
 
@@ -193,7 +222,7 @@ var Team = React.createClass({
 
 var Footer = React.createClass({
 	render: function() {
-		return <div id="footer">footer</div>
+		return <footer>footer</footer>
 	}
 });	
 

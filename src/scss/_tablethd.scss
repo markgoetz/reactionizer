@@ -6,8 +6,11 @@
 
 	#settings_menu {
 		display: block;
-		min-width: 250px;
 		align-self: stretch;
+	}
+
+	#settings_container {
+		min-width: 180px;
 	}
 
 	.window {

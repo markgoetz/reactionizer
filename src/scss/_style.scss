@@ -8,23 +8,79 @@ body {
 	min-height: 44px;
 	min-width: 44px;
 	display: inline-block;
-	background: linear-gradient(to bottom, $light-grey 0%, $light-grey 50%, $light-grey-shadow 50%);
+	@include team-gradient($light-grey);
 	font-size: 18px;
 	padding: 5px;
 	border-radius: $radius;
 	margin: 2px;
 	color: $black;
+	transition: background .5s;
+
+	&:hover {
+		@include team-gradient($yellow);
+	}
+
+	&.moved {
+		@include team-gradient($medium-blue);
+	}
+
+	&.created {
+		@include team-gradient($primary-blue);
+		color: $lightest-blue;
+	}
 }
 
-.field {
+.field	{
+	margin-top: 5px;
+	margin-bottom: 50px;
+}
+
+.subfield {
+	text-align: right;	
 	margin-top: 5px;
 	margin-bottom: 5px;
-}
 
-.field label {
-	font-size: 14pt;
-	font-family: $font-ui;
-	color: $lightest-blue;
+	label {
+		font-size: 14px;
+		font-family: $font-ui;
+		color: $lightest-blue;
+		margin-right: 10px;
+		width: 25%;
+	}
+
+	select, input[type=text] {
+		padding: auto;
+		font-family: $font-ui;
+		background: $light-grey;
+		font-size: 14px;
+		border: solid 2px darken($light-grey, 30%);
+		padding: 15px;
+		border-radius: $radius;
+		color: $medium-blue;
+		width: 75%;
+
+		@include button-hover($light-grey);
+	}
+
+	select {
+		-webkit-appearance: none;
+    	-moz-appearance: none;
+    	appearance: none;
+
+    	background-image:
+		    linear-gradient(45deg, transparent 50%, $medium-blue 50%),
+		    linear-gradient(135deg, $medium-blue 50%, transparent 50%),
+		    linear-gradient(to right, $medium-blue, $medium-blue);
+		background-position:
+		    calc(100% - 15px) 1em,
+		    calc(100% - 10px) 1em,
+		    calc(100% - 2em) 0.5em;
+		background-size:
+		    5px 5px,
+		    5px 5px,
+		    1px 1.5em;
+		background-repeat: no-repeat;
+	}
 }
 
 header {
@@ -46,16 +102,6 @@ header {
 	display: inline-block;
 }
 
-input[type=text], select {
-	font-family: $font-ui;
-	background: $light-grey;
-	font-size: 14px;
-	border: 0;
-	padding: 15px;
-	border-radius: $radius;
-	color: $medium-blue;
-}
-
 button {
 	font-family: $font-primary;
 	text-align: center;
@@ -68,7 +114,7 @@ button {
 		color: $lightest-blue;
 		width: 100%;
 		border-radius: $radius;
-		@include button-shadow($primary-red-shadow);
+		@include button-shadow($primary-red);
 		@include button-hover($primary-red);
 	}
 
@@ -77,19 +123,19 @@ button {
 		width: 44px;
 		color: $black;
 		font-size: 22px;
-		@include button-shadow($light-grey-shadow);
+		@include button-shadow($light-grey);
 
 		&.selected {
 			background: $primary-red;
 			color: $lightest-blue;
-			@include button-shadow($primary-red-shadow);
+			@include button-shadow($primary-red);
 			@include button-hover($primary-red);
 		}
 
 		&.disabled {
 			background: $disabled-bg-color;
 			color: $disabled-text-color;
-			@include button-shadow($disabled-shadow-color);
+			@include button-shadow($disabled-bg-color);
 			/* do not put the hover here, it's disabled. */
 		}
 
@@ -106,6 +152,9 @@ button {
 
 h3 {
 	font-size: 30px;
-	margin-top: 50px;
 	margin-bottom: 0px;
+}
+
+input[type=text] {
+
 }

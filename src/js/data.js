@@ -45,7 +45,8 @@ static_teams = [
 	{city:'Florida',name:'Panthers',lat:26.158333, lon:-80.325556,orig_div:5,tz:0},
 	{city:'Tampa Bay',name:'Lightning',lat:27.942778, lon:-82.451944,orig_div:5,tz:0},
 	{city:'Washington',name:'Capitals',lat:38.898056, lon:-77.020833,orig_div:5,tz:0},
-	{city:'Winnipeg',name:'Jets',lat:49.892892, lon:-97.143836,orig_div:-1,tz:1}	
+	{city:'Winnipeg',name:'Jets',lat:49.892892, lon:-97.143836,orig_div:-1,tz:1},
+	{city:'Las Vegas',name:'Expansions',lat:36.175, lon:-115.136389,orig_div:-1,tz:3}
 ];
 
 global_cities = [
@@ -54,7 +55,6 @@ global_cities = [
 	{city: 'Hamilton',tz:0, lat:43.255278, lon:-79.873056},
 	{city: 'Houston',tz:1, lat:29.762778, lon:-95.383056},
 	{city: 'Kansas City',tz:1, lat:39.109722, lon:-94.588611},
-	{city: 'Las Vegas',tz:3, lat:36.175, lon:-115.136389},
 	{city: 'Milwaukee',tz:1, lat:43.0522222, lon:-87.955833},
 	{city: 'Quebec City', tz:0, lat:46.816667, lon:-71.216667},
 	{city: 'Seattle', tz:3, lat:47.609722, lon:-122.333056}

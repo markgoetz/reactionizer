@@ -68,10 +68,10 @@ var ConferenceSelector = React.createClass({
 
     return React.createElement(
       "div",
-      { className: "field" },
+      null,
       React.createElement(
         "div",
-        { className: "subfield" },
+        { className: "field" },
         React.createElement(
           "h3",
           null,
@@ -79,13 +79,17 @@ var ConferenceSelector = React.createClass({
         ),
         React.createElement(
           "div",
-          { className: "selector-container" },
-          conference_nodes
+          { className: "subfield" },
+          React.createElement(
+            "div",
+            { className: "selector-container" },
+            conference_nodes
+          )
         )
       ),
       React.createElement(
         "div",
-        { className: "subfield" },
+        { className: "field" },
         React.createElement(
           "h3",
           null,
@@ -93,8 +97,12 @@ var ConferenceSelector = React.createClass({
         ),
         React.createElement(
           "div",
-          { className: "selector-container" },
-          division_nodes
+          { className: "subfield" },
+          React.createElement(
+            "div",
+            { className: "selector-container" },
+            division_nodes
+          )
         )
       )
     );
@@ -170,43 +178,39 @@ var Relocationizer = React.createClass({
         ),
         React.createElement(
           "div",
+          { className: "subfield" },
+          React.createElement(
+            "label",
+            null,
+            "team"
+          ),
+          React.createElement(
+            "select",
+            null,
+            team_nodes
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "subfield" },
+          React.createElement(
+            "label",
+            null,
+            "to"
+          ),
+          React.createElement(
+            "select",
+            null,
+            city_nodes
+          )
+        ),
+        React.createElement(
+          "div",
           null,
           React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "label",
-              null,
-              "from"
-            ),
-            React.createElement(
-              "select",
-              null,
-              team_nodes
-            )
-          ),
-          React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "label",
-              null,
-              "to"
-            ),
-            React.createElement(
-              "select",
-              null,
-              city_nodes
-            )
-          ),
-          React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "button",
-              { className: "action" },
-              "Relocate Team"
-            )
+            "button",
+            { className: "action" },
+            "Relocate Team"
           )
         )
       ),
@@ -220,39 +224,35 @@ var Relocationizer = React.createClass({
         ),
         React.createElement(
           "div",
+          { className: "subfield" },
+          React.createElement(
+            "label",
+            null,
+            "city"
+          ),
+          React.createElement(
+            "select",
+            null,
+            city_nodes
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "subfield" },
+          React.createElement(
+            "label",
+            null,
+            "name"
+          ),
+          React.createElement("input", { type: "text" })
+        ),
+        React.createElement(
+          "div",
           null,
           React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "label",
-              null,
-              "city"
-            ),
-            React.createElement(
-              "select",
-              null,
-              city_nodes
-            )
-          ),
-          React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "label",
-              null,
-              "name"
-            ),
-            React.createElement("input", { type: "text" })
-          ),
-          React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "button",
-              { className: "action" },
-              "Create Team"
-            )
+            "button",
+            { className: "action" },
+            "Create Team"
           )
         )
       )
@@ -264,11 +264,14 @@ var Map = React.createClass({
   displayName: "Map",
 
   render: function () {
+    //this._updatePolygons();
+    //this._updatePins();
+
     return React.createElement("div", { id: "map" });
   },
   componentDidMount: function () {
-    global_polygons = new Array();
-    global_markers = new Array();
+    this.polygons = new Array();
+    this.pins = new Array();
 
     var latlng = new google.maps.LatLng(41, -96);
     var myOptions = {
@@ -281,18 +284,33 @@ var Map = React.createClass({
     };
     var map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-    for (var i = 0; i < global_teams.length; i++) {
-      var team = global_teams[i];
+    //this._initPins(this.props.league);
+    //this._initPolygons(this.props.league);
+  },
+
+  _initPins: function (teams) {
+    for (var i = 0; i < teams.length; i++) {
+      var team = teams[i];
 
       var ll = new google.maps.LatLng(team.lat, team.lon);
-      global_markers[i] = new google.maps.Marker({
+      var pin = new google.maps.Marker({
         position: ll,
         title: team.city + ' ' + team.name,
         icon: getLogoURL(team)
       });
-      global_markers[i].setMap(map);
+      pin.setMap(map);
+      this.pins.push(marker);
     }
-  }
+  },
+
+  _initPolygons: function (teams) {
+    var conference_count = teams.length;
+    var division_count = teams[0].length;
+  },
+
+  _updatePins: function () {},
+
+  _updatePolygons: function () {}
 });
 
 var LeagueDisplay = React.createClass({
@@ -484,7 +502,8 @@ static_teams = [
 	{city:'Florida',name:'Panthers',lat:26.158333, lon:-80.325556,orig_div:5,tz:0},
 	{city:'Tampa Bay',name:'Lightning',lat:27.942778, lon:-82.451944,orig_div:5,tz:0},
 	{city:'Washington',name:'Capitals',lat:38.898056, lon:-77.020833,orig_div:5,tz:0},
-	{city:'Winnipeg',name:'Jets',lat:49.892892, lon:-97.143836,orig_div:-1,tz:1}	
+	{city:'Winnipeg',name:'Jets',lat:49.892892, lon:-97.143836,orig_div:-1,tz:1},
+	{city:'Las Vegas',name:'Expansions',lat:36.175, lon:-115.136389,orig_div:-1,tz:3}
 ];
 
 global_cities = [
@@ -493,7 +512,6 @@ global_cities = [
 	{city: 'Hamilton',tz:0, lat:43.255278, lon:-79.873056},
 	{city: 'Houston',tz:1, lat:29.762778, lon:-95.383056},
 	{city: 'Kansas City',tz:1, lat:39.109722, lon:-94.588611},
-	{city: 'Las Vegas',tz:3, lat:36.175, lon:-115.136389},
 	{city: 'Milwaukee',tz:1, lat:43.0522222, lon:-87.955833},
 	{city: 'Quebec City', tz:0, lat:46.816667, lon:-71.216667},
 	{city: 'Seattle', tz:3, lat:47.609722, lon:-122.333056}
@@ -852,7 +870,7 @@ DivisionList.prototype._breakdownDivisions = function() {
 			this.string.substring(10, 15),
 			this.string.substring(15, 20),
 			this.string.substring(20, 25),
-			this.string.substring(25, 30)		
+			this.string.substring(25, 31)		
 		);
 	}
 	
@@ -861,7 +879,7 @@ DivisionList.prototype._breakdownDivisions = function() {
 			this.string.substring(0, 8),
 			this.string.substring(8, 15),
 			this.string.substring(15, 23),
-			this.string.substring(23, 30)
+			this.string.substring(23, 31)
 		);
 	}
 	
@@ -869,14 +887,14 @@ DivisionList.prototype._breakdownDivisions = function() {
 		_divisions = new Array(
 			this.string.substring(0, 10),
 			this.string.substring(10, 20),
-			this.string.substring(20, 30)
+			this.string.substring(20, 31)
 		);
 	}
 	
 	else if (this.div_count == 2) {
 		_divisions = new Array(
 			this.string.substring(0, 15),
-			this.string.substring(15, 30)
+			this.string.substring(15, 31)
 		);
 	}
 	

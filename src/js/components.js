@@ -68,10 +68,10 @@ var ConferenceSelector = React.createClass({
 
     return React.createElement(
       "div",
-      { className: "field" },
+      null,
       React.createElement(
         "div",
-        { className: "subfield" },
+        { className: "field" },
         React.createElement(
           "h3",
           null,
@@ -79,13 +79,17 @@ var ConferenceSelector = React.createClass({
         ),
         React.createElement(
           "div",
-          { className: "selector-container" },
-          conference_nodes
+          { className: "subfield" },
+          React.createElement(
+            "div",
+            { className: "selector-container" },
+            conference_nodes
+          )
         )
       ),
       React.createElement(
         "div",
-        { className: "subfield" },
+        { className: "field" },
         React.createElement(
           "h3",
           null,
@@ -93,8 +97,12 @@ var ConferenceSelector = React.createClass({
         ),
         React.createElement(
           "div",
-          { className: "selector-container" },
-          division_nodes
+          { className: "subfield" },
+          React.createElement(
+            "div",
+            { className: "selector-container" },
+            division_nodes
+          )
         )
       )
     );
@@ -170,43 +178,39 @@ var Relocationizer = React.createClass({
         ),
         React.createElement(
           "div",
+          { className: "subfield" },
+          React.createElement(
+            "label",
+            null,
+            "team"
+          ),
+          React.createElement(
+            "select",
+            null,
+            team_nodes
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "subfield" },
+          React.createElement(
+            "label",
+            null,
+            "to"
+          ),
+          React.createElement(
+            "select",
+            null,
+            city_nodes
+          )
+        ),
+        React.createElement(
+          "div",
           null,
           React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "label",
-              null,
-              "from"
-            ),
-            React.createElement(
-              "select",
-              null,
-              team_nodes
-            )
-          ),
-          React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "label",
-              null,
-              "to"
-            ),
-            React.createElement(
-              "select",
-              null,
-              city_nodes
-            )
-          ),
-          React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "button",
-              { className: "action" },
-              "Relocate Team"
-            )
+            "button",
+            { className: "action" },
+            "Relocate Team"
           )
         )
       ),
@@ -220,39 +224,35 @@ var Relocationizer = React.createClass({
         ),
         React.createElement(
           "div",
+          { className: "subfield" },
+          React.createElement(
+            "label",
+            null,
+            "city"
+          ),
+          React.createElement(
+            "select",
+            null,
+            city_nodes
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "subfield" },
+          React.createElement(
+            "label",
+            null,
+            "name"
+          ),
+          React.createElement("input", { type: "text" })
+        ),
+        React.createElement(
+          "div",
           null,
           React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "label",
-              null,
-              "city"
-            ),
-            React.createElement(
-              "select",
-              null,
-              city_nodes
-            )
-          ),
-          React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "label",
-              null,
-              "name"
-            ),
-            React.createElement("input", { type: "text" })
-          ),
-          React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "button",
-              { className: "action" },
-              "Create Team"
-            )
+            "button",
+            { className: "action" },
+            "Create Team"
           )
         )
       )
@@ -264,11 +264,14 @@ var Map = React.createClass({
   displayName: "Map",
 
   render: function () {
+    //this._updatePolygons();
+    //this._updatePins();
+
     return React.createElement("div", { id: "map" });
   },
   componentDidMount: function () {
-    global_polygons = new Array();
-    global_markers = new Array();
+    this.polygons = new Array();
+    this.pins = new Array();
 
     var latlng = new google.maps.LatLng(41, -96);
     var myOptions = {
@@ -281,18 +284,33 @@ var Map = React.createClass({
     };
     var map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-    for (var i = 0; i < global_teams.length; i++) {
-      var team = global_teams[i];
+    //this._initPins(this.props.league);
+    //this._initPolygons(this.props.league);
+  },
+
+  _initPins: function (teams) {
+    for (var i = 0; i < teams.length; i++) {
+      var team = teams[i];
 
       var ll = new google.maps.LatLng(team.lat, team.lon);
-      global_markers[i] = new google.maps.Marker({
+      var pin = new google.maps.Marker({
         position: ll,
         title: team.city + ' ' + team.name,
         icon: getLogoURL(team)
       });
-      global_markers[i].setMap(map);
+      pin.setMap(map);
+      this.pins.push(marker);
     }
-  }
+  },
+
+  _initPolygons: function (teams) {
+    var conference_count = teams.length;
+    var division_count = teams[0].length;
+  },
+
+  _updatePins: function () {},
+
+  _updatePolygons: function () {}
 });
 
 var LeagueDisplay = React.createClass({

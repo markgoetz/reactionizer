@@ -1,4 +1,4 @@
-div, span {
+div, span, input, select {
 	box-sizing: border-box;
 }
 
@@ -73,5 +73,12 @@ div, span {
 
 	button {
 		flex-grow: 1;
+		flex-basis: 44px;
 	}	
+}
+
+.subfield {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }

@@ -31,4 +31,14 @@
 	.conference {
 		flex-grow: 1;
 	}
+
+	.subfield select, .subfield input[type=text] {
+		padding: 7px;
+	}
+
+	button.selector {
+		height: auto;
+		width: auto;
+		padding: 7px;
+	}
 }

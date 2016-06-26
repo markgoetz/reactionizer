@@ -1,6 +1,6 @@
 @media (min-width: 1281px) {
 	.team .city, .team .name {
-		font-size: 20pt;
+		font-size: 24px;
 	}
 
 	.team-logo, .team-logo img {
@@ -9,5 +9,17 @@
 		max-height: none;
 		max-width: none;
 		display: inline-block;
+	}
+
+	.field {
+		margin-bottom: 50px;
+	}
+
+	h3 {
+		font-size: 30px;
+	}
+
+	button.action {
+		font-size: 30px;
 	}
 }

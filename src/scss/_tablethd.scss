@@ -10,11 +10,7 @@
 	}
 
 	#settings_container {
-		min-width: 180px;
-	}
-
-	.window {
-
+		min-width: 44px*4 + 30px;
 	}
 
 	#settings_header {
@@ -36,5 +32,17 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: flex-start;
+	}
+
+	.field {
+		margin-bottom: 30px;
+	}
+
+	h3 {
+		font-size: 26px;
+	}
+
+	button.action {
+		font-size: 26px;
 	}
 }

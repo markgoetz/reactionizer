@@ -181,7 +181,7 @@ DivisionList.prototype._breakdownDivisions = function() {
 			this.string.substring(10, 15),
 			this.string.substring(15, 20),
 			this.string.substring(20, 25),
-			this.string.substring(25, 30)		
+			this.string.substring(25, 31)		
 		);
 	}
 	
@@ -190,7 +190,7 @@ DivisionList.prototype._breakdownDivisions = function() {
 			this.string.substring(0, 8),
 			this.string.substring(8, 15),
 			this.string.substring(15, 23),
-			this.string.substring(23, 30)
+			this.string.substring(23, 31)
 		);
 	}
 	
@@ -198,14 +198,14 @@ DivisionList.prototype._breakdownDivisions = function() {
 		_divisions = new Array(
 			this.string.substring(0, 10),
 			this.string.substring(10, 20),
-			this.string.substring(20, 30)
+			this.string.substring(20, 31)
 		);
 	}
 	
 	else if (this.div_count == 2) {
 		_divisions = new Array(
 			this.string.substring(0, 15),
-			this.string.substring(15, 30)
+			this.string.substring(15, 31)
 		);
 	}
 	

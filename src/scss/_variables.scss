@@ -5,24 +5,27 @@ $primary-blue:  #082049;
 $medium-blue:   #3061B7;
 $lightest-blue: #ECF3FF;
 $primary-red:   #B40405;
-$primary-red-shadow: #860A2C;
 $black:         #2A2F38;
 $light-grey:    #CCD1D6;
-$light-grey-shadow: #B9BEC4;
+$yellow:        #E4E38A;
 
 $disabled-bg-color: #CACACA;
 $disabled-text-color: #a9a9a9;
-$disabled-shadow-color: #848484;
 
 $radius: 3px;
 
-$shadow-height: 2px;
+$shadow-height: 3px;
+
 @mixin button-shadow($color) {
-	box-shadow: 0px $shadow-height 0px $color;
+	box-shadow: 0px $shadow-height 0px darken($color, 20%);
 }
 
 @mixin button-hover($color) {
 	&:hover {
 		background-color: lighten($color, 5%);
 	}
+}
+
+@mixin team-gradient($color) {
+	background: linear-gradient(to bottom, $color 0%, darken($color, 5%) 50%, darken($color, 15%) 50%, darken($color, 20%) 100%);
 }

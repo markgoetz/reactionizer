@@ -45,7 +45,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-div, span {
+div, span, input, select {
   box-sizing: border-box; }
 
 #divisionizer {
@@ -106,7 +106,13 @@ div, span {
   display: flex;
   width: 100%; }
   .selector-container button {
-    flex-grow: 1; }
+    flex-grow: 1;
+    flex-basis: 44px; }
+
+.subfield {
+  display: flex;
+  flex-direction: row;
+  align-items: center; }
 
 body {
   font-family: "Bebas Neue", "Helvetica", "sans-serif";
@@ -116,21 +122,55 @@ body {
   min-height: 44px;
   min-width: 44px;
   display: inline-block;
-  background: linear-gradient(to bottom, #CCD1D6 0%, #CCD1D6 50%, #B9BEC4 50%);
+  background: linear-gradient(to bottom, #CCD1D6 0%, #bec4cb 50%, #a2abb4 50%, #939ea9 100%);
   font-size: 18px;
   padding: 5px;
   border-radius: 3px;
   margin: 2px;
-  color: #2A2F38; }
+  color: #2A2F38;
+  transition: background .5s; }
+  .team:hover {
+    background: linear-gradient(to bottom, #E4E38A 0%, #dfde75 50%, #d6d44c 50%, #d1cf37 100%); }
+  .team.moved {
+    background: linear-gradient(to bottom, #3061B7 0%, #2b56a3 50%, #20417a 50%, #1b3666 100%); }
+  .team.created {
+    background: linear-gradient(to bottom, #082049 0%, #051632 50%, #000204 50%, black 100%);
+    color: #ECF3FF; }
 
 .field {
   margin-top: 5px;
-  margin-bottom: 5px; }
+  margin-bottom: 50px; }
 
-.field label {
-  font-size: 14pt;
-  font-family: "Roboto", "Helvetica", "sans-serif";
-  color: #ECF3FF; }
+.subfield {
+  text-align: right;
+  margin-top: 5px;
+  margin-bottom: 5px; }
+  .subfield label {
+    font-size: 14px;
+    font-family: "Roboto", "Helvetica", "sans-serif";
+    color: #ECF3FF;
+    margin-right: 10px;
+    width: 25%; }
+  .subfield select, .subfield input[type=text] {
+    padding: auto;
+    font-family: "Roboto", "Helvetica", "sans-serif";
+    background: #CCD1D6;
+    font-size: 14px;
+    border: solid 2px #778592;
+    padding: 15px;
+    border-radius: 3px;
+    color: #3061B7;
+    width: 75%; }
+    .subfield select:hover, .subfield input[type=text]:hover {
+      background-color: #dadee1; }
+  .subfield select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, #3061B7 50%), linear-gradient(135deg, #3061B7 50%, transparent 50%), linear-gradient(to right, #3061B7, #3061B7);
+    background-position: calc(100% - 15px) 1em, calc(100% - 10px) 1em, calc(100% - 2em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat; }
 
 header {
   color: #ECF3FF;
@@ -148,15 +188,6 @@ header {
 .team-logo {
   display: inline-block; }
 
-input[type=text], select {
-  font-family: "Roboto", "Helvetica", "sans-serif";
-  background: #CCD1D6;
-  font-size: 14px;
-  border: 0;
-  padding: 15px;
-  border-radius: 3px;
-  color: #3061B7; }
-
 button {
   font-family: "Bebas Neue", "Helvetica", "sans-serif";
   text-align: center;
@@ -169,7 +200,7 @@ button {
     color: #ECF3FF;
     width: 100%;
     border-radius: 3px;
-    box-shadow: 0px 2px 0px #860A2C; }
+    box-shadow: 0px 3px 0px #500202; }
     button.action:hover {
       background-color: #cd0506; }
   button.selector {
@@ -177,17 +208,17 @@ button {
     width: 44px;
     color: #2A2F38;
     font-size: 22px;
-    box-shadow: 0px 2px 0px #B9BEC4; }
+    box-shadow: 0px 3px 0px #939ea9; }
     button.selector.selected {
       background: #B40405;
       color: #ECF3FF;
-      box-shadow: 0px 2px 0px #860A2C; }
+      box-shadow: 0px 3px 0px #500202; }
       button.selector.selected:hover {
         background-color: #cd0506; }
     button.selector.disabled {
       background: #CACACA;
       color: #a9a9a9;
-      box-shadow: 0px 2px 0px #848484;
+      box-shadow: 0px 3px 0px #979797;
       /* do not put the hover here, it's disabled. */ }
     button.selector:first-child {
       border-radius: 3px 0 0 3px; }
@@ -196,7 +227,6 @@ button {
 
 h3 {
   font-size: 30px;
-  margin-top: 50px;
   margin-bottom: 0px; }
 
 /* Tablet Portrait */
@@ -234,7 +264,7 @@ h3 {
     align-self: stretch; }
 
   #settings_container {
-    min-width: 180px; }
+    min-width: 206px; }
 
   #settings_header {
     display: none; }
@@ -251,7 +281,16 @@ h3 {
   .division .list {
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: flex-start; } }
+    align-items: flex-start; }
+
+  .field {
+    margin-bottom: 30px; }
+
+  h3 {
+    font-size: 26px; }
+
+  button.action {
+    font-size: 26px; } }
 @media (min-width: 1025px) {
   .team .city, .team .name {
     display: inline; }
@@ -278,16 +317,33 @@ h3 {
     width: 100%; }
 
   .conference {
-    flex-grow: 1; } }
+    flex-grow: 1; }
+
+  .subfield select, .subfield input[type=text] {
+    padding: 7px; }
+
+  button.selector {
+    height: auto;
+    width: auto;
+    padding: 7px; } }
 @media (min-width: 1281px) {
   .team .city, .team .name {
-    font-size: 20pt; }
+    font-size: 24px; }
 
   .team-logo, .team-logo img {
     min-height: 0;
     min-width: 0;
     max-height: none;
     max-width: none;
-    display: inline-block; } }
+    display: inline-block; }
+
+  .field {
+    margin-bottom: 50px; }
+
+  h3 {
+    font-size: 30px; }
+
+  button.action {
+    font-size: 30px; } }
 
 /*# sourceMappingURL=reactionizer.css.map */

@@ -56,18 +56,22 @@ var ConferenceSelector = React.createClass({
       this
     );
 
-		return (<div className="field">
-      <div className="subfield">
+		return (<div>
+      <div className="field">
         <h3>Conferences</h3>
-        <div className="selector-container">
-          {conference_nodes}
+        <div className="subfield">
+          <div className="selector-container">
+            {conference_nodes}
+          </div>
         </div>
       </div>
       
-      <div className="subfield">
-        <h3>Divisions</h3>
-        <div className="selector-container">
-          {division_nodes}
+      <div className="field">
+        <h3>Divisions</h3>  
+        <div className="subfield">
+          <div className="selector-container">
+            {division_nodes}
+          </div>
         </div>
       </div>
     </div>);
@@ -122,21 +126,17 @@ var Relocationizer = React.createClass({
 
     return (<div>
       <div className="field">
-          <h3>Relocate team</h3>
-          <div>
-              <div><label>from</label><select>{team_nodes}</select></div>
-              <div><label>to</label><select>{city_nodes}</select></div>
-              <div><button className="action">Relocate Team</button></div>
-          </div>
-        </div>
+        <h3>Relocate team</h3>
+        <div className="subfield"><label>team</label><select>{team_nodes}</select></div>
+        <div className="subfield"><label>to</label><select>{city_nodes}</select></div>
+        <div><button className="action">Relocate Team</button></div>
+      </div>
 
         <div className="field">
           <h3>Expansion team</h3>
-          <div>
-              <div><label>city</label><select>{city_nodes}</select></div>
-              <div><label>name</label><input type="text" /></div>
-              <div><button className="action">Create Team</button></div>
-          </div>
+          <div className="subfield"><label>city</label><select>{city_nodes}</select></div>
+          <div className="subfield"><label>name</label><input type="text" /></div>
+          <div><button className="action">Create Team</button></div>
         </div>
       </div>);
   }
@@ -146,11 +146,14 @@ var Relocationizer = React.createClass({
 
 var Map = React.createClass({
 	render: function() {
+    //this._updatePolygons();
+    //this._updatePins();
+
 		return <div id="map"></div>;
 	},
   componentDidMount: function() {
-    global_polygons = new Array();
-    global_markers = new Array();
+    this.polygons = new Array();
+    this.pins = new Array();
   
     var latlng = new google.maps.LatLng(41,-96);
     var myOptions = {
@@ -162,20 +165,41 @@ var Map = React.createClass({
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById("map"), myOptions);
-  
-    for (var i = 0; i < global_teams.length; i++) {
-      var team = global_teams[i];
+
+    //this._initPins(this.props.league);
+    //this._initPolygons(this.props.league);
+  },
+
+  _initPins: function(teams) {
+    for (var i = 0; i < teams.length; i++) {
+      var team = teams[i];
 
       var ll = new google.maps.LatLng(team.lat,team.lon);
-      global_markers[i] = new google.maps.Marker(
+      var pin = new google.maps.Marker(
         {
           position:ll,
           title:team.city + ' ' + team.name,
           icon:getLogoURL(team)
         }
       );
-      global_markers[i].setMap(map);
+      pin.setMap(map);
+      this.pins.push(marker);
     }
+  },
+
+  _initPolygons: function(teams) {
+    var conference_count = teams.length;
+    var division_count = teams[0].length;
+
+
+  },
+
+  _updatePins: function () {
+
+  },
+
+  _updatePolygons: function() {
+
   }
 });
 

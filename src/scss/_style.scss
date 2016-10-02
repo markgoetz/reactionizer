@@ -93,9 +93,12 @@ header {
 }
 
 #settings_container {
-	padding: 15px;
 	background: $primary-blue;
 	color: $lightest-blue;
+
+	& > * {
+		padding: 15px;
+	}
 }
 
 #settings_menu {
@@ -173,10 +176,6 @@ button {
 			border-radius: 0 $radius $radius 0;
 		}
 	}
-}
-
-#settings_header button {
-	margin: 5px;
 }
 
 h3 {

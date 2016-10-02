@@ -67,6 +67,9 @@ div, span, input, select {
     align-self: stretch;
     opacity: 1; }
 
+#settings_header button {
+  margin: 5px; }
+
 .application {
   flex-grow: 1;
   display: flex;
@@ -189,9 +192,10 @@ header {
   vertical-align: middle; }
 
 #settings_container {
-  padding: 15px;
   background: #082049;
   color: #ECF3FF; }
+  #settings_container > * {
+    padding: 15px; }
 
 #settings_menu {
   background: #082049;
@@ -252,9 +256,6 @@ button {
       border-radius: 3px 0 0 3px; }
     button.selector:last-child {
       border-radius: 0 3px 3px 0; }
-
-#settings_header button {
-  margin: 5px; }
 
 h3 {
   font-size: 30px;

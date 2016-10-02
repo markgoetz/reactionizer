@@ -1,5 +1,18 @@
 /* Tablet Portrait */
 @media (min-width: 700px) {
+	#settings_menu {
+		flex-direction: row;
+		justify-content: space-between;
+
+		& div {
+			flex-grow: 1;
+		}
+
+		& > :first-child {
+			margin-right: 15px;
+		}
+	}
+
 	.conference {
 		flex-direction: row;
 	}

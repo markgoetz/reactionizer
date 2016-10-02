@@ -4,13 +4,16 @@
 		flex-direction: row;	
 	}
 
-	#settings_menu {
+	#settings_menu, #settings_menu.closed {
 		display: block;
 		align-self: stretch;
+		position: static;
+		max-height: auto;
+		opacity: 1;
 	}
 
 	#settings_container {
-		min-width: 44px*4 + 30px;
+		min-width: 44px * 4 + 30px;
 	}
 
 	#settings_header {
@@ -44,5 +47,17 @@
 
 	button.action {
 		font-size: 26px;
+	}
+
+	.division.col-3 .list, .division.col-2 .list {
+		flex-wrap: no-wrap;
+		flex-direction: row;
+
+		& .team {
+			width: auto;
+			margin-left: inherit;
+			margin-right: inherit;
+		}
+
 	}
 }

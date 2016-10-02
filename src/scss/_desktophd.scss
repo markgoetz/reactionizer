@@ -22,4 +22,12 @@
 	button.action {
 		font-size: 30px;
 	}
+
+	.division.col-6 .team .city, .division.col-6 .team .name {
+		font-size: 18px;
+	}
+
+	.division.col-6 .team .name {
+		display: inline;
+	}
 }

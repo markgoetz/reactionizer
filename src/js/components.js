@@ -1,35 +1,45 @@
 var Header = React.createClass({
-  displayName: "Header",
+  displayName: 'Header',
 
   render: function () {
     return React.createElement(
-      "header",
+      'header',
       null,
-      "header"
+      'header'
     );
   }
 });
 
 var SettingsMenu = React.createClass({
-  displayName: "SettingsMenu",
+  displayName: 'SettingsMenu',
 
+  getInitialState: function () {
+    return { menu_open: false };
+  },
   render: function () {
+    var menu_class = this.state.menu_open ? 'open' : 'closed';
+    var button_label = this.state.menu_open ? 'close' : 'open';
+
     return React.createElement(
-      "div",
-      { id: "settings_container" },
+      'div',
+      { id: 'settings_container' },
       React.createElement(
-        "h2",
-        { id: "settings_header" },
-        "Settings",
+        'h2',
+        { id: 'settings_header' },
         React.createElement(
-          "button",
+          'span',
           null,
-          "open"
+          'Settings'
+        ),
+        React.createElement(
+          'button',
+          { onClick: this.toggleMenu },
+          button_label
         )
       ),
       React.createElement(
-        "div",
-        { id: "settings_menu" },
+        'div',
+        { id: 'settings_menu', className: menu_class },
         React.createElement(ConferenceSelector, { conferences: this.props.conferences, divisions: this.props.divisions, onConferenceChange: this.onConferenceChange }),
         React.createElement(Relocationizer, { teams: this.props.teams, cities: this.props.cities })
       )
@@ -37,11 +47,14 @@ var SettingsMenu = React.createClass({
   },
   onConferenceChange: function (c, d) {
     this.props.onConferenceChange(c, d);
+  },
+  toggleMenu: function () {
+    this.setState({ menu_open: !this.state.menu_open });
   }
 });
 
 var ConferenceSelector = React.createClass({
-  displayName: "ConferenceSelector",
+  displayName: 'ConferenceSelector',
 
   getInitialState: function () {
     return { conferences: this.props.conferences, divisions: this.props.divisions };
@@ -49,7 +62,7 @@ var ConferenceSelector = React.createClass({
   render: function () {
     var conference_nodes = [3, 2, 1].map(function (conference) {
       return React.createElement(SelectorButton, {
-        type: "conference",
+        type: 'conference',
         key: "conference" + conference,
         value: conference,
         selected: conference == this.state.conferences,
@@ -58,7 +71,7 @@ var ConferenceSelector = React.createClass({
     }, this);
     var division_nodes = [6, 4, 3, 2].map(function (division) {
       return React.createElement(SelectorButton, {
-        type: "division",
+        type: 'division',
         key: "division" + division,
         value: division,
         selected: division == this.state.divisions,
@@ -67,40 +80,40 @@ var ConferenceSelector = React.createClass({
     }, this);
 
     return React.createElement(
-      "div",
+      'div',
       null,
       React.createElement(
-        "div",
-        { className: "field" },
+        'div',
+        { className: 'field' },
         React.createElement(
-          "h3",
+          'h3',
           null,
-          "Conferences"
+          'Conferences'
         ),
         React.createElement(
-          "div",
-          { className: "subfield" },
+          'div',
+          { className: 'subfield' },
           React.createElement(
-            "div",
-            { className: "selector-container" },
+            'div',
+            { className: 'selector-container' },
             conference_nodes
           )
         )
       ),
       React.createElement(
-        "div",
-        { className: "field" },
+        'div',
+        { className: 'field' },
         React.createElement(
-          "h3",
+          'h3',
           null,
-          "Divisions"
+          'Divisions'
         ),
         React.createElement(
-          "div",
-          { className: "subfield" },
+          'div',
+          { className: 'subfield' },
           React.createElement(
-            "div",
-            { className: "selector-container" },
+            'div',
+            { className: 'selector-container' },
             division_nodes
           )
         )
@@ -125,13 +138,13 @@ var ConferenceSelector = React.createClass({
 });
 
 var SelectorButton = React.createClass({
-  displayName: "SelectorButton",
+  displayName: 'SelectorButton',
 
   render: function () {
     var className = "div_button selector " + (this.props.selected ? ' selected' : '') + (this.props.disabled ? ' disabled' : '');
     var id = this.props.type + '_count_selector_' + this.props.value;
     return React.createElement(
-      "button",
+      'button',
       {
         className: className,
         id: id,
@@ -146,12 +159,12 @@ var SelectorButton = React.createClass({
 });
 
 var Relocationizer = React.createClass({
-  displayName: "Relocationizer",
+  displayName: 'Relocationizer',
 
   render: function () {
     var team_nodes = this.props.teams.map(function (team) {
       return React.createElement(
-        "option",
+        'option',
         { key: team.name },
         team.name
       );
@@ -159,100 +172,100 @@ var Relocationizer = React.createClass({
 
     var city_nodes = this.props.cities.map(function (city) {
       return React.createElement(
-        "option",
+        'option',
         { key: city.city },
         city.city
       );
     });
 
     return React.createElement(
-      "div",
+      'div',
       null,
       React.createElement(
-        "div",
-        { className: "field" },
+        'div',
+        { className: 'field' },
         React.createElement(
-          "h3",
+          'h3',
           null,
-          "Relocate team"
+          'Relocate team'
         ),
         React.createElement(
-          "div",
-          { className: "subfield" },
+          'div',
+          { className: 'subfield' },
           React.createElement(
-            "label",
+            'label',
             null,
-            "team"
+            'team'
           ),
           React.createElement(
-            "select",
+            'select',
             null,
             team_nodes
           )
         ),
         React.createElement(
-          "div",
-          { className: "subfield" },
+          'div',
+          { className: 'subfield' },
           React.createElement(
-            "label",
+            'label',
             null,
-            "to"
+            'to'
           ),
           React.createElement(
-            "select",
+            'select',
             null,
             city_nodes
           )
         ),
         React.createElement(
-          "div",
+          'div',
           null,
           React.createElement(
-            "button",
-            { className: "action" },
-            "Relocate Team"
+            'button',
+            { className: 'action' },
+            'Relocate Team'
           )
         )
       ),
       React.createElement(
-        "div",
-        { className: "field" },
+        'div',
+        { className: 'field' },
         React.createElement(
-          "h3",
+          'h3',
           null,
-          "Expansion team"
+          'Expansion team'
         ),
         React.createElement(
-          "div",
-          { className: "subfield" },
+          'div',
+          { className: 'subfield' },
           React.createElement(
-            "label",
+            'label',
             null,
-            "city"
+            'city'
           ),
           React.createElement(
-            "select",
+            'select',
             null,
             city_nodes
           )
         ),
         React.createElement(
-          "div",
-          { className: "subfield" },
+          'div',
+          { className: 'subfield' },
           React.createElement(
-            "label",
+            'label',
             null,
-            "name"
+            'name'
           ),
-          React.createElement("input", { type: "text" })
+          React.createElement('input', { type: 'text' })
         ),
         React.createElement(
-          "div",
+          'div',
           null,
           React.createElement(
-            "button",
-            { className: "action" },
-            "Create Team"
+            'button',
+            { className: 'action' },
+            'Create Team'
           )
         )
       )
@@ -261,13 +274,13 @@ var Relocationizer = React.createClass({
 });
 
 var Map = React.createClass({
-  displayName: "Map",
+  displayName: 'Map',
 
   render: function () {
     //this._updatePolygons();
     //this._updatePins();
 
-    return React.createElement("div", { id: "map" });
+    return React.createElement('div', { id: 'map' });
   },
   componentDidMount: function () {
     this.polygons = new Array();
@@ -314,56 +327,58 @@ var Map = React.createClass({
 });
 
 var LeagueDisplay = React.createClass({
-  displayName: "LeagueDisplay",
+  displayName: 'LeagueDisplay',
 
   render: function () {
     var nodes = this.props.league.map(function (conference, index) {
-      return React.createElement(Conference, { conference: conference, key: index });
-    });
+      return React.createElement(Conference, { conference: conference, key: index, count: this.props.league.length });
+    }, this);
 
     return React.createElement(
-      "div",
-      { id: "teams" },
+      'div',
+      { id: 'teams' },
       nodes
     );
   }
 });
 
 var Conference = React.createClass({
-  displayName: "Conference",
+  displayName: 'Conference',
 
   render: function () {
     var division_nodes = this.props.conference.map(function (division, index) {
-      return React.createElement(Division, { division: division, key: index });
-    });
+      return React.createElement(Division, { division: division, key: index, count: this.props.conference.length * this.props.count });
+    }, this);
 
+    var className = "conference col-" + this.props.count;
     return React.createElement(
-      "div",
-      { className: "conference" },
+      'div',
+      { className: className },
       division_nodes
     );
   }
 });
 
 var Division = React.createClass({
-  displayName: "Division",
+  displayName: 'Division',
 
   render: function () {
     var team_nodes = this.props.division.map(function (team) {
       return React.createElement(Team, { team: team, key: team.name });
     });
 
+    var className = "division col-" + this.props.count;
     return React.createElement(
-      "div",
-      { className: "division" },
+      'div',
+      { className: className },
       React.createElement(
-        "div",
-        { className: "name" },
+        'div',
+        { className: 'name' },
         this.props.division.name
       ),
       React.createElement(
-        "div",
-        { className: "list" },
+        'div',
+        { className: 'list' },
         team_nodes
       )
     );
@@ -371,23 +386,23 @@ var Division = React.createClass({
 });
 
 var Team = React.createClass({
-  displayName: "Team",
+  displayName: 'Team',
 
   render: function () {
     var source = getLogoURL(this.props.team);
     return React.createElement(
-      "div",
-      { className: "team" },
-      React.createElement("img", { className: "team-logo", src: source }),
+      'div',
+      { className: 'team' },
+      React.createElement('img', { className: 'team-logo', src: source }),
       React.createElement(
-        "span",
-        { className: "city" },
+        'span',
+        { className: 'city' },
         this.props.team.city
       ),
       React.createElement(
-        "span",
-        { className: "name" },
-        " ",
+        'span',
+        { className: 'name' },
+        ' ',
         this.props.team.name
       )
     );
@@ -395,19 +410,19 @@ var Team = React.createClass({
 });
 
 var Footer = React.createClass({
-  displayName: "Footer",
+  displayName: 'Footer',
 
   render: function () {
     return React.createElement(
-      "footer",
+      'footer',
       null,
-      "footer"
+      'footer'
     );
   }
 });
 
 var Divisionizer = React.createClass({
-  displayName: "Divisionizer",
+  displayName: 'Divisionizer',
 
   getInitialState: function () {
     return {
@@ -428,12 +443,12 @@ var Divisionizer = React.createClass({
     var teams = division_list.toArray();
 
     return React.createElement(
-      "div",
-      { id: "divisionizer" },
+      'div',
+      { id: 'divisionizer' },
       React.createElement(Header, null),
       React.createElement(
-        "div",
-        { className: "application" },
+        'div',
+        { className: 'application' },
         React.createElement(SettingsMenu, {
           conferences: this.state.conference_count,
           divisions: this.state.division_count,
@@ -444,8 +459,8 @@ var Divisionizer = React.createClass({
           onConferenceChange: this.onConferenceChange
         }),
         React.createElement(
-          "div",
-          { className: "content" },
+          'div',
+          { className: 'content' },
           React.createElement(Map, { league: teams }),
           React.createElement(LeagueDisplay, { league: teams })
         )

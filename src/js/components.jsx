@@ -6,13 +6,19 @@ var Header = React.createClass({
 
 
 var SettingsMenu = React.createClass({
+  getInitialState: function() {
+    return {menu_open:false};
+  },
   render: function() {
+    var menu_class = (this.state.menu_open) ? 'open' : 'closed';
+    var button_label = (this.state.menu_open) ? 'close' : 'open';
+
     return (<div id="settings_container">
       <h2 id="settings_header">
-        Settings
-        <button>open</button>
+        <span>Settings</span>
+        <button onClick={this.toggleMenu}>{button_label}</button>
       </h2>
-      <div id="settings_menu">
+      <div id="settings_menu" className={menu_class}>
         <ConferenceSelector conferences={this.props.conferences} divisions={this.props.divisions} onConferenceChange={this.onConferenceChange} />
         <Relocationizer teams={this.props.teams} cities={this.props.cities} />
       </div>
@@ -20,6 +26,9 @@ var SettingsMenu = React.createClass({
   },
   onConferenceChange: function(c,d) {
     this.props.onConferenceChange(c,d);
+  },
+  toggleMenu: function() {
+    this.setState({menu_open: !this.state.menu_open});
   }
 });
 
@@ -208,8 +217,8 @@ var Map = React.createClass({
 var LeagueDisplay = React.createClass({
 	render: function() {
 		var nodes = this.props.league.map(function (conference,index) {
-			return <Conference conference={conference} key={index} />;
-		});
+			return <Conference conference={conference} key={index} count={this.props.league.length} />;
+		}, this);
 
 		return <div id="teams">{nodes}</div>;
 	}
@@ -218,10 +227,11 @@ var LeagueDisplay = React.createClass({
 var Conference = React.createClass({
 	render: function() {
 		var division_nodes = this.props.conference.map(function (division,index) {
-			return <Division division={division} key={index} />
-		});
+			return <Division division={division} key={index} count={this.props.conference.length*this.props.count} />
+		}, this);
 
-		return <div className="conference">{division_nodes}</div>;
+    var className = "conference col-" + this.props.count;
+		return <div className={className}>{division_nodes}</div>;
 	}
 });
 
@@ -231,7 +241,8 @@ var Conference = React.createClass({
 			return <Team team={team} key={team.name} />
 		});
 
-		return <div className="division"><div className="name">{this.props.division.name}</div><div className="list">{team_nodes}</div></div>;
+    var className = "division col-" + this.props.count;
+		return <div className={className}><div className="name">{this.props.division.name}</div><div className="list">{team_nodes}</div></div>;
 	}
 });
 

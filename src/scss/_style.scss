@@ -98,6 +98,30 @@ header {
 	color: $lightest-blue;
 }
 
+#settings_menu {
+	background: $primary-blue;
+	z-index: 9000000001;
+}
+
+#settings_header {
+	font-size: 24px;
+	width: 100%;
+
+	& span {
+		padding-right: auto;
+	}
+
+	& button {
+		border-radius: $radius;
+		@include button-hover($light-grey);
+		@include button-shadow($light-grey);
+		min-height: 44px;
+		min-width: 44px;
+		padding-left: auto;
+		font-size: 18px;
+	}
+}
+
 .team-logo {
 	display: inline-block;
 }
@@ -107,6 +131,7 @@ button {
 	text-align: center;
 	border: 0;
 	@include button-hover($light-grey);
+	cursor: pointer;
 
 	&.action {
 		font-size: 30px;
@@ -128,6 +153,7 @@ button {
 		&.selected {
 			background: $primary-red;
 			color: $lightest-blue;
+
 			@include button-shadow($primary-red);
 			@include button-hover($primary-red);
 		}
@@ -147,7 +173,10 @@ button {
 			border-radius: 0 $radius $radius 0;
 		}
 	}
+}
 
+#settings_header button {
+	margin: 5px;
 }
 
 h3 {

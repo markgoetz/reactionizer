@@ -11,8 +11,20 @@ div, span, input, select {
 }
 
 #settings_menu {
-	display: none;
-	transition: 1s;
+	transition: .4s;
+	position: absolute;
+	display: block;
+
+	&.closed {
+		max-height: 0px;
+		opacity: 0;
+	}
+
+	&.open {
+		max-height: auto;
+		align-self: stretch;
+		opacity: 1;
+	}
 }
 
 .application {

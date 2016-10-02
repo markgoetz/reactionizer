@@ -41,4 +41,20 @@
 		width: auto;
 		padding: 7px;
 	}
+
+	button {
+		min-height: 0;
+	}
+
+	.division.col-3 .list, .division.col-2 .list {
+		flex-wrap: wrap;
+		flex-direction: row;
+
+		& .team {
+			width: calc(50% - 4px);
+			margin-left: 2px;
+			margin-right: 2px;
+		}
+
+	}
 }

@@ -24,23 +24,6 @@
 		display: none;
 	}
 
-	.team .city, .team .name {
-		display: none;
-	}
-
-	.team-logo {
-		display: block;
-		min-height: 100%;
-		min-width: 100%;
-		flex-grow: 0;
-	}
-
-	.division .list {
-		flex-direction: row;
-		flex-wrap: wrap;
-		align-items: flex-start;
-	}
-
 	.field {
 		margin-bottom: 30px;
 	}
@@ -51,17 +34,5 @@
 
 	button.action {
 		font-size: 26px;
-	}
-
-	.division.col-3 .list, .division.col-2 .list {
-		flex-wrap: no-wrap;
-		flex-direction: row;
-
-		& .team {
-			width: auto;
-			margin-left: inherit;
-			margin-right: inherit;
-		}
-
 	}
 }

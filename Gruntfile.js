@@ -5,7 +5,6 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       options: {
-       // define a string to put between each file in the concatenated output
         separator: ';'
       },
       dist: {
@@ -73,7 +72,7 @@ module.exports = function(grunt) {
           src: ['*.css', '!*.min.css'],
           dest: 'dist/css',
           ext: '.min.css'
-    }]
+        }]
       }
     },
   });

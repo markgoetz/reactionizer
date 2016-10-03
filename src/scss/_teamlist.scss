@@ -1,0 +1,52 @@
+@media (min-width:700px) and (max-width:899px),(min-width:1025px) {
+	#teams {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.conference {
+		display: flex;
+		flex-direction: row;
+		flex-grow: 1;
+	}
+
+	.team {
+		text-align: left;
+		justify-content: flex-start;
+	}
+
+	.division {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		flex-grow: 1
+	}
+
+	.team .city, .team .name {
+		display: inline;
+	}
+
+	.division .list {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%
+	}
+
+	.division.col-3 .team .name, .division.col-6 .team .name {
+		display: none;
+	}
+
+	.division.col-3 .list, .division.col-2 .list {
+		flex-wrap: wrap;
+		flex-direction: row;
+		align-items: flex-start;
+		align-content: flex-start;
+
+		& .team {
+			width: calc(50% - 4px);
+			margin-left: 2px;
+			margin-right: 2px;
+		}
+	}
+}

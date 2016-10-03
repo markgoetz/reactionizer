@@ -86,34 +86,6 @@ div, span, input, select {
   display: flex;
   flex-direction: column; }
 
-.conference {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: space-around; }
-
-.division {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  align-items: space-around; }
-
-.division .list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap; }
-
-.team {
-  flex-grow: 1;
-  text-align: center;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around; }
-
-.team .city, .team .name {
-  display: none; }
-
 #map {
   flex-grow: 1; }
 
@@ -265,6 +237,77 @@ h3 {
   font-size: 30px;
   margin-bottom: 0px; }
 
+@media (max-width: 699px), (min-width: 900px) and (max-width: 1024px) {
+  .conference {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-around; }
+
+  .division {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: space-around; }
+
+  .division .list {
+    display: table-row; }
+
+  .team {
+    display: table-cell;
+    text-align: center;
+    min-width: 44px;
+    min-height: 44px; }
+
+  .team .city, .team .name {
+    display: none; }
+
+  .team-logo {
+    display: block;
+    min-height: 100%;
+    min-width: 100%;
+    flex-grow: 0; } }
+@media (min-width: 700px) and (max-width: 899px), (min-width: 1025px) {
+  #teams {
+    display: flex;
+    flex-direction: row; }
+
+  .conference {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1; }
+
+  .team {
+    text-align: left;
+    justify-content: flex-start; }
+
+  .division {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-grow: 1; }
+
+  .team .city, .team .name {
+    display: inline; }
+
+  .division .list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%; }
+
+  .division.col-3 .team .name, .division.col-6 .team .name {
+    display: none; }
+
+  .division.col-3 .list, .division.col-2 .list {
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    align-content: flex-start; }
+    .division.col-3 .list .team, .division.col-2 .list .team {
+      width: calc(50% - 4px);
+      margin-left: 2px;
+      margin-right: 2px; } }
 /* Tablet Portrait */
 @media (min-width: 700px) {
   #settings_menu {
@@ -275,40 +318,8 @@ h3 {
     #settings_menu > :first-child {
       margin-right: 15px; }
 
-  .conference {
-    flex-direction: row; }
-
-  .list {
-    flex-wrap: wrap; }
-
   #map {
-    flex-grow: 1; }
-
-  .team {
-    flex-grow: 0;
-    text-align: left;
-    justify-content: flex-start; }
-
-  .division {
-    align-items: stretch; }
-
-  .team .city, .team .name {
-    display: inline; }
-
-  .division .list {
-    flex-direction: column;
-    align-items: strech; }
-
-  .division.col-6 .team .name {
-    display: none; }
-
-  .division.col-3 .list, .division.col-2 .list {
-    flex-wrap: wrap;
-    flex-direction: row; }
-    .division.col-3 .list .team, .division.col-2 .list .team {
-      width: calc(50% - 4px);
-      margin-left: 2px;
-      margin-right: 2px; } }
+    flex-grow: 1; } }
 /* Tablet Landscape */
 @media (min-width: 900px) {
   .application {
@@ -329,20 +340,6 @@ h3 {
   #settings_header {
     display: none; }
 
-  .team .city, .team .name {
-    display: none; }
-
-  .team-logo {
-    display: block;
-    min-height: 100%;
-    min-width: 100%;
-    flex-grow: 0; }
-
-  .division .list {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start; }
-
   .field {
     margin-bottom: 30px; }
 
@@ -350,43 +347,8 @@ h3 {
     font-size: 26px; }
 
   button.action {
-    font-size: 26px; }
-
-  .division.col-3 .list, .division.col-2 .list {
-    flex-wrap: no-wrap;
-    flex-direction: row; }
-    .division.col-3 .list .team, .division.col-2 .list .team {
-      width: auto;
-      margin-left: inherit;
-      margin-right: inherit; } }
+    font-size: 26px; } }
 @media (min-width: 1025px) {
-  .team .city, .team .name {
-    display: inline; }
-
-  .team {
-    min-height: 0;
-    text-align: left;
-    justify-content: flex-start; }
-
-  .division .list {
-    flex-direction: column;
-    align-items: stretch; }
-
-  .team-logo, .team-logo img {
-    min-height: 0;
-    min-width: 0;
-    max-height: 22px;
-    max-width: 22px;
-    display: inline-block; }
-
-  #teams {
-    display: flex;
-    flex-direction: row;
-    width: 100%; }
-
-  .conference {
-    flex-grow: 1; }
-
   .subfield select, .subfield input[type=text] {
     padding: 7px; }
 
@@ -398,13 +360,8 @@ h3 {
   button {
     min-height: 0; }
 
-  .division.col-3 .list, .division.col-2 .list {
-    flex-wrap: wrap;
-    flex-direction: row; }
-    .division.col-3 .list .team, .division.col-2 .list .team {
-      width: calc(50% - 4px);
-      margin-left: 2px;
-      margin-right: 2px; } }
+  .team {
+    min-height: 0; } }
 @media (min-width: 1281px) {
   .team .city, .team .name {
     font-size: 24px; }

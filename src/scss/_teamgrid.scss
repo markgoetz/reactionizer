@@ -1,0 +1,37 @@
+@media (max-width: 699px),(min-width:900px) and (max-width:1024px) {
+	.conference {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: space-around;
+	}
+
+	.division {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		align-items: space-around;
+	}
+
+	.division .list {
+		display: table-row;
+	}
+
+	.team {
+		display: table-cell;
+		text-align: center;
+		min-width: 44px;
+		min-height: 44px;
+	}
+
+	.team .city, .team .name {
+		display: none;
+	}
+
+	.team-logo {
+		display: block;
+		min-height: 100%;
+		min-width: 100%;
+		flex-grow: 0;
+	}
+}

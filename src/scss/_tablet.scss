@@ -13,50 +13,7 @@
 		}
 	}
 
-	.conference {
-		flex-direction: row;
-	}
-
-	.list {
-		flex-wrap: wrap;
-	}
-
 	#map {
 		flex-grow: 1;
-	}
-
-	.team {
-		flex-grow: 0;
-		text-align: left;
-		justify-content: flex-start;
-	}
-
-	.division {
-		align-items: stretch;
-	}
-
-	.team .city, .team .name {
-		display: inline;
-	}
-
-	.division .list {
-		flex-direction: column;
-		align-items: strech;
-	}
-
-	.division.col-6 .team .name {
-		display: none;
-	}
-
-	.division.col-3 .list, .division.col-2 .list {
-		flex-wrap: wrap;
-		flex-direction: row;
-
-		& .team {
-			width: calc(50% - 4px);
-			margin-left: 2px;
-			margin-right: 2px;
-		}
-
 	}
 }

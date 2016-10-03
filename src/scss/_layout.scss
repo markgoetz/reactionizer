@@ -51,40 +51,6 @@ div, span, input, select {
 	flex-direction: column;
 }
 
-.conference {
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	justify-content: space-around;
-}
-
-.division {
-	display: flex;
-	flex-direction: column;
-	flex-grow: 1;
-	align-items: space-around;
-}
-
-.division .list {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-}
-
-.team {
-	flex-grow: 1;
-	text-align: center;
- 	
- 	display: flex;
- 	flex-direction: row;
- 	align-items: center;
- 	justify-content: space-around;
-}
-
-.team .city, .team .name {
-	display: none;
-}
-
 #map {
 	flex-grow: 1;
 }

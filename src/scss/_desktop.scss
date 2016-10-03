@@ -1,37 +1,4 @@
 @media (min-width: 1025px) {
-	.team .city, .team .name {
-		display: inline;
-	}
-
-	.team {
-		min-height: 0;
-		text-align: left;
-		justify-content: flex-start;
-	}
-
-	.division .list {
-		flex-direction: column;
-		align-items: stretch;
-	}
-
-	.team-logo, .team-logo img {
-		min-height: 0;
-		min-width: 0;
-		max-height: 22px;
-		max-width: 22px;
-		display: inline-block;
-	}
-
-	#teams {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-	}
-
-	.conference {
-		flex-grow: 1;
-	}
-
 	.subfield select, .subfield input[type=text] {
 		padding: 7px;
 	}
@@ -46,15 +13,7 @@
 		min-height: 0;
 	}
 
-	.division.col-3 .list, .division.col-2 .list {
-		flex-wrap: wrap;
-		flex-direction: row;
-
-		& .team {
-			width: calc(50% - 4px);
-			margin-left: 2px;
-			margin-right: 2px;
-		}
-
+	.team {
+		min-height: 0;
 	}
 }

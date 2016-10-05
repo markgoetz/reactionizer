@@ -21,10 +21,16 @@ module.exports = function(grunt) {
         dest: 'dist/js/<%= pkg.name %>.min.js'
       }
     },
+    eslint: {
+      target: 'src/js/*.js',
+      options: {
+        configFile: 'eslintrc.json'
+      }
+    },
     watch: {
       js: {
         files: ['src/js/*'],
-        tasks: ['babel', 'concat', 'uglify']
+        tasks: ['babel', 'concat', 'eslint', 'uglify']
       },
       scss: {
         files: ['src/scss/*'],
@@ -74,7 +80,7 @@ module.exports = function(grunt) {
           ext: '.min.css'
         }]
       }
-    },
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -83,10 +89,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-eslint');
  
 
   // Default task(s).
   grunt.registerTask('default', ['watch']);
-  grunt.registerTask('compilejs', ['babel', 'concat', 'uglify']);
+  grunt.registerTask('compilejs', ['babel', 'eslint', 'concat', 'uglify']);
   grunt.registerTask('compilescss', ['sass', 'cssmin']);
 };

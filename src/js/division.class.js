@@ -3,7 +3,7 @@ var costs;
 var global_teams;
 var DL_ENCODING_CHARS = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var DL_DEFAULT_STRING = "IJCGRQFH9T72DEBOAPSNLKM1468053UVWXYZ";
-var DL_ENCODING_BREAK_CHAR = ' ';
+var DL_ENCODING_BREAK_CHAR = " ";
 var DL_MAX_MUTATIONS = 2;
 
 function DivisionList(div_string, conference_count, division_count) {
@@ -37,7 +37,7 @@ DivisionList.prototype.calculateScore = function() {
 DivisionList.prototype.crossWith = function(otherDivision) {
 	var chars_already_used = new Array();
 	var unused_chars = DivisionList.getDefaultString();
-	var new_string = '';
+	var new_string = "";
 	var new_char;
 	
 	// splice the two divisions together
@@ -66,7 +66,7 @@ DivisionList.prototype.crossWith = function(otherDivision) {
 		else {
 			new_string = new_string + new_char;
 			chars_already_used[new_char] = 1;
-			unused_chars = unused_chars.setCharAt(unused_chars.indexOf(new_char), '');
+			unused_chars = unused_chars.setCharAt(unused_chars.indexOf(new_char), "");
 		}
 	}
 	
@@ -75,7 +75,7 @@ DivisionList.prototype.crossWith = function(otherDivision) {
 		var random_missing_char_pos = randomInt(unused_chars.length);
 		var random_missing_char = unused_chars.charAt(random_missing_char_pos);
 		new_string = new_string.setCharAt(break_pos, random_missing_char);
-		unused_chars = unused_chars.setCharAt(random_missing_char_pos, '');
+		unused_chars = unused_chars.setCharAt(random_missing_char_pos, "");
 		break_pos = new_string.indexOf(DL_ENCODING_BREAK_CHAR, 0);
 	}
 	
@@ -143,7 +143,7 @@ DivisionList.prototype.inSameDivision = function(team1, team2) {
 		}
 	}
 	return false;
-}
+};
 
 DivisionList.prototype.inSameConference = function(team1, team2) {
 	var team1_char = DL_ENCODING_CHARS.charAt(team1);
@@ -223,7 +223,7 @@ DivisionList.prototype._breakdownDivisions = function() {
 	this.conferences = _conferences;
 	
 	return _conferences;
-}
+};
 
 DivisionList.getRandom = function(conference_count, division_count) {
 	// take a list of all the teams that we have

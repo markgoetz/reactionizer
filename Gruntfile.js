@@ -24,13 +24,13 @@ module.exports = function(grunt) {
     eslint: {
       target: 'src/js/*.js',
       options: {
-        configFile: 'eslintrc.json'
+        configFile: '.eslintrc.json'
       }
     },
     watch: {
       js: {
         files: ['src/js/*'],
-        tasks: ['babel', 'concat', 'eslint', 'uglify']
+        tasks: ['babel', 'concat', 'uglify']
       },
       scss: {
         files: ['src/scss/*'],
@@ -94,6 +94,6 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['watch']);
-  grunt.registerTask('compilejs', ['babel', 'eslint', 'concat', 'uglify']);
+  grunt.registerTask('compilejs', ['babel', 'concat', 'uglify']);
   grunt.registerTask('compilescss', ['sass', 'cssmin']);
 };

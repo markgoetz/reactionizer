@@ -15,53 +15,6 @@ var conference_colors = new Array(
 	new Array("#7EE01B", "#386907")
 );
 
-function updateDivisionCount(div_count) {
-	$(".div_button").removeClass("selected");
-	$("#division_count_selector_" + div_count).addClass("selected");
-	global_division_count = div_count;
-	divisions = initDivisions();
-	
-	resetPolygons();
-	updateScreenLayout();
-	updateTableFormat(divisions);
-	
-	updateMap(divisions);
-	updateTable(divisions);
-	setBookmark(divisions.string);
-}
-
-function updateConferenceCount(conf_count) {
-	$(".conf_button").removeClass("selected");
-	$("#conf_count_selector_" + conf_count).addClass("selected");
-	
-	$(".div_button").removeClass("disabled").removeAttr("disabled");
-	
-	global_conference_count = conf_count;
-	
-	if (conf_count == 3) {
-		$("#division_count_selector_4").addClass("disabled").attr("disabled", "disabled");
-		$("#division_count_selector_2").addClass("disabled").attr("disabled", "disabled");
-		
-		if (global_division_count == 4 || global_division_count == 2)
-			updateDivisionCount(6);
-	}
-	else if (conf_count == 2) {
-		$("#division_count_selector_3").addClass("disabled").attr("disabled", "disabled");
-		
-		if (global_division_count == 3)
-			updateDivisionCount(6);
-	}
-
-	divisions = initDivisions();
-	resetPolygons();
-	updateScreenLayout();
-	updateTableFormat(divisions);
-	
-	updateMap(divisions);
-	updateTable(divisions);
-	setBookmark(divisions.string);
-}
-
 function getDistanceWeight() {
 	return $("#distance_weight_slider").slider( "option", "value" );
 }
@@ -179,13 +132,6 @@ function processBookmark() {
 }
 
 function initInterface() {    
-	$("#distance_weight_slider").slider({max:10,value:5, change: updateCosts});
-	$("#rivalry_weight_slider").slider( {max:10,value:5, change: updateCosts});
-	$("#division_weight_slider").slider({max:10,value:5, change: updateCosts});
-	$("#timezone_weight_slider").slider({max:10,value:5, change: updateCosts});
-	
-	$("#relocationizer").dialog({autoOpen:false, modal:true,minHeight:100,minWidth:400});
-
 	var sorted_teams = global_teams.slice(0);
 	sorted_teams.sort(function(a,b) { if (a.name < b.name) return -1; if (a.name > b.name) return 1; return 0; });
 	for (var i = 0; i < sorted_teams.length; i++) {
@@ -195,30 +141,6 @@ function initInterface() {
 	for (i = 0; i < global_cities.length; i++) {
 		$("#relocationizer_cities").append("<option value='" + i + "'>" + global_cities[i].city + "</option>");
 	}
-	
-	updateDivisionCount(global_division_count);
-	updateConferenceCount(global_conference_count);
-	
-	updateScreenLayout();
-}
-
-function openRelocationDialog() {
-	$("#relocationizer").dialog("open");
-}
-
-function relocateTeam() {
-	var team = $("#relocationizer_teams option:selected").attr("value");
-	var city = $("#relocationizer_cities option:selected").attr("value");
-	changeTeamCity(team, city);
-}
-
-function addMovedTeamRow(team, city_name) {
-	removeMovedTeamRow(team);
-	$("#relocated_teams").append("<div class='relocated_team' id='team" + team + "'>Relocated <span class='old_team'>" + global_teams[team].name + "</span> to <span class='new_city'>" + city_name + "</span>&nbsp;<a href='javascript:revertTeamCity(" + team + ");'>Undo</a></div>");
-}
-
-function removeMovedTeamRow(team) {
-	$("#relocated_teams #team" + team).remove();
 }
 
 function initDivisions() {
@@ -268,23 +190,6 @@ function updateTableFormat(divisions) {
 	}
 	
 	$(".team").draggable({revert:true}).droppable({drop:handleDrop, hoverClass:"droppable"});
-}
-
-function updateTable(divisions) {
-//	$("#divisions .team").remove();
-	
-	var division_list = divisions.toArray();
-	var divisions_per_conference = divisions.div_count / divisions.conf_count;
-	for (var i = 0; i < divisions.conf_count; i++) {
-		for (var j = 0; j < divisions_per_conference; j++) {
-			var current_division = division_list[i][j];
-			
-			for (var k = 0; k < current_division.length; k++) {
-				var team = current_division[k];
-				$("#c" + i + "d" + j + "t" + k).text(team.city + " " + team.name);
-			}
-		}
-	}
 }
 
 function updateMap(divisions) {

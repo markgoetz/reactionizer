@@ -3,7 +3,6 @@ var rivalry_costs;
 var timezone_costs = new Array();
 var division_costs = new Array();
 var costs = new Array();
-var division_count;
 var global_cities;
 var global_teams;
 var global_next_empty_division = -4;

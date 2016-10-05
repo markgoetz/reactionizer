@@ -1,3 +1,9 @@
+var getLogoURL;
+var allTeams;
+var google;
+var DivisionList;
+
+
 var Header = React.createClass({
 	render: function() {
 		return <header>header</header>;
@@ -120,7 +126,7 @@ var SelectorButton = React.createClass({
 	propTypes: {
 		selected: React.PropTypes.bool,
 		disabled: React.PropTypes.bool,
-		type: React.PropTypes.string,
+		type: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
 		value: React.PropTypes.string,
 		onButtonClick: React.PropTypes.func
 	},
@@ -196,7 +202,7 @@ var Map = React.createClass({
 			streetViewControl: false,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
-		var map = new google.maps.Map(document.getElementById("map"), myOptions);
+		this.map = new google.maps.Map(document.getElementById("map"), myOptions);
 
     //this._initPins(this.props.league);
     //this._initPolygons(this.props.league);
@@ -214,14 +220,14 @@ var Map = React.createClass({
 					icon:getLogoURL(team)
 				}
       );
-			pin.setMap(map);
-			this.pins.push(marker);
+			pin.setMap(this.map);
+			this.pins.push(pin);
 		}
 	},
 
 	_initPolygons: function(teams) {
-		var conference_count = teams.length;
-		var division_count = teams[0].length;
+		// var conference_count = teams.length;
+		// var division_count = teams[0].length;
 
 
 	},
@@ -239,11 +245,11 @@ var Map = React.createClass({
 
 var LeagueDisplay = React.createClass({
 	propTypes: {
-		league: React.propTypes.array
+		league: React.PropTypes.array
 	},
 	render: function() {
 		var nodes = this.props.league.map(function (conference,index) {
-			return <Conference conference={conference} key={index} count={this.props.league.length} />;
+			return <Conference conference={conference} key={index} number={index} count={this.props.league.length} />;
 		}, this);
 
 		return <div id="teams">{nodes}</div>;
@@ -252,12 +258,13 @@ var LeagueDisplay = React.createClass({
 
 var Conference = React.createClass({
 	propTypes: {
-		conference: React.propTypes.array,
-		count: React.propTypes.number
+		conference: React.PropTypes.array,
+		count: React.PropTypes.number,
+		number: React.PropTypes.number
 	},
 	render: function() {
 		var division_nodes = this.props.conference.map(function (division,index) {
-			return <Division division={division} key={index} count={this.props.conference.length*this.props.count} />;
+			return <Division division={division} key={index} count={this.props.conference.length*this.props.count} conference={this.props.number} number={index} />;
 		}, this);
 
 		var className = "conference col-" + this.props.count;
@@ -267,20 +274,25 @@ var Conference = React.createClass({
 
 var Division = React.createClass({
 	propTypes: {
-		division: React.propTypes.array,
-		count: React.propTypes.number
+		division: React.PropTypes.array,
+		count: React.PropTypes.number,
+		conference: React.PropTypes.number,
+		number: React.PropTypes.number
 	},
 	render: function() {
 		var team_nodes = this.props.division.map(function (team) {
 			return <Team team={team} key={team.name} />;
 		});
 
-		var className = "division col-" + this.props.count;
+		var className = "division col-" + this.props.count + " conf-" + this.props.conference + " div-" + this.props.number;
 		return <div className={className}><div className="name">{this.props.division.name}</div><div className="list">{team_nodes}</div></div>;
 	}
 });
 
 var Team = React.createClass({
+	propTypes: {
+		team: React.PropTypes.object
+	},
 	render: function() {
 		var source=getLogoURL(this.props.team);
 		return (<div className="team">
@@ -300,11 +312,11 @@ var Footer = React.createClass({
 
 var Divisionizer = React.createClass({
 	propTypes: {
-		initConferences: React.propTypes.number,
-		initDivisions: React.propTypes.number,
-		initString: React.propTypes.string,
-		teams: React.propTypes.array,
-		cities: React.propTypes.array
+		initConferences: React.PropTypes.number,
+		initDivisions: React.PropTypes.number,
+		initString: React.PropTypes.string,
+		teams: React.PropTypes.array,
+		cities: React.PropTypes.array
 	},
 	getInitialState: function() {
 		return {

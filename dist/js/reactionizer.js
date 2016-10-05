@@ -1,473 +1,526 @@
-var Header = React.createClass({
-  displayName: 'Header',
+var getLogoURL;
+var allTeams;
+var google;
+var DivisionList;
 
-  render: function () {
-    return React.createElement(
-      'header',
-      null,
-      'header'
-    );
-  }
+var Header = React.createClass({
+	displayName: "Header",
+
+	render: function () {
+		return React.createElement(
+			"header",
+			null,
+			"header"
+		);
+	}
 });
 
 var SettingsMenu = React.createClass({
-  displayName: 'SettingsMenu',
+	displayName: "SettingsMenu",
 
-  getInitialState: function () {
-    return { menu_open: false };
-  },
-  render: function () {
-    var menu_class = this.state.menu_open ? 'open' : 'closed';
-    var button_label = this.state.menu_open ? 'close' : 'open';
+	propTypes: {
+		conferences: React.PropTypes.number,
+		divisions: React.PropTypes.number,
+		teams: React.PropTypes.array,
+		cities: React.PropTypes.array,
+		onConferenceChange: React.PropTypes.func
+	},
+	getInitialState: function () {
+		return { menu_open: false };
+	},
+	render: function () {
+		var menu_class = this.state.menu_open ? "open" : "closed";
+		var button_label = this.state.menu_open ? "close" : "open";
 
-    return React.createElement(
-      'div',
-      { id: 'settings_container' },
-      React.createElement(
-        'h2',
-        { id: 'settings_header' },
-        React.createElement(
-          'span',
-          null,
-          'Settings'
-        ),
-        React.createElement(
-          'button',
-          { onClick: this.toggleMenu },
-          button_label
-        )
-      ),
-      React.createElement(
-        'div',
-        { id: 'settings_menu', className: menu_class },
-        React.createElement(ConferenceSelector, { conferences: this.props.conferences, divisions: this.props.divisions, onConferenceChange: this.onConferenceChange }),
-        React.createElement(Relocationizer, { teams: this.props.teams, cities: this.props.cities })
-      )
-    );
-  },
-  onConferenceChange: function (c, d) {
-    this.props.onConferenceChange(c, d);
-  },
-  toggleMenu: function () {
-    this.setState({ menu_open: !this.state.menu_open });
-  }
+		return React.createElement(
+			"div",
+			{ id: "settings_container" },
+			React.createElement(
+				"h2",
+				{ id: "settings_header" },
+				React.createElement(
+					"span",
+					null,
+					"Settings"
+				),
+				React.createElement(
+					"button",
+					{ onClick: this.toggleMenu },
+					button_label
+				)
+			),
+			React.createElement(
+				"div",
+				{ id: "settings_menu", className: menu_class },
+				React.createElement(ConferenceSelector, { conferences: this.props.conferences, divisions: this.props.divisions, onConferenceChange: this.onConferenceChange }),
+				React.createElement(Relocationizer, { teams: this.props.teams, cities: this.props.cities })
+			)
+		);
+	},
+	onConferenceChange: function (c, d) {
+		this.props.onConferenceChange(c, d);
+	},
+	toggleMenu: function () {
+		this.setState({ menu_open: !this.state.menu_open });
+	}
 });
 
 var ConferenceSelector = React.createClass({
-  displayName: 'ConferenceSelector',
+	displayName: "ConferenceSelector",
 
-  getInitialState: function () {
-    return { conferences: this.props.conferences, divisions: this.props.divisions };
-  },
-  render: function () {
-    var conference_nodes = [3, 2, 1].map(function (conference) {
-      return React.createElement(SelectorButton, {
-        type: 'conference',
-        key: "conference" + conference,
-        value: conference,
-        selected: conference == this.state.conferences,
-        disabled: false,
-        onButtonClick: this.conferenceUpdate });
-    }, this);
-    var division_nodes = [6, 4, 3, 2].map(function (division) {
-      return React.createElement(SelectorButton, {
-        type: 'division',
-        key: "division" + division,
-        value: division,
-        selected: division == this.state.divisions,
-        disabled: division % this.state.conferences != 0,
-        onButtonClick: this.divisionUpdate });
-    }, this);
+	propTypes: {
+		conferences: React.PropTypes.number,
+		divisions: React.PropTypes.number,
+		onConferenceChange: React.PropTypes.func
+	},
+	getInitialState: function () {
+		return { conferences: this.props.conferences, divisions: this.props.divisions };
+	},
+	render: function () {
+		var conference_nodes = [3, 2, 1].map(function (conference) {
+			return React.createElement(SelectorButton, {
+				type: "conference",
+				key: "conference" + conference,
+				value: conference,
+				selected: conference == this.state.conferences,
+				disabled: false,
+				onButtonClick: this.conferenceUpdate });
+		}, this);
+		var division_nodes = [6, 4, 3, 2].map(function (division) {
+			return React.createElement(SelectorButton, {
+				type: "division",
+				key: "division" + division,
+				value: division,
+				selected: division == this.state.divisions,
+				disabled: division % this.state.conferences != 0,
+				onButtonClick: this.divisionUpdate });
+		}, this);
 
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'div',
-        { className: 'field' },
-        React.createElement(
-          'h3',
-          null,
-          'Conferences'
-        ),
-        React.createElement(
-          'div',
-          { className: 'subfield' },
-          React.createElement(
-            'div',
-            { className: 'selector-container' },
-            conference_nodes
-          )
-        )
-      ),
-      React.createElement(
-        'div',
-        { className: 'field' },
-        React.createElement(
-          'h3',
-          null,
-          'Divisions'
-        ),
-        React.createElement(
-          'div',
-          { className: 'subfield' },
-          React.createElement(
-            'div',
-            { className: 'selector-container' },
-            division_nodes
-          )
-        )
-      )
-    );
-  },
-  conferenceUpdate: function (c) {
-    this.setState({ conferences: c });
-    var d = this.state.divisions;
+		return React.createElement(
+			"div",
+			null,
+			React.createElement(
+				"div",
+				{ className: "field" },
+				React.createElement(
+					"h3",
+					null,
+					"Conferences"
+				),
+				React.createElement(
+					"div",
+					{ className: "subfield" },
+					React.createElement(
+						"div",
+						{ className: "selector-container" },
+						conference_nodes
+					)
+				)
+			),
+			React.createElement(
+				"div",
+				{ className: "field" },
+				React.createElement(
+					"h3",
+					null,
+					"Divisions"
+				),
+				React.createElement(
+					"div",
+					{ className: "subfield" },
+					React.createElement(
+						"div",
+						{ className: "selector-container" },
+						division_nodes
+					)
+				)
+			)
+		);
+	},
+	conferenceUpdate: function (c) {
+		this.setState({ conferences: c });
+		var d = this.state.divisions;
 
-    if (this.state.divisions % c != 0) {
-      d = 6;
-      this.setState({ divisions: d });
-    }
+		if (this.state.divisions % c != 0) {
+			d = 6;
+			this.setState({ divisions: d });
+		}
 
-    this.props.onConferenceChange(c, d);
-  },
-  divisionUpdate: function (d) {
-    this.setState({ divisions: d });
-    this.props.onConferenceChange(this.state.conferences, d);
-  }
+		this.props.onConferenceChange(c, d);
+	},
+	divisionUpdate: function (d) {
+		this.setState({ divisions: d });
+		this.props.onConferenceChange(this.state.conferences, d);
+	}
 });
 
 var SelectorButton = React.createClass({
-  displayName: 'SelectorButton',
+	displayName: "SelectorButton",
 
-  render: function () {
-    var className = "div_button selector " + (this.props.selected ? ' selected' : '') + (this.props.disabled ? ' disabled' : '');
-    var id = this.props.type + '_count_selector_' + this.props.value;
-    return React.createElement(
-      'button',
-      {
-        className: className,
-        id: id,
-        disabled: this.props.disabled,
-        onClick: this.handleClick },
-      this.props.value
-    );
-  },
-  handleClick: function (e) {
-    this.props.onButtonClick(this.props.value);
-  }
+	propTypes: {
+		selected: React.PropTypes.bool,
+		disabled: React.PropTypes.bool,
+		type: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
+		value: React.PropTypes.string,
+		onButtonClick: React.PropTypes.func
+	},
+	render: function () {
+		var className = "div_button selector " + (this.props.selected ? " selected" : "") + (this.props.disabled ? " disabled" : "");
+		var id = this.props.type + "_count_selector_" + this.props.value;
+		return React.createElement(
+			"button",
+			{
+				className: className,
+				id: id,
+				disabled: this.props.disabled,
+				onClick: this.handleClick },
+			this.props.value
+		);
+	},
+	handleClick: function () {
+		this.props.onButtonClick(this.props.value);
+	}
 });
 
 var Relocationizer = React.createClass({
-  displayName: 'Relocationizer',
+	displayName: "Relocationizer",
 
-  render: function () {
-    var team_nodes = this.props.teams.map(function (team) {
-      return React.createElement(
-        'option',
-        { key: team.name },
-        team.name
-      );
-    });
+	propTypes: {
+		teams: React.PropTypes.array,
+		cities: React.PropTypes.array
+	},
+	render: function () {
+		var team_nodes = this.props.teams.map(function (team) {
+			return React.createElement(
+				"option",
+				{ key: team.name },
+				team.name
+			);
+		});
 
-    var city_nodes = this.props.cities.map(function (city) {
-      return React.createElement(
-        'option',
-        { key: city.city },
-        city.city
-      );
-    });
+		var city_nodes = this.props.cities.map(function (city) {
+			return React.createElement(
+				"option",
+				{ key: city.city },
+				city.city
+			);
+		});
 
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'div',
-        { className: 'field' },
-        React.createElement(
-          'h3',
-          null,
-          'Relocate team'
-        ),
-        React.createElement(
-          'div',
-          { className: 'subfield' },
-          React.createElement(
-            'label',
-            null,
-            'team'
-          ),
-          React.createElement(
-            'select',
-            null,
-            team_nodes
-          )
-        ),
-        React.createElement(
-          'div',
-          { className: 'subfield' },
-          React.createElement(
-            'label',
-            null,
-            'to'
-          ),
-          React.createElement(
-            'select',
-            null,
-            city_nodes
-          )
-        ),
-        React.createElement(
-          'div',
-          null,
-          React.createElement(
-            'button',
-            { className: 'action' },
-            'Relocate Team'
-          )
-        )
-      ),
-      React.createElement(
-        'div',
-        { className: 'field' },
-        React.createElement(
-          'h3',
-          null,
-          'Expansion team'
-        ),
-        React.createElement(
-          'div',
-          { className: 'subfield' },
-          React.createElement(
-            'label',
-            null,
-            'city'
-          ),
-          React.createElement(
-            'select',
-            null,
-            city_nodes
-          )
-        ),
-        React.createElement(
-          'div',
-          { className: 'subfield' },
-          React.createElement(
-            'label',
-            null,
-            'name'
-          ),
-          React.createElement('input', { type: 'text' })
-        ),
-        React.createElement(
-          'div',
-          null,
-          React.createElement(
-            'button',
-            { className: 'action' },
-            'Create Team'
-          )
-        )
-      )
-    );
-  }
+		return React.createElement(
+			"div",
+			null,
+			React.createElement(
+				"div",
+				{ className: "field" },
+				React.createElement(
+					"h3",
+					null,
+					"Relocate team"
+				),
+				React.createElement(
+					"div",
+					{ className: "subfield" },
+					React.createElement(
+						"label",
+						null,
+						"team"
+					),
+					React.createElement(
+						"select",
+						null,
+						team_nodes
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "subfield" },
+					React.createElement(
+						"label",
+						null,
+						"to"
+					),
+					React.createElement(
+						"select",
+						null,
+						city_nodes
+					)
+				),
+				React.createElement(
+					"div",
+					null,
+					React.createElement(
+						"button",
+						{ className: "action" },
+						"Relocate Team"
+					)
+				)
+			),
+			React.createElement(
+				"div",
+				{ className: "field" },
+				React.createElement(
+					"h3",
+					null,
+					"Expansion team"
+				),
+				React.createElement(
+					"div",
+					{ className: "subfield" },
+					React.createElement(
+						"label",
+						null,
+						"city"
+					),
+					React.createElement(
+						"select",
+						null,
+						city_nodes
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "subfield" },
+					React.createElement(
+						"label",
+						null,
+						"name"
+					),
+					React.createElement("input", { type: "text" })
+				),
+				React.createElement(
+					"div",
+					null,
+					React.createElement(
+						"button",
+						{ className: "action" },
+						"Create Team"
+					)
+				)
+			)
+		);
+	}
 });
 
 var Map = React.createClass({
-  displayName: 'Map',
+	displayName: "Map",
 
-  render: function () {
-    //this._updatePolygons();
-    //this._updatePins();
+	render: function () {
+		//this._updatePolygons();
+		//this._updatePins();
 
-    return React.createElement('div', { id: 'map' });
-  },
-  componentDidMount: function () {
-    this.polygons = new Array();
-    this.pins = new Array();
+		return React.createElement("div", { id: "map" });
+	},
+	componentDidMount: function () {
+		this.polygons = new Array();
+		this.pins = new Array();
 
-    var latlng = new google.maps.LatLng(41, -96);
-    var myOptions = {
-      zoom: 4,
-      center: latlng,
-      maxZoom: 6,
-      minZoom: 3,
-      streetViewControl: false,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(document.getElementById("map"), myOptions);
+		var latlng = new google.maps.LatLng(41, -96);
+		var myOptions = {
+			zoom: 4,
+			center: latlng,
+			maxZoom: 6,
+			minZoom: 3,
+			streetViewControl: false,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		this.map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-    //this._initPins(this.props.league);
-    //this._initPolygons(this.props.league);
-  },
+		//this._initPins(this.props.league);
+		//this._initPolygons(this.props.league);
+	},
 
-  _initPins: function (teams) {
-    for (var i = 0; i < teams.length; i++) {
-      var team = teams[i];
+	_initPins: function (teams) {
+		for (var i = 0; i < teams.length; i++) {
+			var team = teams[i];
 
-      var ll = new google.maps.LatLng(team.lat, team.lon);
-      var pin = new google.maps.Marker({
-        position: ll,
-        title: team.city + ' ' + team.name,
-        icon: getLogoURL(team)
-      });
-      pin.setMap(map);
-      this.pins.push(marker);
-    }
-  },
+			var ll = new google.maps.LatLng(team.lat, team.lon);
+			var pin = new google.maps.Marker({
+				position: ll,
+				title: team.city + " " + team.name,
+				icon: getLogoURL(team)
+			});
+			pin.setMap(this.map);
+			this.pins.push(pin);
+		}
+	},
 
-  _initPolygons: function (teams) {
-    var conference_count = teams.length;
-    var division_count = teams[0].length;
-  },
+	_initPolygons: function (teams) {
+		// var conference_count = teams.length;
+		// var division_count = teams[0].length;
 
-  _updatePins: function () {},
+	},
 
-  _updatePolygons: function () {}
+	_updatePins: function () {},
+
+	_updatePolygons: function () {}
 });
 
 var LeagueDisplay = React.createClass({
-  displayName: 'LeagueDisplay',
+	displayName: "LeagueDisplay",
 
-  render: function () {
-    var nodes = this.props.league.map(function (conference, index) {
-      return React.createElement(Conference, { conference: conference, key: index, count: this.props.league.length });
-    }, this);
+	propTypes: {
+		league: React.PropTypes.array
+	},
+	render: function () {
+		var nodes = this.props.league.map(function (conference, index) {
+			return React.createElement(Conference, { conference: conference, key: index, number: index, count: this.props.league.length });
+		}, this);
 
-    return React.createElement(
-      'div',
-      { id: 'teams' },
-      nodes
-    );
-  }
+		return React.createElement(
+			"div",
+			{ id: "teams" },
+			nodes
+		);
+	}
 });
 
 var Conference = React.createClass({
-  displayName: 'Conference',
+	displayName: "Conference",
 
-  render: function () {
-    var division_nodes = this.props.conference.map(function (division, index) {
-      return React.createElement(Division, { division: division, key: index, count: this.props.conference.length * this.props.count });
-    }, this);
+	propTypes: {
+		conference: React.PropTypes.array,
+		count: React.PropTypes.number,
+		number: React.PropTypes.number
+	},
+	render: function () {
+		var division_nodes = this.props.conference.map(function (division, index) {
+			return React.createElement(Division, { division: division, key: index, count: this.props.conference.length * this.props.count, conference: this.props.number, number: index });
+		}, this);
 
-    var className = "conference col-" + this.props.count;
-    return React.createElement(
-      'div',
-      { className: className },
-      division_nodes
-    );
-  }
+		var className = "conference col-" + this.props.count;
+		return React.createElement(
+			"div",
+			{ className: className },
+			division_nodes
+		);
+	}
 });
 
 var Division = React.createClass({
-  displayName: 'Division',
+	displayName: "Division",
 
-  render: function () {
-    var team_nodes = this.props.division.map(function (team) {
-      return React.createElement(Team, { team: team, key: team.name });
-    });
+	propTypes: {
+		division: React.PropTypes.array,
+		count: React.PropTypes.number,
+		conference: React.PropTypes.number,
+		number: React.PropTypes.number
+	},
+	render: function () {
+		var team_nodes = this.props.division.map(function (team) {
+			return React.createElement(Team, { team: team, key: team.name });
+		});
 
-    var className = "division col-" + this.props.count;
-    return React.createElement(
-      'div',
-      { className: className },
-      React.createElement(
-        'div',
-        { className: 'name' },
-        this.props.division.name
-      ),
-      React.createElement(
-        'div',
-        { className: 'list' },
-        team_nodes
-      )
-    );
-  }
+		var className = "division col-" + this.props.count + " conf-" + this.props.conference + " div-" + this.props.number;
+		return React.createElement(
+			"div",
+			{ className: className },
+			React.createElement(
+				"div",
+				{ className: "name" },
+				this.props.division.name
+			),
+			React.createElement(
+				"div",
+				{ className: "list" },
+				team_nodes
+			)
+		);
+	}
 });
 
 var Team = React.createClass({
-  displayName: 'Team',
+	displayName: "Team",
 
-  render: function () {
-    var source = getLogoURL(this.props.team);
-    return React.createElement(
-      'div',
-      { className: 'team' },
-      React.createElement('img', { className: 'team-logo', src: source }),
-      React.createElement(
-        'span',
-        { className: 'city' },
-        this.props.team.city
-      ),
-      React.createElement(
-        'span',
-        { className: 'name' },
-        ' ',
-        this.props.team.name
-      )
-    );
-  }
+	propTypes: {
+		team: React.PropTypes.object
+	},
+	render: function () {
+		var source = getLogoURL(this.props.team);
+		return React.createElement(
+			"div",
+			{ className: "team" },
+			React.createElement("img", { className: "team-logo", src: source }),
+			React.createElement(
+				"span",
+				{ className: "city" },
+				this.props.team.city
+			),
+			React.createElement(
+				"span",
+				{ className: "name" },
+				" ",
+				this.props.team.name
+			)
+		);
+	}
 });
 
 var Footer = React.createClass({
-  displayName: 'Footer',
+	displayName: "Footer",
 
-  render: function () {
-    return React.createElement(
-      'footer',
-      null,
-      'footer'
-    );
-  }
+	render: function () {
+		return React.createElement(
+			"footer",
+			null,
+			"footer"
+		);
+	}
 });
 
 var Divisionizer = React.createClass({
-  displayName: 'Divisionizer',
+	displayName: "Divisionizer",
 
-  getInitialState: function () {
-    return {
-      conference_count: this.props.initConferences,
-      division_count: this.props.initDivisions,
-      string: this.props.initString
-    };
-  },
-  onAddTeam: function (name) {
-    allTeams.conferences[0].divisions[0].teams.push({ name: name });
-    this.setState({ teams: allTeams });
-  },
-  onConferenceChange: function (c, d) {
-    this.setState({ conference_count: c, division_count: d });
-  },
-  render: function () {
-    var division_list = new DivisionList(this.state.string, this.state.conference_count, this.state.division_count);
-    var teams = division_list.toArray();
+	propTypes: {
+		initConferences: React.PropTypes.number,
+		initDivisions: React.PropTypes.number,
+		initString: React.PropTypes.string,
+		teams: React.PropTypes.array,
+		cities: React.PropTypes.array
+	},
+	getInitialState: function () {
+		return {
+			conference_count: this.props.initConferences,
+			division_count: this.props.initDivisions,
+			string: this.props.initString
+		};
+	},
+	onAddTeam: function (name) {
+		allTeams.conferences[0].divisions[0].teams.push({ name: name });
+		this.setState({ teams: allTeams });
+	},
+	onConferenceChange: function (c, d) {
+		this.setState({ conference_count: c, division_count: d });
+	},
+	render: function () {
+		var division_list = new DivisionList(this.state.string, this.state.conference_count, this.state.division_count);
+		var teams = division_list.toArray();
 
-    return React.createElement(
-      'div',
-      { id: 'divisionizer' },
-      React.createElement(Header, null),
-      React.createElement(
-        'div',
-        { className: 'application' },
-        React.createElement(SettingsMenu, {
-          conferences: this.state.conference_count,
-          divisions: this.state.division_count,
-          teams: this.props.teams,
-          cities: this.props.cities,
-          onRelocateTeam: this.onRelocateTeam,
-          onAddTeam: this.onAddTeam,
-          onConferenceChange: this.onConferenceChange
-        }),
-        React.createElement(
-          'div',
-          { className: 'content' },
-          React.createElement(Map, { league: teams }),
-          React.createElement(LeagueDisplay, { league: teams })
-        )
-      ),
-      React.createElement(Footer, null)
-    );
-  }
+		return React.createElement(
+			"div",
+			{ id: "divisionizer" },
+			React.createElement(Header, null),
+			React.createElement(
+				"div",
+				{ className: "application" },
+				React.createElement(SettingsMenu, {
+					conferences: this.state.conference_count,
+					divisions: this.state.division_count,
+					teams: this.props.teams,
+					cities: this.props.cities,
+					onRelocateTeam: this.onRelocateTeam,
+					onAddTeam: this.onAddTeam,
+					onConferenceChange: this.onConferenceChange
+				}),
+				React.createElement(
+					"div",
+					{ className: "content" },
+					React.createElement(Map, { league: teams }),
+					React.createElement(LeagueDisplay, { league: teams })
+				)
+			),
+			React.createElement(Footer, null)
+		);
+	}
 });
 //# sourceMappingURL=components.js.map
 ;var distance_costs = new Array();
@@ -475,7 +528,6 @@ var rivalry_costs;
 var timezone_costs = new Array();
 var division_costs = new Array();
 var costs = new Array();
-var division_count;
 var global_cities;
 var global_teams;
 var global_next_empty_division = -4;
@@ -488,48 +540,48 @@ var DISTANCE_WEIGHT_MODIFIER = 9;
 var TIMEZONE_WEIGHT_MODIFIER = 3;
 
 static_teams = [
-	{city:'Anaheim',name:'Ducks', lat:33.807778,lon:-117.876667,orig_div:0,tz:3},
-	{city:'Dallas',name:'Stars',lat:32.790556, lon:-96.810278,orig_div:0,tz:1},
-	{city:'Los Angeles',name:'Kings',lat:34.043056, lon:-118.267222,orig_div:0,tz:3}, 
-	{city:'Phoenix',name:'Coyotes',lat:33.531944, lon:-112.261111,orig_div:0,tz:2},
-	{city:'San Jose',name:'Sharks',lat:37.332778, lon:-121.901111,orig_div:0,tz:3},	
-	{city:'Calgary',name:'Flames',lat:51.0375, lon:-114.051944,orig_div:1,tz:2},
-	{city:'Colorado',name:'Avalanche',lat:39.748611, lon:-105.0075,orig_div:1,tz:2},
-	{city:'Edmonton',name:'Oilers',lat:53.571389, lon:-113.456111,orig_div:1,tz:2},
-	{city:'Minnesota',name:'Wild',lat:44.944722, lon:-93.101111,orig_div:1,tz:1},
-	{city:'Vancouver',name:'Canucks',lat:49.277778, lon:-123.108889,orig_div:1,tz:3},
-	{city:'Columbus',name:'Blue Jackets',lat:39.969283, lon:-83.006111,orig_div:2,tz:0},
-	{city:'Chicago',name:'Blackhawks',lat:41.880556, lon:-87.674167,orig_div:2,tz:1},
-	{city:'Detroit',name:'Red Wings',lat:42.325278, lon:-83.051389,orig_div:2,tz:0},
-	{city:'Nashville',name:'Predators',lat:36.159167, lon:-86.778611,orig_div:2,tz:1},
-	{city:'St. Louis',name:'Blues',lat:38.626667, lon:-90.2025,orig_div:2,tz:1},
-	{city:'Boston',name:'Bruins',lat:42.366303, lon:-71.062228,orig_div:3,tz:0},
-	{city:'Buffalo',name:'Sabres',lat:42.875, lon:-78.876389,orig_div:3,tz:0},
-	{city:'Montreal',name:'Canadiens',lat:45.496111, lon:-73.569444,orig_div:3,tz:0},
-	{city:'Ottawa',name:'Senators',lat:45.296944, lon:-75.927222,orig_div:3,tz:0},
-	{city:'Toronto',name:'Maple Leafs',lat:43.643333, lon:-79.379167,orig_div:3,tz:0},
-	{city:'New Jersey',name:'Devils',lat:40.733611, lon:-74.171111,orig_div:4,tz:0},
-	{city:'New York',name:'Islanders',lat:40.722778, lon:-73.590556,orig_div:4,tz:0},
-	{city:'New York',name:'Rangers',lat:40.750556, lon:-73.993611,orig_div:4,tz:0},
-	{city:'Philadelphia',name:'Flyers',lat:39.901111, lon:-75.171944,orig_div:4,tz:0},
-	{city:'Pittsburgh',name:'Penguins',lat:40.439444, lon:-79.989167,orig_div:4,tz:0},
-	{city:'Carolina',name:'Hurricanes',lat:35.803333, lon:-78.721944,orig_div:5,tz:0},
-	{city:'Florida',name:'Panthers',lat:26.158333, lon:-80.325556,orig_div:5,tz:0},
-	{city:'Tampa Bay',name:'Lightning',lat:27.942778, lon:-82.451944,orig_div:5,tz:0},
-	{city:'Washington',name:'Capitals',lat:38.898056, lon:-77.020833,orig_div:5,tz:0},
-	{city:'Winnipeg',name:'Jets',lat:49.892892, lon:-97.143836,orig_div:-1,tz:1},
-	{city:'Las Vegas',name:'Expansions',lat:36.175, lon:-115.136389,orig_div:-1,tz:3}
+	{city: "Anaheim",name:"Ducks", lat:33.807778,lon:-117.876667,orig_div:0,tz:3},
+	{city: "Dallas",name:"Stars",lat:32.790556, lon:-96.810278,orig_div:0,tz:1},
+	{city: "Los Angeles",name:"Kings",lat:34.043056, lon:-118.267222,orig_div:0,tz:3}, 
+	{city: "Phoenix",name:"Coyotes",lat:33.531944, lon:-112.261111,orig_div:0,tz:2},
+	{city: "San Jose",name:"Sharks",lat:37.332778, lon:-121.901111,orig_div:0,tz:3},	
+	{city: "Calgary",name:"Flames",lat:51.0375, lon:-114.051944,orig_div:1,tz:2},
+	{city: "Colorado",name:"Avalanche",lat:39.748611, lon:-105.0075,orig_div:1,tz:2},
+	{city: "Edmonton",name:"Oilers",lat:53.571389, lon:-113.456111,orig_div:1,tz:2},
+	{city: "Minnesota",name:"Wild",lat:44.944722, lon:-93.101111,orig_div:1,tz:1},
+	{city:"Vancouver",name:"Canucks",lat:49.277778, lon:-123.108889,orig_div:1,tz:3},
+	{city:"Columbus",name:"Blue Jackets",lat:39.969283, lon:-83.006111,orig_div:2,tz:0},
+	{city:"Chicago",name:"Blackhawks",lat:41.880556, lon:-87.674167,orig_div:2,tz:1},
+	{city:"Detroit",name:"Red Wings",lat:42.325278, lon:-83.051389,orig_div:2,tz:0},
+	{city:"Nashville",name:"Predators",lat:36.159167, lon:-86.778611,orig_div:2,tz:1},
+	{city:"St. Louis",name:"Blues",lat:38.626667, lon:-90.2025,orig_div:2,tz:1},
+	{city:"Boston",name:"Bruins",lat:42.366303, lon:-71.062228,orig_div:3,tz:0},
+	{city:"Buffalo",name:"Sabres",lat:42.875, lon:-78.876389,orig_div:3,tz:0},
+	{city:"Montreal",name:"Canadiens",lat:45.496111, lon:-73.569444,orig_div:3,tz:0},
+	{city:"Ottawa",name:"Senators",lat:45.296944, lon:-75.927222,orig_div:3,tz:0},
+	{city:"Toronto",name:"Maple Leafs",lat:43.643333, lon:-79.379167,orig_div:3,tz:0},
+	{city:"New Jersey",name:"Devils",lat:40.733611, lon:-74.171111,orig_div:4,tz:0},
+	{city:"New York",name:"Islanders",lat:40.722778, lon:-73.590556,orig_div:4,tz:0},
+	{city:"New York",name:"Rangers",lat:40.750556, lon:-73.993611,orig_div:4,tz:0},
+	{city:"Philadelphia",name:"Flyers",lat:39.901111, lon:-75.171944,orig_div:4,tz:0},
+	{city:"Pittsburgh",name:"Penguins",lat:40.439444, lon:-79.989167,orig_div:4,tz:0},
+	{city:"Carolina",name:"Hurricanes",lat:35.803333, lon:-78.721944,orig_div:5,tz:0},
+	{city:"Florida",name:"Panthers",lat:26.158333, lon:-80.325556,orig_div:5,tz:0},
+	{city:"Tampa Bay",name:"Lightning",lat:27.942778, lon:-82.451944,orig_div:5,tz:0},
+	{city:"Washington",name:"Capitals",lat:38.898056, lon:-77.020833,orig_div:5,tz:0},
+	{city:"Winnipeg",name:"Jets",lat:49.892892, lon:-97.143836,orig_div:-1,tz:1},
+	{city:"Las Vegas",name:"Expansions",lat:36.175, lon:-115.136389,orig_div:-1,tz:3}
 ];
 
 global_cities = [
-  	{city: 'Atlanta',tz:0, lat:33.755, lon:-84.39},
-	{city: 'Hartford',tz:0, lat:41.762736, lon:-72.674286},
-	{city: 'Hamilton',tz:0, lat:43.255278, lon:-79.873056},
-	{city: 'Houston',tz:1, lat:29.762778, lon:-95.383056},
-	{city: 'Kansas City',tz:1, lat:39.109722, lon:-94.588611},
-	{city: 'Milwaukee',tz:1, lat:43.0522222, lon:-87.955833},
-	{city: 'Quebec City', tz:0, lat:46.816667, lon:-71.216667},
-	{city: 'Seattle', tz:3, lat:47.609722, lon:-122.333056}
+	{city: "Atlanta",tz:0, lat:33.755, lon:-84.39},
+	{city: "Hartford",tz:0, lat:41.762736, lon:-72.674286},
+	{city: "Hamilton",tz:0, lat:43.255278, lon:-79.873056},
+	{city: "Houston",tz:1, lat:29.762778, lon:-95.383056},
+	{city: "Kansas City",tz:1, lat:39.109722, lon:-94.588611},
+	{city: "Milwaukee",tz:1, lat:43.0522222, lon:-87.955833},
+	{city: "Quebec City", tz:0, lat:46.816667, lon:-71.216667},
+	{city: "Seattle", tz:3, lat:47.609722, lon:-122.333056}
 ];
 
 var static_rivalry_costs = [
@@ -702,12 +754,14 @@ function revertTeamCity(team) {
 	setBookmark(divisions.string);
 	
 	removeMovedTeamRow(team);
-};var DL_DIVISION_MULTIPLIER = 3;
+};var randomInt;
+
+var DL_DIVISION_MULTIPLIER = 3;
 var costs;
 var global_teams;
 var DL_ENCODING_CHARS = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var DL_DEFAULT_STRING = "IJCGRQFH9T72DEBOAPSNLKM1468053UVWXYZ";
-var DL_ENCODING_BREAK_CHAR = ' ';
+var DL_ENCODING_BREAK_CHAR = " ";
 var DL_MAX_MUTATIONS = 2;
 
 function DivisionList(div_string, conference_count, division_count) {
@@ -741,7 +795,7 @@ DivisionList.prototype.calculateScore = function() {
 DivisionList.prototype.crossWith = function(otherDivision) {
 	var chars_already_used = new Array();
 	var unused_chars = DivisionList.getDefaultString();
-	var new_string = '';
+	var new_string = "";
 	var new_char;
 	
 	// splice the two divisions together
@@ -770,7 +824,7 @@ DivisionList.prototype.crossWith = function(otherDivision) {
 		else {
 			new_string = new_string + new_char;
 			chars_already_used[new_char] = 1;
-			unused_chars = unused_chars.setCharAt(unused_chars.indexOf(new_char), '');
+			unused_chars = unused_chars.setCharAt(unused_chars.indexOf(new_char), "");
 		}
 	}
 	
@@ -779,7 +833,7 @@ DivisionList.prototype.crossWith = function(otherDivision) {
 		var random_missing_char_pos = randomInt(unused_chars.length);
 		var random_missing_char = unused_chars.charAt(random_missing_char_pos);
 		new_string = new_string.setCharAt(break_pos, random_missing_char);
-		unused_chars = unused_chars.setCharAt(random_missing_char_pos, '');
+		unused_chars = unused_chars.setCharAt(random_missing_char_pos, "");
 		break_pos = new_string.indexOf(DL_ENCODING_BREAK_CHAR, 0);
 	}
 	
@@ -847,7 +901,7 @@ DivisionList.prototype.inSameDivision = function(team1, team2) {
 		}
 	}
 	return false;
-}
+};
 
 DivisionList.prototype.inSameConference = function(team1, team2) {
 	var team1_char = DL_ENCODING_CHARS.charAt(team1);
@@ -927,7 +981,7 @@ DivisionList.prototype._breakdownDivisions = function() {
 	this.conferences = _conferences;
 	
 	return _conferences;
-}
+};
 
 DivisionList.getRandom = function(conference_count, division_count) {
 	// take a list of all the teams that we have
@@ -1008,66 +1062,22 @@ var global_polygons;
 var global_markers;
 var global_relocated_teams = new Array();
 
-var conference_colors = new Array(new Array('#1B7EE0', '#0F4780', '#ADD6FF', '#899096', '#565A5E', '#C8D1DB'), new Array('#F5891D', '#944E07', '#FFD6AD'), new Array('#7EE01B', '#386907'));
-
-function updateDivisionCount(div_count) {
-	$('.div_button').removeClass('selected');
-	$('#division_count_selector_' + div_count).addClass('selected');
-	global_division_count = div_count;
-	divisions = initDivisions();
-
-	resetPolygons();
-	updateScreenLayout();
-	updateTableFormat(divisions);
-
-	updateMap(divisions);
-	updateTable(divisions);
-	setBookmark(divisions.string);
-}
-
-function updateConferenceCount(conf_count) {
-	$('.conf_button').removeClass('selected');
-	$('#conf_count_selector_' + conf_count).addClass('selected');
-
-	$('.div_button').removeClass('disabled').removeAttr('disabled');
-
-	global_conference_count = conf_count;
-
-	if (conf_count == 3) {
-		$('#division_count_selector_4').addClass('disabled').attr('disabled', 'disabled');
-		$('#division_count_selector_2').addClass('disabled').attr('disabled', 'disabled');
-
-		if (global_division_count == 4 || global_division_count == 2) updateDivisionCount(6);
-	} else if (conf_count == 2) {
-		$('#division_count_selector_3').addClass('disabled').attr('disabled', 'disabled');
-
-		if (global_division_count == 3) updateDivisionCount(6);
-	}
-
-	divisions = initDivisions();
-	resetPolygons();
-	updateScreenLayout();
-	updateTableFormat(divisions);
-
-	updateMap(divisions);
-	updateTable(divisions);
-	setBookmark(divisions.string);
-}
+var conference_colors = new Array(new Array("#1B7EE0", "#0F4780", "#ADD6FF", "#899096", "#565A5E", "#C8D1DB"), new Array("#F5891D", "#944E07", "#FFD6AD"), new Array("#7EE01B", "#386907"));
 
 function getDistanceWeight() {
-	return $('#distance_weight_slider').slider("option", "value");
+	return $("#distance_weight_slider").slider("option", "value");
 }
 
 function getTimezoneWeight() {
-	return $('#timezone_weight_slider').slider("option", "value");
+	return $("#timezone_weight_slider").slider("option", "value");
 }
 
 function getRivalryWeight() {
-	return $('#rivalry_weight_slider').slider("option", "value");
+	return $("#rivalry_weight_slider").slider("option", "value");
 }
 
 function getDivisionWeight() {
-	return $('#division_weight_slider').slider("option", "value");
+	return $("#division_weight_slider").slider("option", "value");
 }
 
 function initMap() {
@@ -1091,7 +1101,7 @@ function initMap() {
 		var ll = new google.maps.LatLng(team.lat, team.lon);
 		global_markers[i] = new google.maps.Marker({
 			position: ll,
-			title: team.city + ' ' + team.name,
+			title: team.city + " " + team.name,
 			icon: getLogoURL(team)
 		});
 		global_markers[i].setMap(map);
@@ -1148,68 +1158,37 @@ function initialize(container_id, conferences, divisions, defaultString) {
 
 function processBookmark() {
 	if (location.hash) {
-		var hash_pieces = location.hash.substring(1).split(':');
+		var hash_pieces = location.hash.substring(1).split(":");
 		global_conference_count = hash_pieces[0];
 		global_division_count = hash_pieces[1];
 
 		for (var i = 3; i < hash_pieces.length; i++) {
 			var relocated_team = hash_pieces[i];
-			var team_pieces = relocated_team.split('^');
+			var team_pieces = relocated_team.split("^");
 			changeTeamCity(team_pieces[0], team_pieces[1]);
 		}
 	}
 }
 
 function initInterface() {
-	$('#distance_weight_slider').slider({ max: 10, value: 5, change: updateCosts });
-	$('#rivalry_weight_slider').slider({ max: 10, value: 5, change: updateCosts });
-	$('#division_weight_slider').slider({ max: 10, value: 5, change: updateCosts });
-	$('#timezone_weight_slider').slider({ max: 10, value: 5, change: updateCosts });
-
-	$('#relocationizer').dialog({ autoOpen: false, modal: true, minHeight: 100, minWidth: 400 });
-
 	var sorted_teams = global_teams.slice(0);
 	sorted_teams.sort(function (a, b) {
 		if (a.name < b.name) return -1;if (a.name > b.name) return 1;return 0;
 	});
 	for (var i = 0; i < sorted_teams.length; i++) {
 		var index = global_teams.indexOf(sorted_teams[i]);
-		$('#relocationizer_teams').append("<option value='" + index + "'>" + sorted_teams[i].name + "</option>");
+		$("#relocationizer_teams").append("<option value='" + index + "'>" + sorted_teams[i].name + "</option>");
 	}
 	for (i = 0; i < global_cities.length; i++) {
-		$('#relocationizer_cities').append("<option value='" + i + "'>" + global_cities[i].city + "</option>");
+		$("#relocationizer_cities").append("<option value='" + i + "'>" + global_cities[i].city + "</option>");
 	}
-
-	updateDivisionCount(global_division_count);
-	updateConferenceCount(global_conference_count);
-
-	updateScreenLayout();
-}
-
-function openRelocationDialog() {
-	$('#relocationizer').dialog('open');
-}
-
-function relocateTeam() {
-	var team = $('#relocationizer_teams option:selected').attr('value');
-	var city = $('#relocationizer_cities option:selected').attr('value');
-	changeTeamCity(team, city);
-}
-
-function addMovedTeamRow(team, city_name) {
-	removeMovedTeamRow(team);
-	$('#relocated_teams').append('<div class="relocated_team" id="team' + team + '">Relocated <span class="old_team">' + global_teams[team].name + '</span> to <span class="new_city">' + city_name + '</span>&nbsp;<a href="javascript:revertTeamCity(' + team + ');">Undo</a></div>');
-}
-
-function removeMovedTeamRow(team) {
-	$('#relocated_teams #team' + team).remove();
 }
 
 function initDivisions() {
 	var div_string;
 
 	if (location.hash) {
-		var hash_pieces = location.hash.substring(1).split(':');
+		var hash_pieces = location.hash.substring(1).split(":");
 		div_string = hash_pieces[2];
 	} else {
 		div_string = DivisionList.getDefaultString();
@@ -1219,21 +1198,21 @@ function initDivisions() {
 }
 
 function setBookmark(div_string) {
-	div_string = global_conference_count + ':' + global_division_count + ':' + div_string;
+	div_string = global_conference_count + ":" + global_division_count + ":" + div_string;
 
 	for (var i = 0; i < global_teams.length; i++) {
 		if (global_relocated_teams[i]) {
-			div_string += ':' + i + '^' + global_relocated_teams[i];
+			div_string += ":" + i + "^" + global_relocated_teams[i];
 		}
 	}
 
-	location.hash = '#' + div_string;
-	$('#fb_share').attr('href', "http://www.facebook.com/sharer/sharer.php?u=http://www.divisionizer.com/%23" + div_string);
-	$('#tw_share').attr('href', "http://www.twitter.com/home?status=http://www.divisionizer.com/%23" + div_string);
+	location.hash = "#" + div_string;
+	$("#fb_share").attr("href", "http://www.facebook.com/sharer/sharer.php?u=http://www.divisionizer.com/%23" + div_string);
+	$("#tw_share").attr("href", "http://www.twitter.com/home?status=http://www.divisionizer.com/%23" + div_string);
 }
 
 function updateTableFormat(divisions) {
-	$('#divisions').empty();
+	$("#divisions").empty();
 
 	var division_count = divisions.div_count;
 	var conference_count = divisions.conf_count;
@@ -1242,32 +1221,15 @@ function updateTableFormat(divisions) {
 	var divisions_per_conference = division_count / conference_count;
 	for (var i = 0; i < conference_count; i++) {
 		for (var j = 0; j < divisions_per_conference; j++) {
-			$('#divisions').append('<div class="division column' + division_count + '" id="c' + i + 'd' + j + '"><div class="header">Division ' + (j + 1) + '<div class="legend" style="background:' + conference_colors[i][j] + '"></div></div></div>');
+			$("#divisions").append("<div class='division column" + division_count + "' id='c" + i + "d" + j + "'><div class='header'>Division " + (j + 1) + "<div class='legend' style='background:" + conference_colors[i][j] + "'></div></div></div>");
 			var current_division = division_list[i][j];
 			for (var k = 0; k < current_division.length; k++) {
-				$('#c' + i + 'd' + j).append('<div class="team" id="c' + i + 'd' + j + 't' + k + '"></div>');
+				$("#c" + i + "d" + j).append("<div class='team' id='c" + i + "d" + j + "t" + k + "'></div>");
 			}
 		}
 	}
 
-	$('.team').draggable({ revert: true }).droppable({ drop: handleDrop, hoverClass: 'droppable' });
-}
-
-function updateTable(divisions) {
-	//	$('#divisions .team').remove();
-
-	var division_list = divisions.toArray();
-	var divisions_per_conference = divisions.div_count / divisions.conf_count;
-	for (var i = 0; i < divisions.conf_count; i++) {
-		for (var j = 0; j < divisions_per_conference; j++) {
-			var current_division = division_list[i][j];
-
-			for (var k = 0; k < current_division.length; k++) {
-				var team = current_division[k];
-				$('#c' + i + 'd' + j + 't' + k).text(team.city + ' ' + team.name);
-			}
-		}
-	}
+	$(".team").draggable({ revert: true }).droppable({ drop: handleDrop, hoverClass: "droppable" });
 }
 
 function updateMap(divisions) {
@@ -1289,15 +1251,15 @@ function updateMap(divisions) {
 }
 
 function getLogoURL(team) {
-	return 'logos/' + team.name.toLowerCase().replace(' ', '') + '.png';
+	return "logos/" + team.name.toLowerCase().replace(" ", "") + ".png";
 }
 function handleDrop(event, ui) {
 	var divisions = initDivisions();
 	var teams_per_conference = global_teams.length / divisions.conf_count;
 	var teams_per_division = global_teams.length / divisions.div_count;
 
-	var team1_id = $(this).attr('id');
-	var team2_id = ui.draggable.attr('id');
+	var team1_id = $(this).attr("id");
+	var team2_id = ui.draggable.attr("id");
 
 	var team1_matches = team1_id.match(/\d+/g);
 	var team1_offset = new Number(team1_matches[0]) * teams_per_conference + Math.ceil(new Number(team1_matches[1]) * teams_per_division) + new Number(team1_matches[2]);
@@ -1308,7 +1270,7 @@ function handleDrop(event, ui) {
 	divisions.string = divisions.string.swapChars(team1_offset, team2_offset);
 	delete divisions.conferences;
 
-	ui.draggable.css('top', '0px').css('left', '0px');
+	ui.draggable.css("top", "0px").css("left", "0px");
 
 	updateTable(divisions);
 	updateMap(divisions);
@@ -1316,11 +1278,11 @@ function handleDrop(event, ui) {
 }
 
 function divisionize() {
-	$('#divisionizer_on').show();
-	$('#divisionizer_off').hide();
+	$("#divisionizer_on").show();
+	$("#divisionizer_off").hide();
 
-	$('.conf_button').addClass('disabled').attr('disabled', 'disabled');
-	$('.div_button').addClass('disabled').attr('disabled', 'disabled');
+	$(".conf_button").addClass("disabled").attr("disabled", "disabled");
+	$(".div_button").addClass("disabled").attr("disabled", "disabled");
 
 	var population = new Array();
 	continuing_flag = true;
@@ -1332,20 +1294,20 @@ function divisionize() {
 }
 
 function stop_divisionize() {
-	$('.conf_button').removeClass('disabled').removeAttr('disabled');
-	$('.div_button').addClass('disabled').attr('disabled', 'disabled');
+	$(".conf_button").removeClass("disabled").removeAttr("disabled");
+	$(".div_button").addClass("disabled").attr("disabled", "disabled");
 
-	$('.div_button').removeClass('disabled').removeAttr('disabled');
+	$(".div_button").removeClass("disabled").removeAttr("disabled");
 
 	if (global_conference_count == 3) {
-		$('#division_count_selector_4').addClass('disabled').attr('disabled', 'disabled');
-		$('#division_count_selector_2').addClass('disabled').attr('disabled', 'disabled');
+		$("#division_count_selector_4").addClass("disabled").attr("disabled", "disabled");
+		$("#division_count_selector_2").addClass("disabled").attr("disabled", "disabled");
 	} else if (global_conference_count == 2) {
-		$('#division_count_selector_3').addClass('disabled').attr('disabled', 'disabled');
+		$("#division_count_selector_3").addClass("disabled").attr("disabled", "disabled");
 	}
 
-	$('#divisionizer_on').hide();
-	$('#divisionizer_off').show();
+	$("#divisionizer_on").hide();
+	$("#divisionizer_off").show();
 	//window.clearTimeout(ga_timeout);
 	continuing_flag = false;
 }

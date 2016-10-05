@@ -1,3 +1,5 @@
+var randomInt;
+
 var DL_DIVISION_MULTIPLIER = 3;
 var costs;
 var global_teams;

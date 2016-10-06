@@ -103,7 +103,7 @@ div, span, input, select {
 
 body {
   font-family: "Bebas Neue", "Helvetica", "sans-serif";
-  background: #ECF3FF; }
+  background: url("/images/ice.jpg") repeat; }
 
 .team {
   min-height: 44px;
@@ -167,6 +167,9 @@ header {
   height: 44px;
   vertical-align: middle; }
 
+footer {
+  background: #ECF3FF; }
+
 #settings_container {
   background: #082049;
   color: #ECF3FF; }
@@ -227,6 +230,7 @@ button {
       background: #CACACA;
       color: #a9a9a9;
       box-shadow: 0px 3px 0px #979797;
+      cursor: default;
       /* do not put the hover here, it's disabled. */ }
     button.selector:first-child {
       border-radius: 3px 0 0 3px; }
@@ -236,6 +240,31 @@ button {
 h3 {
   font-size: 30px;
   margin-bottom: 0px; }
+
+.division > .name {
+  text-align: center;
+  font-size: 21px;
+  border-bottom: 3px inset;
+  padding: 3px 5px;
+  margin: 0px 2em; }
+
+.division.conf-0 {
+  background: rgba(180, 4, 5, 0.1); }
+  .division.conf-0 > .name {
+    color: #B40405;
+    border-color: #B40405; }
+
+.division.conf-1 {
+  background: rgba(48, 97, 183, 0.1); }
+  .division.conf-1 > .name {
+    color: #3061B7;
+    border-color: #3061B7; }
+
+.division.conf-2 {
+  background: rgba(163, 161, 0, 0.1); }
+  .division.conf-2 > .name {
+    color: #A3A100;
+    border-color: #A3A100; }
 
 @media (max-width: 699px), (min-width: 900px) and (max-width: 1024px) {
   #teams {
@@ -374,6 +403,9 @@ h3 {
     font-size: 30px; }
 
   button.action {
+    font-size: 30px; }
+
+  .division > .name {
     font-size: 30px; }
 
   .division.col-6 .team .city, .division.col-6 .team .name {

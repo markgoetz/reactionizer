@@ -7,7 +7,8 @@ $lightest-blue: #ECF3FF;
 $primary-red:   #B40405;
 $black:         #2A2F38;
 $light-grey:    #CCD1D6;
-$yellow:        #E4E38A;
+$light-yellow:  #E4E38A;
+$yellow:        #A3A100;
 
 $disabled-bg-color: #CACACA;
 $disabled-text-color: #a9a9a9;
@@ -15,6 +16,14 @@ $disabled-text-color: #a9a9a9;
 $radius: 3px;
 
 $shadow-height: 3px;
+
+$conf-0-color: $primary-red;
+$conf-1-color: $medium-blue;
+$conf-2-color: $yellow;
+
+$conf-0-bg: rgba($conf-0-color, .1);
+$conf-1-bg: rgba($conf-1-color, .1);
+$conf-2-bg: rgba($conf-2-color, .1);
 
 @mixin button-shadow($color) {
 	box-shadow: 0px $shadow-height 0px darken($color, 20%);

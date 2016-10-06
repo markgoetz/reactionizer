@@ -1,7 +1,7 @@
 
 body {
 	font-family: $font-primary;
-	background: $lightest-blue;
+	background: url("/images/ice.jpg") repeat;
 }
 
 .team {
@@ -17,7 +17,7 @@ body {
 	transition: background .5s;
 
 	&:hover {
-		@include team-gradient($yellow);
+		@include team-gradient($light-yellow);
 	}
 
 	&.moved {
@@ -90,6 +90,10 @@ header {
 	background: $medium-blue;
 	height: 44px;
 	vertical-align: middle;
+}
+
+footer {
+	background: $lightest-blue;
 }
 
 #settings_container {
@@ -165,6 +169,7 @@ button {
 			background: $disabled-bg-color;
 			color: $disabled-text-color;
 			@include button-shadow($disabled-bg-color);
+			cursor: default;
 			/* do not put the hover here, it's disabled. */
 		}
 
@@ -181,6 +186,38 @@ button {
 h3 {
 	font-size: 30px;
 	margin-bottom: 0px;
+}
+
+.division > .name {
+	text-align: center;
+	font-size: 21px;
+	border-bottom: 3px inset;
+	padding: 3px 5px;
+	margin: 0px 2em;
+}
+
+.division.conf-0 {
+	background: $conf-0-bg;
+	& > .name {
+		color: $conf-0-color;
+		border-color: $conf-0-color;
+	}
+}
+
+.division.conf-1 {
+	background: $conf-1-bg;
+	& > .name {
+		color: $conf-1-color;
+		border-color: $conf-1-color;
+	}
+}
+
+.division.conf-2 {
+	background: $conf-2-bg;
+	& > .name {
+		color: $conf-2-color;
+		border-color: $conf-2-color;
+	}
 }
 
 input[type=text] {

@@ -417,7 +417,7 @@ var Division = React.createClass({
 			React.createElement(
 				"div",
 				{ className: "name" },
-				this.props.division.name
+				"Name"
 			),
 			React.createElement(
 				"div",

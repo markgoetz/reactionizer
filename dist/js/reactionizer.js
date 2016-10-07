@@ -160,8 +160,8 @@ var SelectorButton = React.createClass({
 	propTypes: {
 		selected: React.PropTypes.bool,
 		disabled: React.PropTypes.bool,
-		type: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
-		value: React.PropTypes.string,
+		type: React.PropTypes.string,
+		value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
 		onButtonClick: React.PropTypes.func
 	},
 	render: function () {
@@ -360,6 +360,9 @@ var LeagueDisplay = React.createClass({
 
 	propTypes: {
 		league: React.PropTypes.array
+	},
+	componentDidMount: function () {
+		dragula(Array.prototype.slice.call(ReactDOM.findDOMNode(this).querySelectorAll(".division .list")));
 	},
 	render: function () {
 		var nodes = this.props.league.map(function (conference, index) {

@@ -45,6 +45,28 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80); }
+
+.gu-hide {
+  display: none !important; }
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important; }
+
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20); }
+
 div, span, input, select {
   box-sizing: border-box; }
 
@@ -103,7 +125,7 @@ div, span, input, select {
 
 body {
   font-family: "Bebas Neue", "Helvetica", "sans-serif";
-  background: url("/images/ice.jpg") repeat; }
+  background: url("/images/ice.png") repeat; }
 
 .team {
   min-height: 44px;
@@ -115,7 +137,8 @@ body {
   border-radius: 3px;
   margin: 2px;
   color: #2A2F38;
-  transition: background .5s; }
+  transition: background .5s;
+  box-shadow: 0px 1px 1px #2A2F38; }
   .team:hover {
     background: linear-gradient(to bottom, #E4E38A 0%, #dfde75 50%, #d6d44c 50%, #d1cf37 100%); }
   .team.moved {
@@ -245,8 +268,8 @@ h3 {
   text-align: center;
   font-size: 21px;
   border-bottom: 3px inset;
-  padding: 3px 5px;
-  margin: 0px 2em; }
+  padding: 3px 0px;
+  margin: 0px auto; }
 
 .division.conf-0 {
   background: rgba(180, 4, 5, 0.1); }

@@ -85,11 +85,13 @@ div, span, input, select {
   width: 100%; }
   #settings_menu.closed {
     max-height: 0px;
-    opacity: 0; }
+    opacity: 0;
+    z-index: -1000; }
   #settings_menu.open {
     max-height: auto;
     align-self: stretch;
-    opacity: 1; }
+    opacity: 1;
+    z-index: 9000000000001; }
   #settings_menu > div {
     flex-grow: 1; }
 
@@ -200,8 +202,7 @@ footer {
     padding: 15px; }
 
 #settings_menu {
-  background: #082049;
-  z-index: 9000000001; }
+  background: #082049; }
 
 #settings_header {
   font-size: 24px;
@@ -266,7 +267,7 @@ h3 {
 
 .division > .name {
   text-align: center;
-  font-size: 21px;
+  font-size: 24px;
   border-bottom: 3px inset;
   padding: 3px 0px;
   margin: 0px auto; }

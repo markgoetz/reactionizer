@@ -127,7 +127,7 @@ div, span, input, select {
 
 body {
   font-family: "Bebas Neue", "Helvetica", "sans-serif";
-  background: url("/images/ice.png") repeat; }
+  background: #ECF3FF; }
 
 .team {
   min-height: 44px;
@@ -289,6 +289,9 @@ h3 {
   .division.conf-2 > .name {
     color: #A3A100;
     border-color: #A3A100; }
+
+#league {
+  background: url("/images/ice.jpg"); }
 
 @media (max-width: 699px), (min-width: 900px) and (max-width: 1024px) {
   #teams {

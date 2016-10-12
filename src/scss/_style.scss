@@ -1,7 +1,7 @@
 
 body {
 	font-family: $font-primary;
-	background: url("/images/ice.png") repeat;
+	background: $lightest-blue;
 }
 
 .team {
@@ -220,6 +220,6 @@ h3 {
 	}
 }
 
-input[type=text] {
-
+#league {
+	background: url("/images/ice.jpg");
 }

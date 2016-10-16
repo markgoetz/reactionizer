@@ -36,10 +36,9 @@ var Divisionizer = React.createClass({
 				teams: data.teams,
 				cities: data.cities,
 				defaultdivs: data.defaultdivs,
-				league: [],
+				league: this._getLeague(this.state.conference_count, this.state.division_count, data.defaultdivs, data.teams),
 				max_id: data.teams.length + 1
 			});
-			this._buildDivisions();
 		});
 	},
 	getInitialState: function() {
@@ -62,8 +61,11 @@ var Divisionizer = React.createClass({
 		team.lat = city.lat;
 		team.lon = city.lon;
 
-		this.setState({teams: teams});
-		this._buildDivisions();
+		this.setState({
+			teams: teams,
+			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.default_divs, teams)
+		});
+		this._getDivisions();
 	},
 	onAddTeam: function(name, cityid) {
 		var city = this.state.cities[cityid];
@@ -78,23 +80,29 @@ var Divisionizer = React.createClass({
 		var teams = this.state.teams;
 		teams.push(team);
 
-		//TODO: Update the strings.
+		//TODO: Update the default division strings.
 
-		this._buildDivisions();
+		this.setState({
+			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.default_divs, teams),
+			teams: teams
+		});
 	},
 	onConferenceChange: function(c, d) {
-		this.setState({conference_count:c, division_count:d});
-		this._buildDivisions();
+		this.setState({
+			conference_count: c,
+			division_count: d,
+			league: this._getLeague(c, d, this.state.defaultdivs, this.state.teams)
+		});
 	},
-	_buildDivisions: function() {
-		var div_string = this.state.defaultdivs[this.state.conference_count + ":" + this.state.division_count];
+	_getLeague: function(conf_count, div_count, default_divs, teams) {
+		var div_string = default_divs[conf_count + ":" + div_count];
 
 		if (div_string) {
-			var division = new DivisionList(div_string, this.state.conference_count, this.state.division_count, this.state.teams);
-			this.setState({league: division.toArray()});
+			var division = new DivisionList(div_string, conf_count, div_count, teams);
+			return division.toArray();
 		}
 		else {
-			this.setState({league: []});
+			return [];
 		}
 	},
 	render: function() {

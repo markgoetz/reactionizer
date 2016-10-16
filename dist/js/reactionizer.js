@@ -146,20 +146,25 @@ var Divisionizer = React.createClass({
 	}
 });
 //# sourceMappingURL=components.js.map
-;function DivisionList(div_string, conference_count, division_count, all_teams) {
+;function DivisionList(division, conference_count, division_count, all_teams) {
 	this.all_teams = all_teams;
 	this.div_count = division_count;
 	this.conf_count = conference_count;
-	this.div_string = div_string;
+	this.div_string = division.string;
+	this.div_names = division.names;
 	var _divisions;
 
 	var _setDivisions = function() {
 		_divisions = [];
 
+		var t = 0;
 		for (var c = 0; c < this.conf_count; c++) {
 			_divisions.push([]);
 			for (var d = 0; d < this.div_count / this.conf_count; d++) {
-				_divisions[c].push([]);
+				var a = new Array();
+				a.name = this.div_names[t];
+				_divisions[c].push(a);
+				t++;
 			}
 		}
 
@@ -416,7 +421,7 @@ var Division = React.createClass({
 			React.createElement(
 				"div",
 				{ className: "name" },
-				"Name"
+				this.props.division.name
 			),
 			React.createElement(
 				"div",

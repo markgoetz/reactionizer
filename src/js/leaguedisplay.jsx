@@ -52,7 +52,7 @@ var Division = React.createClass({
 		});
 
 		var className = "division col-" + this.props.count + " conf-" + this.props.conference + " div-" + this.props.number;
-		return <div className={className}><div className="name">Name</div><div className="list">{team_nodes}</div></div>;
+		return <div className={className}><div className="name">{this.props.division.name}</div><div className="list">{team_nodes}</div></div>;
 	}
 });
 

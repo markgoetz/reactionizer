@@ -5,11 +5,9 @@ var LeagueDisplay = React.createClass({
 	propTypes: {
 		league: React.PropTypes.array
 	},
-	componentDidMount: function() {
+	componentDidUpdate: function() {
 		dragula(
-			Array.prototype.slice.call(
-				ReactDOM.findDOMNode(this).querySelectorAll(".division .list")
-			)
+			Array.prototype.slice.call(document.querySelectorAll(".division .list"))
 		).on("drop", function(el, container) {
 			alert(el.className + " " + container.className);
 		});

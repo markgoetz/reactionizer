@@ -294,7 +294,7 @@ h3 {
   background: url("/images/ice.jpg"); }
 
 @media (max-width: 699px), (min-width: 900px) and (max-width: 1024px) {
-  #teams {
+  #league {
     display: flex;
     flex-direction: column; }
 
@@ -320,7 +320,7 @@ h3 {
     display: inline-block;
     min-height: 100%; } }
 @media (min-width: 700px) and (max-width: 899px), (min-width: 1025px) {
-  #teams {
+  #league {
     display: flex;
     flex-direction: row; }
 

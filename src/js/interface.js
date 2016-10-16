@@ -74,13 +74,13 @@ function moveTeamMarker(team, lat, lon) {
 	global_markers[team].setAnimation(google.maps.Animation.DROP);
 }
 
-function initialize(container_id, conferences, divisions, defaultString) {
+function initialize(container_id, conferences, divisions) {
 	//initMap();
 	processBookmark();
 
 	//updateCosts();
 
-	ReactDOM.render(React.createElement(Divisionizer, { initConferences: conferences, initDivisions: divisions, teamurl: "data/teams.json", cityurl: "data/cities.json", initString: defaultString }), document.getElementById(container_id));
+	ReactDOM.render(React.createElement(Divisionizer, { initConferences: conferences, initDivisions: divisions, dataurl: "data/data.json" }), document.getElementById(container_id));
 	//updateTableFormat(divisions);
 	//setBookmark(divisions.string);
 }

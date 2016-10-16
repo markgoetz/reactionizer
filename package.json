@@ -26,8 +26,10 @@
     "grunt-contrib-watch": "latest",
     "grunt-eslint": "^19.0.0",
     "grunt-postcss": "latest",
+    "jasmine": "^2.5.2",
     "react": "^15.1.0",
-    "watchify": "^3.7.0"
+    "watchify": "^3.7.0",
+    "webpack": "^1.13.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

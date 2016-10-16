@@ -1,4 +1,3 @@
-var allTeams;
 var DivisionList;
 var SettingsMenu;
 var Map;
@@ -34,51 +33,83 @@ var Divisionizer = React.createClass({
 	propTypes: {
 		initConferences: React.PropTypes.number,
 		initDivisions: React.PropTypes.number,
-		initString: React.PropTypes.string,
-		teamurl: React.PropTypes.string,
-		cityurl: React.PropTypes.string
+		dataurl: React.PropTypes.string
 	},
 	componentDidMount: function () {
 		$(document).ajaxError(function (event, jqxhr, settings, thrownError) {
-			console.log(thrownError);
+			alert(thrownError);
 		});
 
 		$.ajax({
-			url: this.props.teamurl,
+			url: this.props.dataurl,
 			context: this,
 			dataType: "json"
 		}).done(function (data) {
-			this.setState({ teams: data });
-		});
-
-		$.ajax({
-			url: this.props.cityurl,
-			context: this,
-			dataType: "json"
-		}).done(function (data) {
-			this.setState({ cities: data });
+			this.setState({
+				teams: data.teams,
+				cities: data.cities,
+				defaultdivs: data.defaultdivs,
+				league: [],
+				max_id: data.teams.length + 1
+			});
+			this._buildDivisions();
 		});
 	},
 	getInitialState: function () {
 		return {
 			conference_count: this.props.initConferences,
 			division_count: this.props.initDivisions,
-			string: this.props.initString,
 			teams: [],
 			cities: [],
-			max_id: 32
+			defaultdivs: [],
+			league: [],
+			max_id: 0
 		};
 	},
-	onAddTeam: function (name) {
-		allTeams.conferences[0].divisions[0].teams.push({ id: this.state.max_id++, name: name });
-		this.setState({ teams: allTeams });
+	onRelocateTeam: function (teamid, cityid) {
+		var teams = this.state.teams;
+		var team = teams[teamid];
+		var city = this.state.cities[cityid];
+
+		team.cityname = city.name;
+		team.lat = city.lat;
+		team.lon = city.lon;
+
+		this.setState({ teams: teams });
+		this._buildDivisions();
+	},
+	onAddTeam: function (name, cityid) {
+		var city = this.state.cities[cityid];
+		var team = {
+			id: this.state.max_id++,
+			name: name,
+			city: city.name,
+			lat: city.lat,
+			lon: city.lon
+		};
+
+		var teams = this.state.teams;
+		teams.push(team);
+
+		//TODO: Update the strings.
+
+		this._buildDivisions();
 	},
 	onConferenceChange: function (c, d) {
 		this.setState({ conference_count: c, division_count: d });
+		this._buildDivisions();
+	},
+	_buildDivisions: function () {
+		var div_string = this.state.defaultdivs[this.state.conference_count + ":" + this.state.division_count];
+
+		if (div_string) {
+			var division = new DivisionList(div_string, this.state.conference_count, this.state.division_count, this.state.teams);
+			this.setState({ league: division.toArray() });
+		} else {
+			this.setState({ league: [] });
+		}
 	},
 	render: function () {
-		var league = [];
-
 		return React.createElement(
 			"div",
 			{ id: "divisionizer" },
@@ -98,8 +129,8 @@ var Divisionizer = React.createClass({
 				React.createElement(
 					"div",
 					{ className: "content" },
-					React.createElement(Map, { league: league }),
-					React.createElement(LeagueDisplay, { league: league })
+					React.createElement(Map, { league: this.state.league }),
+					React.createElement(LeagueDisplay, { league: this.state.league })
 				)
 			),
 			React.createElement(Footer, null)
@@ -107,203 +138,48 @@ var Divisionizer = React.createClass({
 	}
 });
 //# sourceMappingURL=components.js.map
-;var global_teams;
-var static_teams;
-var global_cities;
-
-static_teams = [
-	{city: "Anaheim",name:"Ducks", lat:33.807778,lon:-117.876667,orig_div:0,tz:3},
-	{city: "Dallas",name:"Stars",lat:32.790556, lon:-96.810278,orig_div:0,tz:1},
-	{city: "Los Angeles",name:"Kings",lat:34.043056, lon:-118.267222,orig_div:0,tz:3}, 
-	{city: "Phoenix",name:"Coyotes",lat:33.531944, lon:-112.261111,orig_div:0,tz:2},
-	{city: "San Jose",name:"Sharks",lat:37.332778, lon:-121.901111,orig_div:0,tz:3},	
-	{city: "Calgary",name:"Flames",lat:51.0375, lon:-114.051944,orig_div:1,tz:2},
-	{city: "Colorado",name:"Avalanche",lat:39.748611, lon:-105.0075,orig_div:1,tz:2},
-	{city: "Edmonton",name:"Oilers",lat:53.571389, lon:-113.456111,orig_div:1,tz:2},
-	{city: "Minnesota",name:"Wild",lat:44.944722, lon:-93.101111,orig_div:1,tz:1},
-	{city:"Vancouver",name:"Canucks",lat:49.277778, lon:-123.108889,orig_div:1,tz:3},
-	{city:"Columbus",name:"Blue Jackets",lat:39.969283, lon:-83.006111,orig_div:2,tz:0},
-	{city:"Chicago",name:"Blackhawks",lat:41.880556, lon:-87.674167,orig_div:2,tz:1},
-	{city:"Detroit",name:"Red Wings",lat:42.325278, lon:-83.051389,orig_div:2,tz:0},
-	{city:"Nashville",name:"Predators",lat:36.159167, lon:-86.778611,orig_div:2,tz:1},
-	{city:"St. Louis",name:"Blues",lat:38.626667, lon:-90.2025,orig_div:2,tz:1},
-	{city:"Boston",name:"Bruins",lat:42.366303, lon:-71.062228,orig_div:3,tz:0},
-	{city:"Buffalo",name:"Sabres",lat:42.875, lon:-78.876389,orig_div:3,tz:0},
-	{city:"Montreal",name:"Canadiens",lat:45.496111, lon:-73.569444,orig_div:3,tz:0},
-	{city:"Ottawa",name:"Senators",lat:45.296944, lon:-75.927222,orig_div:3,tz:0},
-	{city:"Toronto",name:"Maple Leafs",lat:43.643333, lon:-79.379167,orig_div:3,tz:0},
-	{city:"New Jersey",name:"Devils",lat:40.733611, lon:-74.171111,orig_div:4,tz:0},
-	{city:"New York",name:"Islanders",lat:40.722778, lon:-73.590556,orig_div:4,tz:0},
-	{city:"New York",name:"Rangers",lat:40.750556, lon:-73.993611,orig_div:4,tz:0},
-	{city:"Philadelphia",name:"Flyers",lat:39.901111, lon:-75.171944,orig_div:4,tz:0},
-	{city:"Pittsburgh",name:"Penguins",lat:40.439444, lon:-79.989167,orig_div:4,tz:0},
-	{city:"Carolina",name:"Hurricanes",lat:35.803333, lon:-78.721944,orig_div:5,tz:0},
-	{city:"Florida",name:"Panthers",lat:26.158333, lon:-80.325556,orig_div:5,tz:0},
-	{city:"Tampa Bay",name:"Lightning",lat:27.942778, lon:-82.451944,orig_div:5,tz:0},
-	{city:"Washington",name:"Capitals",lat:38.898056, lon:-77.020833,orig_div:5,tz:0},
-	{city:"Winnipeg",name:"Jets",lat:49.892892, lon:-97.143836,orig_div:-1,tz:1},
-	{city:"Las Vegas",name:"Expansions",lat:36.175, lon:-115.136389,orig_div:-1,tz:3}
-];
-
-global_cities = [
-	{city: "Atlanta",tz:0, lat:33.755, lon:-84.39},
-	{city: "Hartford",tz:0, lat:41.762736, lon:-72.674286},
-	{city: "Hamilton",tz:0, lat:43.255278, lon:-79.873056},
-	{city: "Houston",tz:1, lat:29.762778, lon:-95.383056},
-	{city: "Kansas City",tz:1, lat:39.109722, lon:-94.588611},
-	{city: "Milwaukee",tz:1, lat:43.0522222, lon:-87.955833},
-	{city: "Quebec City", tz:0, lat:46.816667, lon:-71.216667},
-	{city: "Seattle", tz:3, lat:47.609722, lon:-122.333056}
-];
-
-function initData() {
-	// make a deep copy
-	global_teams = new Array();
-	for (var i = 0; i < static_teams.length; i++) {
-		var team = static_teams[i];
-		global_teams.push({city:team.city, name: team.name, lat:team.lat, lon:team.lon, tz:team.tz, orig_div:team.orig_div});
-	}
-};var global_teams;
-var DL_ENCODING_CHARS = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var DL_DEFAULT_STRING = "IJCGRQFH9T72DEBOAPSNLKM1468053UVWXYZ";
-
-function DivisionList(div_string, conference_count, division_count) {
-	this.string = div_string;
+;function DivisionList(div_string, conference_count, division_count, all_teams) {
+	this.all_teams = all_teams;
 	this.div_count = division_count;
 	this.conf_count = conference_count;
-}
+	this.div_string = div_string;
+	var _divisions;
 
-DivisionList.prototype.toArray = function() {
-	if (!this.conferences)
-		this._breakdownDivisions();
-	
-	var conference_array = new Array();
-	
-	for (var i = 0; i < this.conferences.length; i++) {
-		conference_array.push(new Array());
-		var conference = this.conferences[i];
-		for (var j = 0; j < conference.length; j++) {
-			var division = conference[j];
-			
-			var division_array = new Array();
-			for (var k = 0; k < division.length; k++) {
-				var team_index = DL_ENCODING_CHARS.indexOf(division.charAt(k), 0);
-				division_array.push(global_teams[team_index]);
+	var _setDivisions = function() {
+		_divisions = [];
+
+		for (var c = 0; c < this.conf_count; c++) {
+			_divisions.push([]);
+			for (var d = 0; d < this.div_count / this.conf_count; d++) {
+				_divisions[c].push([]);
 			}
-			
-			conference_array[i][j] = division_array;
 		}
-	}
-	return conference_array;
-};
 
-DivisionList.prototype._breakdownDivisions = function() {
-	var _divisions, _conferences;
-	if (this.div_count == 6) {
-		_divisions = new Array(
-			this.string.substring(0, 5),
-			this.string.substring(5, 10),
-			this.string.substring(10, 15),
-			this.string.substring(15, 20),
-			this.string.substring(20, 25),
-			this.string.substring(25, 31)		
-		);
-	}
-	
-	else if (this.div_count == 4) {
-		_divisions = new Array(
-			this.string.substring(0, 8),
-			this.string.substring(8, 15),
-			this.string.substring(15, 23),
-			this.string.substring(23, 31)
-		);
-	}
-	
-	else if (this.div_count == 3) {
-		_divisions = new Array(
-			this.string.substring(0, 10),
-			this.string.substring(10, 20),
-			this.string.substring(20, 31)
-		);
-	}
-	
-	else if (this.div_count == 2) {
-		_divisions = new Array(
-			this.string.substring(0, 15),
-			this.string.substring(15, 31)
-		);
-	}
-	
-	var divisions_per_conference = this.div_count / this.conf_count;
-	_conferences = new Array();
-	for (var i = 0; i < this.conf_count; i++) {
-		_conferences[i] = new Array();
-		
-		
-		for (var j = i * divisions_per_conference; j < (i + 1) * divisions_per_conference; j++) {
-			_conferences[i].push(_divisions[j]);
+		for (var i = 0; i < this.all_teams.length; i++) {
+			var div_string_elem = this.div_string[i] - 1;
+			var divs_per_conference = this.div_count / this.conf_count;
+
+
+			var conference = Math.floor(div_string_elem / divs_per_conference);
+			var division = div_string_elem % divs_per_conference;
+
+			_divisions[conference][division].push(this.all_teams[i]);
 		}
-	}
-	
-	this.conferences = _conferences;
-	
-	return _conferences;
-};
+	};
 
-DivisionList.getDefaultString = function() {
-	return DL_DEFAULT_STRING.substring(0, global_teams.length);
-};;var GA_GENERATION_SIZE = 80;
-var GA_MAX_SURVIVORS = 28;
-var GA_MIN_SURVIVORS = 10;
-var GA_SURVIVORS_DELTA = -.3;
-var GA_MUTATION_CHANCE = .4;
+	(_setDivisions.bind(this))();
 
-var GA_ITERATION_INTERVAL = 200;
+	this.toArray = function() {
+		return _divisions;
+	};
 
-var continuing_flag;
-var ga_timeout;
+	this.moveTeam = function(team, div_number) {
+		if (team < 0 || team > all_teams.length) return;
+		if (div_number < 0 || div_number > division_count) return;
 
-function gaIterate(population, survivors) {
-	window.clearTimeout(ga_timeout);
-	for (var i = 0; i < population.length; i++){
-		if (!population[i].score)
-			population[i].calculateScore();
-	}
-
-	
-	population.sort(byScore);
-	
-	updateTable(population[0]);
-	updateMap(population[0]);
-	
-	if (continuing_flag) {
-		for (i = Math.ceil(survivors); i < GA_GENERATION_SIZE; i++) {
-			var father = randomInt(Math.ceil(survivors));
-			var mother;
-			
-			do {
-				mother = randomInt(Math.ceil(survivors));
-			}while (mother == father);
-			
-			population[i] = population[father].crossWith(population[mother]);
-		}
-		
-		for (i = 0; i < GA_GENERATION_SIZE; i++) {
-			if (Math.random() < GA_MUTATION_CHANCE)
-				population[i].mutate();
-		}
-		
-		if (survivors > GA_MIN_SURVIVORS)
-			survivors += GA_SURVIVORS_DELTA;
-		ga_timeout = window.setTimeout(function() { gaIterate(population, survivors); },GA_ITERATION_INTERVAL);
-	}
-	else {
-		setBookmark(population[0].string);
-	}
-}
-
-function byScore(a,b) {
-	return a.score - b.score;
+		this.div_string[team] = div_number;
+		_setDivisions();
+	};
 };var global_division_count = 4;
 var global_conference_count = 1;
 var static_teams;
@@ -380,13 +256,13 @@ function moveTeamMarker(team, lat, lon) {
 	global_markers[team].setAnimation(google.maps.Animation.DROP);
 }
 
-function initialize(container_id, conferences, divisions, defaultString) {
+function initialize(container_id, conferences, divisions) {
 	//initMap();
 	processBookmark();
 
 	//updateCosts();
 
-	ReactDOM.render(React.createElement(Divisionizer, { initConferences: conferences, initDivisions: divisions, teamurl: "data/teams.json", cityurl: "data/cities.json", initString: defaultString }), document.getElementById(container_id));
+	ReactDOM.render(React.createElement(Divisionizer, { initConferences: conferences, initDivisions: divisions, dataurl: "data/data.json" }), document.getElementById(container_id));
 	//updateTableFormat(divisions);
 	//setBookmark(divisions.string);
 }

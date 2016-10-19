@@ -3,36 +3,44 @@
   "version": "0.0.0",
   "description": "Tutorial for teaching myself React.",
   "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markgoetz/reactionizer"
+  },
+  "license": "MIT",
   "dependencies": {
     "dragula": "^3.7.2",
-    "react-dragula": "^1.1.17"
+    "extract-text-webpack-plugin": "^1.0.1",
+    "google-maps": "^3.2.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-google-maps": "^4.11.0"
   },
   "devDependencies": {
     "autoprefixer": "latest",
+    "babel-core": "^6.17.0",
     "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.5",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
     "body-parser": "^1.4.3",
     "eslint": "^3.7.1",
     "eslint-config-google": "^0.6.0",
     "eslint-plugin-react": "^6.3.0",
+    "eslint-plugin-requirejs": "^3.0.0",
     "express": "^4.4.5",
-    "grunt": "^0.4.5",
-    "grunt-babel": "^6.0.0",
-    "grunt-contrib-concat": "latest",
-    "grunt-contrib-cssmin": "^1.0.1",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-nodeunit": "~0.4.1",
-    "grunt-contrib-sass": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-contrib-watch": "latest",
-    "grunt-eslint": "^19.0.0",
-    "grunt-postcss": "latest",
+    "html-webpack-plugin": "^2.22.0",
     "jasmine": "^2.5.2",
     "react": "^15.1.0",
+    "uglify-loader": "^1.3.0",
     "watchify": "^3.7.0",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "webpack",
+    "serve": "webpack-dev-server --content-base dist/"
   }
 }

@@ -1,9 +1,7 @@
-var global_division_count = 4;
-var global_conference_count = 1;
-var static_teams;
-var global_teams;
-var global_cities;
-var map;
+var React = require("react");
+var ReactDOM = require("react-dom");
+var Divisionizer = require("./components.jsx");
+
 var global_polygons;
 var global_markers;
 var global_relocated_teams = new Array();
@@ -92,8 +90,8 @@ function initialize(container_id, conferences, divisions) {
 	//updateCosts();
 	
 	ReactDOM.render(
-      <Divisionizer initConferences={conferences} initDivisions={divisions} dataurl="data/data.json" />,
-      document.getElementById(container_id)
+		<Divisionizer initConferences={conferences} initDivisions={divisions} dataurl="data/data.json" />,
+		document.getElementById(container_id)
     );  
 	//updateTableFormat(divisions);
 	//setBookmark(divisions.string);
@@ -129,48 +127,8 @@ function setBookmark(div_string) {
 	$("#tw_share").attr("href", "http://www.twitter.com/home?status=http://www.divisionizer.com/%23" + div_string);
 }
 
-function getLogoURL(team) {
-	return "logos/" + team.name.toLowerCase().replace(" ", "") + ".png";
-}
-
-
-
-function stop_divisionize() {
-	$(".conf_button").removeClass("disabled").removeAttr("disabled");
-	$(".div_button").addClass("disabled").attr("disabled", "disabled");
-	
-	$(".div_button").removeClass("disabled").removeAttr("disabled");
-	
-	if (global_conference_count == 3) {
-		$("#division_count_selector_4").addClass("disabled").attr("disabled", "disabled");
-		$("#division_count_selector_2").addClass("disabled").attr("disabled", "disabled");
-	}
-	else if (global_conference_count == 2) {
-		$("#division_count_selector_3").addClass("disabled").attr("disabled", "disabled");
-	}
-	
-	$("#divisionizer_on").hide();
-	$("#divisionizer_off").show();
-	//window.clearTimeout(ga_timeout);
-	continuing_flag = false;
-}
-
-String.prototype.swapChars = function (i, j) {
-	if (i > j) {
-		var temp = i;
-		i = j;
-		j = temp;
-	}
-	
-	var swapchar1 = this.charAt(i);
-	var swapchar2 = this.charAt(j);
-	var block1 = this.substring(0, i);
-	var block2 = this.substring(i+1,j);
-	var block3 = this.substring(j+1,this.length);
-	
-	return block1 + swapchar2 + block2 + swapchar1 + block3;
-};
-
 String.prototype.setCharAt = function(index, newChar) {
-	return this.substring(0, index) + newChar + this.substring(index+1,this.length);
+	return this.substring(0, index).concat(newChar, this.substring(index+1,this.length));
 };
+
+initialize("container", 2, 4);

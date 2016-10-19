@@ -1,4 +1,6 @@
-var SettingsMenu = React.createClass({
+var React = require("react");
+
+module.exports = React.createClass({
 	propTypes: {
 		conferences: React.PropTypes.number,
 		divisions: React.PropTypes.number,

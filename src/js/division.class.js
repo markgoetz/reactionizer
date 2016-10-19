@@ -46,3 +46,5 @@ function DivisionList(division, conference_count, division_count, all_teams) {
 		_setDivisions();
 	};
 }
+
+module.exports = DivisionList;

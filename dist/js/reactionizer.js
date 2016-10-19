@@ -35,6 +35,9 @@ var Divisionizer = React.createClass({
 		initDivisions: React.PropTypes.number,
 		dataurl: React.PropTypes.string
 	},
+	componentWillMount: function () {
+		this.data = { defaultdivs: [], teams: [], cities: [] };
+	},
 	componentDidMount: function () {
 		$(document).ajaxError(function (event, jqxhr, settings, thrownError) {
 			alert(thrownError);
@@ -44,13 +47,16 @@ var Divisionizer = React.createClass({
 			url: this.props.dataurl,
 			context: this,
 			dataType: "json"
-		}).done(function (data) {
+		}).done(function (json) {
+			this.data = {
+				teams: json.teams,
+				cities: json.cities,
+				defaultdivs: json.defaultdivs
+			};
+
 			this.setState({
-				teams: data.teams,
-				cities: data.cities,
-				defaultdivs: data.defaultdivs,
-				league: this._getLeague(this.state.conference_count, this.state.division_count, data.defaultdivs, data.teams),
-				max_id: data.teams.length + 1
+				league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.defaultdivs, this.data.teams),
+				max_id: this.data.teams.length + 1
 			});
 		});
 	},
@@ -58,15 +64,12 @@ var Divisionizer = React.createClass({
 		return {
 			conference_count: this.props.initConferences,
 			division_count: this.props.initDivisions,
-			teams: [],
-			cities: [],
-			defaultdivs: [],
 			league: [],
 			max_id: 0
 		};
 	},
 	onRelocateTeam: function (teamid, cityid) {
-		var teams = this.state.teams;
+		var teams = this.data.teams;
 		var team = teams[teamid];
 		var city = this.state.cities[cityid];
 
@@ -74,14 +77,15 @@ var Divisionizer = React.createClass({
 		team.lat = city.lat;
 		team.lon = city.lon;
 
+		this.data.teams = teams;
+
 		this.setState({
-			teams: teams,
-			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.default_divs, teams)
+			league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.default_divs, this.data.teams)
 		});
 		this._getDivisions();
 	},
 	onAddTeam: function (name, cityid) {
-		var city = this.state.cities[cityid];
+		var city = this.data.cities[cityid];
 		var team = {
 			id: this.state.max_id++,
 			name: name,
@@ -90,28 +94,40 @@ var Divisionizer = React.createClass({
 			lon: city.lon
 		};
 
-		var teams = this.state.teams;
+		var teams = this.data.teams;
 		teams.push(team);
+		this.data.teams = teams;
 
 		//TODO: Update the default division strings.
 
 		this.setState({
-			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.default_divs, teams),
-			teams: teams
+			league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.defaultdivs, this.data.teams)
 		});
 	},
 	onConferenceChange: function (c, d) {
 		this.setState({
 			conference_count: c,
 			division_count: d,
-			league: this._getLeague(c, d, this.state.defaultdivs, this.state.teams)
+			league: this._getLeague(c, d, this.data.defaultdivs, this.data.teams)
 		});
 	},
-	_getLeague: function (conf_count, div_count, default_divs, teams) {
-		var div_string = default_divs[conf_count + ":" + div_count];
+	onDrag: function (team, division) {
+		var default_div = this.data.defaultdivs[this.state.division_count].string;
+		console.log("Moving " + team + " into " + division);
+		console.log("Old default div is " + default_div);
+		default_div = default_div.setCharAt(team - 1, division.toString());
+		console.log("New default div is " + default_div);
+		this.data.defaultdivs[this.state.division_count].string = default_div;
+
+		this.setState({
+			league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.defaultdivs, this.data.teams)
+		});
+	},
+	_getLeague: function (conf_count, div_count) {
+		var div_string = this.data.defaultdivs[div_count];
 
 		if (div_string) {
-			var division = new DivisionList(div_string, conf_count, div_count, teams);
+			var division = new DivisionList(div_string, conf_count, div_count, this.data.teams);
 			return division.toArray();
 		} else {
 			return [];
@@ -128,8 +144,8 @@ var Divisionizer = React.createClass({
 				React.createElement(SettingsMenu, {
 					conferences: this.state.conference_count,
 					divisions: this.state.division_count,
-					teams: this.state.teams,
-					cities: this.state.cities,
+					teams: this.data.teams,
+					cities: this.data.cities,
 					onRelocateTeam: this.onRelocateTeam,
 					onAddTeam: this.onAddTeam,
 					onConferenceChange: this.onConferenceChange
@@ -138,7 +154,7 @@ var Divisionizer = React.createClass({
 					"div",
 					{ className: "content" },
 					React.createElement(Map, { league: this.state.league }),
-					React.createElement(LeagueDisplay, { league: this.state.league })
+					React.createElement(LeagueDisplay, { league: this.state.league, onDrag: this.onDrag })
 				)
 			),
 			React.createElement(Footer, null)
@@ -331,39 +347,26 @@ function stop_divisionize() {
 	continuing_flag = false;
 }
 
-String.prototype.swapChars = function (i, j) {
-	if (i > j) {
-		var temp = i;
-		i = j;
-		j = temp;
-	}
-
-	var swapchar1 = this.charAt(i);
-	var swapchar2 = this.charAt(j);
-	var block1 = this.substring(0, i);
-	var block2 = this.substring(i + 1, j);
-	var block3 = this.substring(j + 1, this.length);
-
-	return block1 + swapchar2 + block2 + swapchar1 + block3;
-};
-
 String.prototype.setCharAt = function (index, newChar) {
-	return this.substring(0, index) + newChar + this.substring(index + 1, this.length);
+	return this.substring(0, index).concat(newChar, this.substring(index + 1, this.length));
 };
 //# sourceMappingURL=interface.js.map
 ;var getLogoURL;
 var dragula;
 
+/* exported LeagueDisplay */
+
 var LeagueDisplay = React.createClass({
 	displayName: "LeagueDisplay",
 
 	propTypes: {
-		league: React.PropTypes.array
+		league: React.PropTypes.array,
+		onDrag: React.PropTypes.func
 	},
 	componentDidUpdate: function () {
 		dragula(Array.prototype.slice.call(document.querySelectorAll(".division .list"))).on("drop", function (el, container) {
-			alert(el.className + " " + container.className);
-		});
+			this.props.onDrag(el.dataset.teamid, container.dataset.divid);
+		}.bind(this));
 	},
 	render: function () {
 		var nodes = this.props.league.map(function (conference, index) {
@@ -388,7 +391,9 @@ var Conference = React.createClass({
 	},
 	render: function () {
 		var division_nodes = this.props.conference.map(function (division, index) {
-			return React.createElement(Division, { division: division, key: index, count: this.props.conference.length * this.props.count, conference: this.props.number, number: index });
+			var id = this.props.number * this.props.conference.length + index + 1;
+
+			return React.createElement(Division, { division: division, key: index, count: this.props.conference.length * this.props.count, conference: this.props.number, number: index, id: id });
 		}, this);
 
 		var className = "conference col-" + this.props.count;
@@ -407,7 +412,8 @@ var Division = React.createClass({
 		division: React.PropTypes.array,
 		count: React.PropTypes.number,
 		conference: React.PropTypes.number,
-		number: React.PropTypes.number
+		number: React.PropTypes.number,
+		id: React.PropTypes.number
 	},
 	render: function () {
 		var team_nodes = this.props.division.map(function (team) {
@@ -425,7 +431,7 @@ var Division = React.createClass({
 			),
 			React.createElement(
 				"div",
-				{ className: "list" },
+				{ className: "list", "data-divid": this.props.id },
 				team_nodes
 			)
 		);
@@ -442,7 +448,7 @@ var Team = React.createClass({
 		var source = getLogoURL(this.props.team);
 		return React.createElement(
 			"div",
-			{ className: "team" },
+			{ className: "team", "data-teamid": this.props.team.id },
 			React.createElement("img", { className: "team-logo", src: source }),
 			React.createElement(
 				"span",

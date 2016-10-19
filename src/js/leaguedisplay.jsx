@@ -1,16 +1,17 @@
-var getLogoURL;
-var dragula;
+var React = require("react");
+var dragula = require("dragula");
 
 var LeagueDisplay = React.createClass({
 	propTypes: {
-		league: React.PropTypes.array
+		league: React.PropTypes.array,
+		onDrag: React.PropTypes.func
 	},
 	componentDidUpdate: function() {
 		dragula(
 			Array.prototype.slice.call(document.querySelectorAll(".division .list"))
 		).on("drop", function(el, container) {
-			alert(el.className + " " + container.className);
-		});
+			this.props.onDrag(el.dataset.teamid, container.dataset.divid);
+		}.bind(this));
 	},
 	render: function() {
 		var nodes = this.props.league.map(function (conference,index) {
@@ -29,7 +30,9 @@ var Conference = React.createClass({
 	},
 	render: function() {
 		var division_nodes = this.props.conference.map(function (division,index) {
-			return <Division division={division} key={index} count={this.props.conference.length*this.props.count} conference={this.props.number} number={index} />;
+			var id = this.props.number * this.props.conference.length + index + 1;
+
+			return <Division division={division} key={index} count={this.props.conference.length*this.props.count} conference={this.props.number} number={index} id={id} />;
 		}, this);
 
 		var className = "conference col-" + this.props.count;
@@ -42,26 +45,29 @@ var Division = React.createClass({
 		division: React.PropTypes.array,
 		count: React.PropTypes.number,
 		conference: React.PropTypes.number,
-		number: React.PropTypes.number
+		number: React.PropTypes.number,
+		id: React.PropTypes.number
 	},
 	render: function() {
 		var team_nodes = this.props.division.map(function (team) {
-			return <Team team={team} key={team.name} />;
+			return <TeamCard team={team} key={team.name} />;
 		});
 
 		var className = "division col-" + this.props.count + " conf-" + this.props.conference + " div-" + this.props.number;
-		return <div className={className}><div className="name">{this.props.division.name}</div><div className="list">{team_nodes}</div></div>;
+		return <div className={className}><div className="name">{this.props.division.name}</div><div className="list" data-divid={this.props.id}>{team_nodes}</div></div>;
 	}
 });
 
-var Team = React.createClass({
+var TeamCard = React.createClass({
 	propTypes: {
 		team: React.PropTypes.object
 	},
 	render: function() {
-		var source=getLogoURL(this.props.team);
-		return (<div className="team">
+		var source=this.props.team.getLogoURL();
+		return (<div className="team" data-teamid={this.props.team.id}>
         <img className="team-logo" src={source} /><span className="city">{this.props.team.city}</span><span className="name">&nbsp;{this.props.team.name}</span>
       </div>);
 	}
 });
+
+module.exports = LeagueDisplay;

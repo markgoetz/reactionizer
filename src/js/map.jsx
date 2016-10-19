@@ -1,18 +1,20 @@
-var google;
-var getLogoURL;
+var React = require("react");
+var Maps = require("google-maps");
 
 var Map = React.createClass({
 	render: function() {
     //this._updatePolygons();
     //this._updatePins();
 
-		return <div id="map"></div>;
+		return <div id="map">
+			<GoogleMap defaultZoom={4} maxZoom={6} minZoom={3} defaultCenter={ {lat: 41, lon: -96} } />
+		</div>;
 	},
 	componentDidMount: function() {
 		this.polygons = new Array();
 		this.pins = new Array();
   
-		var latlng = new google.maps.LatLng(41,-96);
+		/*var latlng = new google.maps.LatLng(41,-96);
 		var myOptions = {
 			zoom: 4,
 			center: latlng,
@@ -21,7 +23,9 @@ var Map = React.createClass({
 			streetViewControl: false,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
-		this.map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+		return <GoogleMap
+		this.map = new google.maps.Map(document.getElementById("map"), myOptions);*/
 
     //this._initPins(this.props.league);
     //this._initPolygons(this.props.league);
@@ -36,7 +40,7 @@ var Map = React.createClass({
 				{
 					position:ll,
 					title:team.city + " " + team.name,
-					icon:getLogoURL(team)
+					icon:team.getLogoURL()
 				}
       );
 			pin.setMap(this.map);
@@ -59,3 +63,5 @@ var Map = React.createClass({
 
 	}
 });
+
+module.exports = Map;

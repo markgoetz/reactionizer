@@ -2,6 +2,8 @@ var React = require("react");
 var DivisionList = require("./division.class");
 var Team = require("./team.class");
 
+var $ = require("jquery");
+
 var SettingsMenu = require("./settingsmenu");
 var Map = require("./map");
 var LeagueDisplay = require("./leaguedisplay");

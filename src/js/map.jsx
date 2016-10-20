@@ -1,14 +1,18 @@
 var React = require("react");
-var Maps = require("google-maps");
+var ReactGoogleMaps = require("react-google-maps");
+var GoogleMapLoader = ReactGoogleMaps.GoogleMapLoader;
+var GoogleMap = ReactGoogleMaps.GoogleMap;
+var Polyline = ReactGoogleMaps.Polyline;
 
 var Map = React.createClass({
 	render: function() {
     //this._updatePolygons();
     //this._updatePins();
 
-		return <div id="map">
-			<GoogleMap defaultZoom={4} maxZoom={6} minZoom={3} defaultCenter={ {lat: 41, lon: -96} } />
-		</div>;
+		return <GoogleMapLoader
+			containerElement={<div id="map" />}
+			googleMapElement={<GoogleMap defaultZoom={4} maxZoom={6} minZoom={3} defaultCenter={ {lat: 41, lng: -96} } />}
+		/>;
 	},
 	componentDidMount: function() {
 		this.polygons = new Array();

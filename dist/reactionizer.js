@@ -21537,6 +21537,7 @@
 	var React = __webpack_require__(1);
 	var DivisionList = __webpack_require__(173);
 	var Team = __webpack_require__(174);
+
 	var $ = __webpack_require__(175);
 
 	var SettingsMenu = __webpack_require__(176);
@@ -32300,65 +32301,73 @@
 	var ReactGoogleMaps = __webpack_require__(178);
 	var GoogleMapLoader = ReactGoogleMaps.GoogleMapLoader;
 	var GoogleMap = ReactGoogleMaps.GoogleMap;
-	var Polyline = ReactGoogleMaps.Polyline;
+	var Polygon = ReactGoogleMaps.Polyline;
+	var Marker = ReactGoogleMaps.Marker;
 
 	var Map = React.createClass({
 		displayName: "Map",
 
+		propTypes: {
+			league: React.PropTypes.array
+		},
+		_getPolygons: function (league) {
+			var polygons = [];
+
+			for (var c = 0; c < league.length; c++) {
+				var conference = league[c];
+				for (var d = 0; d < conference.length; d++) {
+					var division = conference[d];
+					polygons.push(React.createElement(Polygon, { path: division.map(function (team) {
+							return { lat: team.lat, lng: team.lon };
+						}) }));
+				}
+			}
+
+			return polygons;
+		},
+
+		_getMarkers: function (league) {
+			var markers = [];
+
+			for (var c = 0; c < league.length; c++) {
+				var conference = league[c];
+				for (var d = 0; d < conference.length; d++) {
+					var division = conference[d];
+
+					for (var t = 0; t < division.length; t++) {
+						var team = division[t];
+
+						markers.push(React.createElement(Marker, {
+							position: { lat: team.lat, lng: team.lon },
+							icon: team.getLogoURL(),
+							key: team.id,
+							title: team.name
+						}));
+					}
+				}
+			}
+
+			return markers;
+		},
+
 		render: function () {
-			//this._updatePolygons();
-			//this._updatePins();
+			var polygon_nodes = this._getPolygons(this.props.league);
+			var marker_nodes = this._getMarkers(this.props.league);
 
 			return React.createElement(GoogleMapLoader, {
 				containerElement: React.createElement("div", { id: "map" }),
-				googleMapElement: React.createElement(GoogleMap, { defaultZoom: 4, maxZoom: 6, minZoom: 3, defaultCenter: { lat: 41, lon: -96 } })
+				googleMapElement: React.createElement(
+					GoogleMap,
+					{
+						defaultZoom: 4,
+						maxZoom: 6,
+						minZoom: 3,
+						defaultCenter: { lat: 41, lng: -96 } },
+					polygon_nodes,
+					marker_nodes
+				)
 			});
-		},
-		componentDidMount: function () {
-			this.polygons = new Array();
-			this.pins = new Array();
-
-			/*var latlng = new google.maps.LatLng(41,-96);
-	  var myOptions = {
-	  	zoom: 4,
-	  	center: latlng,
-	  	maxZoom: 6,
-	  	minZoom: 3,
-	  	streetViewControl: false,
-	  	mapTypeId: google.maps.MapTypeId.ROADMAP
-	  };
-	  	return <GoogleMap
-	  this.map = new google.maps.Map(document.getElementById("map"), myOptions);*/
-
-			//this._initPins(this.props.league);
-			//this._initPolygons(this.props.league);
-		},
-
-		_initPins: function (teams) {
-			for (var i = 0; i < teams.length; i++) {
-				var team = teams[i];
-
-				var ll = new google.maps.LatLng(team.lat, team.lon);
-				var pin = new google.maps.Marker({
-					position: ll,
-					title: team.city + " " + team.name,
-					icon: team.getLogoURL()
-				});
-				pin.setMap(this.map);
-				this.pins.push(pin);
-			}
-		},
-
-		_initPolygons: function (teams) {
-			// var conference_count = teams.length;
-			// var division_count = teams[0].length;
-
-
-		},
-
-		_updatePins: function () {},
-
-		_updatePolygons: function () {}
+		}
 	});
 
 	module.exports = Map;

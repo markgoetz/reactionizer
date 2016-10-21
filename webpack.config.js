@@ -1,5 +1,3 @@
-var path = require("path");
-
 var PATHS = {
 	src: "./src/",
 	src_js: "./src/js/",
@@ -25,13 +23,8 @@ module.exports = {
 			}
 		},
 		{
-			test: /reactionizer.js$/,
-			exclude: PATHS.exclude,
-			loader: "uglify"
-		},
-		{
 			test: /\.css$/,
-			loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+			loader: ExtractTextPlugin.extract("css-loader", "sass-loader")
 		}]
 	},
 	resolve: {

@@ -9,12 +9,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "dragula": "^3.7.2",
-    "google-maps": "^3.2.1",
     "jquery": "^3.1.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-google-maps": "^4.11.0"
+    "react-google-maps": "^4.11.0",
+    "sortablejs": "^1.4.2"
   },
   "devDependencies": {
     "autoprefixer": "latest",

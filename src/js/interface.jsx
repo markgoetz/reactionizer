@@ -1,16 +1,10 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var Divisionizer = require("./divisionizer.jsx");
-var css = require("../scss/reactionizer.scss");
+require("../scss/reactionizer.scss");
 
 var global_markers;
 var global_relocated_teams = new Array();
-
-var conference_colors = new Array(
-	new Array("#1B7EE0", "#0F4780", "#ADD6FF", "#899096", "#565A5E", "#C8D1DB"),
-	new Array("#F5891D", "#944E07", "#FFD6AD"),
-	new Array("#7EE01B", "#386907")
-);
 
 function moveTeamMarker(team, lat, lon) {
 	global_markers[team].setPosition(new google.maps.LatLng(lat, lon));

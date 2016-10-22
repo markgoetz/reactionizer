@@ -1,6 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
-var Divisionizer = require("./components.jsx");
+var Divisionizer = require("./divisionizer.jsx");
 var css = require("../scss/reactionizer.scss");
 
 var global_markers;

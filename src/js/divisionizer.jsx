@@ -4,21 +4,11 @@ var Team = require("./team.class");
 
 var $ = require("jquery");
 
+var Header = require("./header");
+var Footer = require("./footer");
 var SettingsMenu = require("./settingsmenu");
 var Map = require("./map");
 var LeagueDisplay = require("./leaguedisplay");
-
-var Header = React.createClass({
-	render: function() {
-		return <header>header</header>;
-	}
-});	
-
-var Footer = React.createClass({
-	render: function() {
-		return <footer>footer</footer>;
-	}
-});	
 
 var Divisionizer = React.createClass({
 	propTypes: {

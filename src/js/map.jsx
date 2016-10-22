@@ -21,14 +21,36 @@ var Map = React.createClass({
 				for (var t = 0; t < division.length; t++) {
 					var team = division[t];
 
+					var icon_background = {
+						path: "M 0 -5 a 10 10 0 1 0 -5.00001 0",
+						strokeColor: "#777777",
+						strokeWeight: 3,
+						fillColor: "#ffffff",
+						fillOpacity: 1
+					};
+
+					// Render the background as a vector
 					markers.push(
 						<Marker
 							position={ { lat: team.lat, lng: team.lon } }
-							icon={team.getLogoURL()}
-							key={team.id}
+							key={ "b" + team.id }
+							icon={ icon_background }
 							title={team.name}
+							zIndex={-99}
 						/>
 					);
+
+					// Render the logo as a separate marker
+					markers.push(
+						<Marker
+							position={ { lat: team.lat, lng: team.lon } }
+							icon={ {url: team.getLogoURL(), anchor: {x:10, y:10}} }
+							key={team.id}
+							title={team.name}
+							zIndex={2}
+						/>
+					);
+
 				}
 			}
 		}

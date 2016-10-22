@@ -2,6 +2,8 @@ var PATHS = {
 	src: "./src/",
 	src_js: "./src/js/",
 	dist: "./dist/",
+	dist_js: "./dist/js/",
+	dist_css: "./dist/css/",
 	exclude: [/node_modules/, /\.spec\.js/]
 };
 
@@ -11,7 +13,7 @@ module.exports = {
 	entry: PATHS.src_js + "interface.jsx",
 	output: {
 		path: PATHS.dist,
-		filename: "reactionizer.js"
+		filename: "js/reactionizer.js"
 	},
 	module: {
 		loaders: [{
@@ -23,10 +25,14 @@ module.exports = {
 			}
 		},
 		{
-			test: /\.css$/,
-			loader: ExtractTextPlugin.extract("css-loader", "sass-loader")
+			test: /\.scss$/,
+			exclude: PATHS.exclude,
+			loader: ExtractTextPlugin.extract("css!sass")
 		}]
 	},
+	plugins: [
+		new ExtractTextPlugin("css/reactionizer.css")
+	],
 	resolve: {
 		extensions: ["", ".js", ".jsx"]
 	}

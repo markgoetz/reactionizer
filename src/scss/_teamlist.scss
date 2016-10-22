@@ -19,7 +19,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
-		flex-grow: 1
+		flex-grow: 1;
 	}
 
 	.team .city, .team .name {
@@ -30,7 +30,8 @@
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
-		width: 100%
+		width: 100%;
+		flex-grow: 1;
 	}
 
 	.division.col-3 .team .name, .division.col-6 .team .name {

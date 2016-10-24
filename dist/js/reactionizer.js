@@ -47,12 +47,10 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(34);
 	var Divisionizer = __webpack_require__(172);
-	var css = __webpack_require__(236);
+	__webpack_require__(235);
 
 	var global_markers;
 	var global_relocated_teams = new Array();
-
-	var conference_colors = new Array(new Array("#1B7EE0", "#0F4780", "#ADD6FF", "#899096", "#565A5E", "#C8D1DB"), new Array("#F5891D", "#944E07", "#FFD6AD"), new Array("#7EE01B", "#386907"));
 
 	function moveTeamMarker(team, lat, lon) {
 		global_markers[team].setPosition(new google.maps.LatLng(lat, lon));
@@ -21481,33 +21479,11 @@
 
 	var $ = __webpack_require__(175);
 
-	var SettingsMenu = __webpack_require__(176);
-	var Map = __webpack_require__(177);
-	var LeagueDisplay = __webpack_require__(225);
-
-	var Header = React.createClass({
-		displayName: "Header",
-
-		render: function () {
-			return React.createElement(
-				"header",
-				null,
-				"header"
-			);
-		}
-	});
-
-	var Footer = React.createClass({
-		displayName: "Footer",
-
-		render: function () {
-			return React.createElement(
-				"footer",
-				null,
-				"footer"
-			);
-		}
-	});
+	var Header = __webpack_require__(176);
+	var Footer = __webpack_require__(177);
+	var SettingsMenu = __webpack_require__(178);
+	var Map = __webpack_require__(182);
+	var LeagueDisplay = __webpack_require__(230);
 
 	var Divisionizer = React.createClass({
 		displayName: "Divisionizer",
@@ -21516,9 +21492,6 @@
 			initConferences: React.PropTypes.number,
 			initDivisions: React.PropTypes.number,
 			dataurl: React.PropTypes.string
-		},
-		componentWillMount: function () {
-			this.data = { defaultdivs: [], teams: [], cities: [] };
 		},
 		componentDidMount: function () {
 			$(document).ajaxError(function (event, jqxhr, settings, thrownError) {
@@ -21530,16 +21503,16 @@
 				context: this,
 				dataType: "json"
 			}).done(function (json) {
-				this.data = {
-					teams: json.teams.map(function (t) {
-						return new Team(t);
-					}),
-					cities: json.cities,
-					defaultdivs: json.defaultdivs
-				};
+				var teams = json.teams.map(function (t) {
+					return new Team(t);
+				});
+				var defaultdivs = json.defaultdivs;
 
 				this.setState({
-					league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.defaultdivs, this.data.teams),
+					teams: teams,
+					cities: json.cities,
+					defaultdivs: json.defaultdivs,
+					league: this._getLeague(this.state.conference_count, this.state.division_count, defaultdivs, teams),
 					max_id: this.data.teams.length + 1
 				});
 			});
@@ -21549,27 +21522,29 @@
 				conference_count: this.props.initConferences,
 				division_count: this.props.initDivisions,
 				league: [],
+				defaultdivs: [],
+				teams: [],
+				cities: [],
 				max_id: 0
 			};
 		},
 		onRelocateTeam: function (teamid, cityid) {
-			var teams = this.data.teams;
+			var teams = this.state.teams;
 			var team = teams[teamid];
 			var city = this.state.cities[cityid];
 
-			team.cityname = city.name;
+			team.cityname = city.state;
 			team.lat = city.lat;
 			team.lon = city.lon;
 
-			this.data.teams = teams;
-
 			this.setState({
-				league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.default_divs, this.data.teams)
+				league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.defaultdivs, teams),
+				teams: teams
 			});
 			this._getDivisions();
 		},
 		onAddTeam: function (name, cityid) {
-			var city = this.data.cities[cityid];
+			var city = this.state.cities[cityid];
 			var team = {
 				id: this.state.max_id++,
 				name: name,
@@ -21578,37 +21553,41 @@
 				lon: city.lon
 			};
 
-			var teams = this.data.teams;
+			var teams = this.state.teams;
 			teams.push(team);
-			this.data.teams = teams;
 
 			//TODO: Update the default division strings.
 
 			this.setState({
-				league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.defaultdivs, this.data.teams)
+				league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.defaultdivs, teams),
+				teams: teams
 			});
 		},
 		onConferenceChange: function (c, d) {
 			this.setState({
 				conference_count: c,
 				division_count: d,
-				league: this._getLeague(c, d, this.data.defaultdivs, this.data.teams)
+				league: this._getLeague(c, d, this.state.defaultdivs, this.state.teams)
 			});
 		},
 		onDrag: function (team, division) {
-			var default_div = this.data.defaultdivs[this.state.division_count].string;
-			default_div = default_div.setCharAt(team - 1, division.toString());
-			this.data.defaultdivs[this.state.division_count].string = default_div;
+			var defaultdivs = this.state.defaultdivs;
+
+			var div_string = defaultdivs[this.state.division_count].string;
+			div_string = div_string.setCharAt(team - 1, division.toString());
+
+			defaultdivs[this.state.division_count].string = div_string;
 
 			this.setState({
-				league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.defaultdivs, this.data.teams)
+				league: this._getLeague(this.state.conference_count, this.state.division_count, defaultdivs, this.state.teams),
+				defaultdivs: defaultdivs
 			});
 		},
 		_getLeague: function (conf_count, div_count) {
-			var div_string = this.data.defaultdivs[div_count];
+			var div_string = this.state.defaultdivs[div_count];
 
 			if (div_string) {
-				var division = new DivisionList(div_string, conf_count, div_count, this.data.teams);
+				var division = new DivisionList(div_string, conf_count, div_count, this.state.teams);
 				return division.toArray();
 			} else {
 				return [];
@@ -21625,8 +21604,8 @@
 					React.createElement(SettingsMenu, {
 						conferences: this.state.conference_count,
 						divisions: this.state.division_count,
-						teams: this.data.teams,
-						cities: this.data.cities,
+						teams: this.state.teams,
+						cities: this.state.cities,
 						onRelocateTeam: this.onRelocateTeam,
 						onAddTeam: this.onAddTeam,
 						onConferenceChange: this.onConferenceChange
@@ -31948,15 +31927,58 @@
 
 	var React = __webpack_require__(1);
 
-	module.exports = React.createClass({
-		displayName: "exports",
+	var Header = React.createClass({
+		displayName: "Header",
+
+		render: function () {
+			return React.createElement(
+				"header",
+				null,
+				"header"
+			);
+		}
+	});
+
+	module.exports = Header;
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+
+	var Footer = React.createClass({
+		displayName: "Footer",
+
+		render: function () {
+			return React.createElement(
+				"footer",
+				null,
+				"footer"
+			);
+		}
+	});
+
+	module.exports = Footer;
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ConferenceSelector = __webpack_require__(179);
+	var Relocationizer = __webpack_require__(181);
+
+	var SettingsMenu = React.createClass({
+		displayName: "SettingsMenu",
 
 		propTypes: {
 			conferences: React.PropTypes.number,
 			divisions: React.PropTypes.number,
 			teams: React.PropTypes.array,
 			cities: React.PropTypes.array,
-			onConferenceChange: React.PropTypes.func
+			onConferenceChange: React.PropTypes.func,
+			onRelocate: React.PropTypes.func
 		},
 		getInitialState: function () {
 			return { menu_open: false };
@@ -31986,7 +32008,7 @@
 					"div",
 					{ id: "settings_menu", className: menu_class },
 					React.createElement(ConferenceSelector, { conferences: this.props.conferences, divisions: this.props.divisions, onConferenceChange: this.onConferenceChange }),
-					React.createElement(Relocationizer, { teams: this.props.teams, cities: this.props.cities })
+					React.createElement(Relocationizer, { teams: this.props.teams, cities: this.props.cities, onRelocate: this.props.onRelocate })
 				)
 			);
 		},
@@ -31998,94 +32020,111 @@
 		}
 	});
 
+	module.exports = SettingsMenu;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SelectorButton = __webpack_require__(180);
+
 	var ConferenceSelector = React.createClass({
-		displayName: "ConferenceSelector",
+	  displayName: "ConferenceSelector",
 
-		propTypes: {
-			conferences: React.PropTypes.number,
-			divisions: React.PropTypes.number,
-			onConferenceChange: React.PropTypes.func
-		},
-		getInitialState: function () {
-			return { conferences: this.props.conferences, divisions: this.props.divisions };
-		},
-		render: function () {
-			var conference_nodes = [3, 2, 1].map(function (conference) {
-				return React.createElement(SelectorButton, {
-					type: "conference",
-					key: "conference" + conference,
-					value: conference,
-					selected: conference == this.state.conferences,
-					disabled: false,
-					onButtonClick: this.conferenceUpdate });
-			}, this);
-			var division_nodes = [6, 4, 3, 2].map(function (division) {
-				return React.createElement(SelectorButton, {
-					type: "division",
-					key: "division" + division,
-					value: division,
-					selected: division == this.state.divisions,
-					disabled: division % this.state.conferences != 0,
-					onButtonClick: this.divisionUpdate });
-			}, this);
+	  propTypes: {
+	    conferences: React.PropTypes.number,
+	    divisions: React.PropTypes.number,
+	    onConferenceChange: React.PropTypes.func
+	  },
+	  getInitialState: function () {
+	    return { conferences: this.props.conferences, divisions: this.props.divisions };
+	  },
+	  render: function () {
+	    var conference_nodes = [3, 2, 1].map(function (conference) {
+	      return React.createElement(SelectorButton, {
+	        type: "conference",
+	        key: "conference" + conference,
+	        value: conference,
+	        selected: conference == this.state.conferences,
+	        disabled: false,
+	        onButtonClick: this.conferenceUpdate });
+	    }, this);
+	    var division_nodes = [6, 4, 3, 2].map(function (division) {
+	      return React.createElement(SelectorButton, {
+	        type: "division",
+	        key: "division" + division,
+	        value: division,
+	        selected: division == this.state.divisions,
+	        disabled: division % this.state.conferences != 0,
+	        onButtonClick: this.divisionUpdate });
+	    }, this);
 
-			return React.createElement(
-				"div",
-				null,
-				React.createElement(
-					"div",
-					{ className: "field" },
-					React.createElement(
-						"h3",
-						null,
-						"Conferences"
-					),
-					React.createElement(
-						"div",
-						{ className: "subfield" },
-						React.createElement(
-							"div",
-							{ className: "selector-container" },
-							conference_nodes
-						)
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "field" },
-					React.createElement(
-						"h3",
-						null,
-						"Divisions"
-					),
-					React.createElement(
-						"div",
-						{ className: "subfield" },
-						React.createElement(
-							"div",
-							{ className: "selector-container" },
-							division_nodes
-						)
-					)
-				)
-			);
-		},
-		conferenceUpdate: function (c) {
-			this.setState({ conferences: c });
-			var d = this.state.divisions;
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "div",
+	        { className: "field" },
+	        React.createElement(
+	          "h3",
+	          null,
+	          "Conferences"
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "subfield" },
+	          React.createElement(
+	            "div",
+	            { className: "selector-container" },
+	            conference_nodes
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "field" },
+	        React.createElement(
+	          "h3",
+	          null,
+	          "Divisions"
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "subfield" },
+	          React.createElement(
+	            "div",
+	            { className: "selector-container" },
+	            division_nodes
+	          )
+	        )
+	      )
+	    );
+	  },
+	  conferenceUpdate: function (c) {
+	    this.setState({ conferences: c });
+	    var d = this.state.divisions;
 
-			if (this.state.divisions % c != 0) {
-				d = 6;
-				this.setState({ divisions: d });
-			}
+	    if (this.state.divisions % c != 0) {
+	      d = 6;
+	      this.setState({ divisions: d });
+	    }
 
-			this.props.onConferenceChange(c, d);
-		},
-		divisionUpdate: function (d) {
-			this.setState({ divisions: d });
-			this.props.onConferenceChange(this.state.conferences, d);
-		}
+	    this.props.onConferenceChange(c, d);
+	  },
+	  divisionUpdate: function (d) {
+	    this.setState({ divisions: d });
+	    this.props.onConferenceChange(this.state.conferences, d);
+	  }
 	});
+
+	module.exports = ConferenceSelector;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
 
 	var SelectorButton = React.createClass({
 		displayName: "SelectorButton",
@@ -32115,12 +32154,21 @@
 		}
 	});
 
+	module.exports = SelectorButton;
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+
 	var Relocationizer = React.createClass({
 		displayName: "Relocationizer",
 
 		propTypes: {
 			teams: React.PropTypes.array,
-			cities: React.PropTypes.array
+			cities: React.PropTypes.array,
+			onRelocate: React.PropTypes.func
 		},
 		render: function () {
 			var team_nodes = this.props.teams.map(function (team) {
@@ -32183,7 +32231,7 @@
 						null,
 						React.createElement(
 							"button",
-							{ className: "action" },
+							{ className: "action", onClick: this.relocate },
 							"Relocate Team"
 						)
 					)
@@ -32231,18 +32279,21 @@
 					)
 				)
 			);
-		}
+		},
+		relocate: function () {}
 	});
 
+	module.exports = Relocationizer;
+
 /***/ },
-/* 177 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ReactGoogleMaps = __webpack_require__(178);
+	var ReactGoogleMaps = __webpack_require__(183);
+
 	var GoogleMapLoader = ReactGoogleMaps.GoogleMapLoader;
 	var GoogleMap = ReactGoogleMaps.GoogleMap;
-	var Polygon = ReactGoogleMaps.Polygon;
 	var Marker = ReactGoogleMaps.Marker;
 
 	var Map = React.createClass({
@@ -32251,31 +32302,17 @@
 		propTypes: {
 			league: React.PropTypes.array
 		},
-		_getPolygons: function (league) {
-			var polygons = [];
-
-			for (var c = 0; c < league.length; c++) {
-				var conference = league[c];
-				for (var d = 0; d < conference.length; d++) {
-					var division = conference[d];
-					var key = c + ":" + d;
-
-					polygons.push(React.createElement(Polygon, {
-						key: key,
-						fillColor: "rgba(0,0,0,0)",
-						fillOpacity: 0.0,
-						path: division.map(function (team) {
-							return { lat: team.lat, lng: team.lon };
-						})
-					}));
-				}
-			}
-
-			return polygons;
-		},
 
 		_getMarkers: function (league) {
 			var markers = [];
+
+			var icon_background = {
+				path: "M -11 -9 " + "A 2 2 0 0 0 -9 -11 " + "L 9 -11 " + "A 2 2 0 0 0 11 -9 " + "L 11 9 " + "A 2 2 0 0 0 9 11 " + "L -9 11 " + "A 2 2 0 0 0 -11 9" + "L -11 -9",
+				strokeColor: "#777777",
+				strokeWeight: 3,
+				fillColor: "#ffffff",
+				fillOpacity: 1
+			};
 
 			for (var c = 0; c < league.length; c++) {
 				var conference = league[c];
@@ -32287,9 +32324,17 @@
 
 						markers.push(React.createElement(Marker, {
 							position: { lat: team.lat, lng: team.lon },
-							icon: team.getLogoURL(),
+							key: "b" + team.id,
+							icon: icon_background,
+							title: team.name,
+							zIndex: -99
+						}));
+						markers.push(React.createElement(Marker, {
+							position: { lat: team.lat, lng: team.lon },
+							icon: { url: team.getLogoURL(), anchor: { x: 10, y: 10 } },
 							key: team.id,
-							title: team.name
+							title: team.name,
+							zIndex: 2
 						}));
 					}
 				}
@@ -32299,7 +32344,6 @@
 		},
 
 		render: function () {
-			var polygon_nodes = this._getPolygons(this.props.league);
 			var marker_nodes = this._getMarkers(this.props.league);
 
 			return React.createElement(GoogleMapLoader, {
@@ -32311,7 +32355,6 @@
 						maxZoom: 6,
 						minZoom: 3,
 						defaultCenter: { lat: 41, lng: -96 } },
-					polygon_nodes,
 					marker_nodes
 				)
 			});
@@ -32321,7 +32364,7 @@
 	module.exports = Map;
 
 /***/ },
-/* 178 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32332,60 +32375,60 @@
 
 	function _interopRequire(obj) { return obj && obj.__esModule ? obj["default"] : obj; }
 
-	var _GoogleMapLoader = __webpack_require__(179);
+	var _GoogleMapLoader = __webpack_require__(184);
 
 	exports.GoogleMapLoader = _interopRequire(_GoogleMapLoader);
 
-	var _GoogleMap = __webpack_require__(189);
+	var _GoogleMap = __webpack_require__(194);
 
 	exports.GoogleMap = _interopRequire(_GoogleMap);
 
-	var _Circle = __webpack_require__(190);
+	var _Circle = __webpack_require__(195);
 
 	exports.Circle = _interopRequire(_Circle);
 
-	var _DirectionsRenderer = __webpack_require__(194);
+	var _DirectionsRenderer = __webpack_require__(199);
 
 	exports.DirectionsRenderer = _interopRequire(_DirectionsRenderer);
 
-	var _DrawingManager = __webpack_require__(197);
+	var _DrawingManager = __webpack_require__(202);
 
 	exports.DrawingManager = _interopRequire(_DrawingManager);
 
-	var _InfoWindow = __webpack_require__(200);
+	var _InfoWindow = __webpack_require__(205);
 
 	exports.InfoWindow = _interopRequire(_InfoWindow);
 
-	var _KmlLayer = __webpack_require__(204);
+	var _KmlLayer = __webpack_require__(209);
 
 	exports.KmlLayer = _interopRequire(_KmlLayer);
 
-	var _Marker = __webpack_require__(207);
+	var _Marker = __webpack_require__(212);
 
 	exports.Marker = _interopRequire(_Marker);
 
-	var _OverlayView = __webpack_require__(210);
+	var _OverlayView = __webpack_require__(215);
 
 	exports.OverlayView = _interopRequire(_OverlayView);
 
-	var _Polygon = __webpack_require__(213);
+	var _Polygon = __webpack_require__(218);
 
 	exports.Polygon = _interopRequire(_Polygon);
 
-	var _Polyline = __webpack_require__(216);
+	var _Polyline = __webpack_require__(221);
 
 	exports.Polyline = _interopRequire(_Polyline);
 
-	var _Rectangle = __webpack_require__(219);
+	var _Rectangle = __webpack_require__(224);
 
 	exports.Rectangle = _interopRequire(_Rectangle);
 
-	var _SearchBox = __webpack_require__(222);
+	var _SearchBox = __webpack_require__(227);
 
 	exports.SearchBox = _interopRequire(_SearchBox);
 
 /***/ },
-/* 179 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32410,7 +32453,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _creatorsGoogleMapHolder = __webpack_require__(180);
+	var _creatorsGoogleMapHolder = __webpack_require__(185);
 
 	var _creatorsGoogleMapHolder2 = _interopRequireDefault(_creatorsGoogleMapHolder);
 
@@ -32497,7 +32540,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 180 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32520,27 +32563,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _warning = __webpack_require__(181);
+	var _warning = __webpack_require__(186);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _eventListsGoogleMapEventList = __webpack_require__(182);
+	var _eventListsGoogleMapEventList = __webpack_require__(187);
 
 	var _eventListsGoogleMapEventList2 = _interopRequireDefault(_eventListsGoogleMapEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
@@ -32657,7 +32700,7 @@
 	exports["default"] = GoogleMapHolder;
 
 /***/ },
-/* 181 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -32724,7 +32767,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 182 */
+/* 187 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#Map
@@ -32738,7 +32781,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 183 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32790,7 +32833,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 184 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32802,7 +32845,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	var _addDefaultPrefix = __webpack_require__(185);
+	var _addDefaultPrefix = __webpack_require__(190);
 
 	var _addDefaultPrefix2 = _interopRequireDefault(_addDefaultPrefix);
 
@@ -32816,7 +32859,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 185 */
+/* 190 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -32833,7 +32876,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 186 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32848,7 +32891,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	var _controlledOrDefault = __webpack_require__(187);
+	var _controlledOrDefault = __webpack_require__(192);
 
 	var _controlledOrDefault2 = _interopRequireDefault(_controlledOrDefault);
 
@@ -32872,7 +32915,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 187 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32884,7 +32927,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	var _addDefaultPrefix = __webpack_require__(185);
+	var _addDefaultPrefix = __webpack_require__(190);
 
 	var _addDefaultPrefix2 = _interopRequireDefault(_addDefaultPrefix);
 
@@ -32901,7 +32944,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 188 */
+/* 193 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -32991,7 +33034,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 189 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33018,15 +33061,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _warning = __webpack_require__(181);
+	var _warning = __webpack_require__(186);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _creatorsGoogleMapHolder = __webpack_require__(180);
+	var _creatorsGoogleMapHolder = __webpack_require__(185);
 
 	var _creatorsGoogleMapHolder2 = _interopRequireDefault(_creatorsGoogleMapHolder);
 
-	var _GoogleMapLoader = __webpack_require__(179);
+	var _GoogleMapLoader = __webpack_require__(184);
 
 	var _GoogleMapLoader2 = _interopRequireDefault(_GoogleMapLoader);
 
@@ -33193,7 +33236,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 190 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33218,11 +33261,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsCircleCreator = __webpack_require__(192);
+	var _creatorsCircleCreator = __webpack_require__(197);
 
 	var _creatorsCircleCreator2 = _interopRequireDefault(_creatorsCircleCreator);
 
@@ -33325,7 +33368,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 191 */
+/* 196 */
 /***/ function(module, exports) {
 
 	var canUseDOM = !!(
@@ -33337,7 +33380,7 @@
 	module.exports = canUseDOM;
 
 /***/ },
-/* 192 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33360,27 +33403,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsCircleEventList = __webpack_require__(193);
+	var _eventListsCircleEventList = __webpack_require__(198);
 
 	var _eventListsCircleEventList2 = _interopRequireDefault(_eventListsCircleEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -33485,7 +33528,7 @@
 	exports["default"] = CircleCreator;
 
 /***/ },
-/* 193 */
+/* 198 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#Circle
@@ -33499,7 +33542,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 194 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33524,11 +33567,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsDirectionsRendererCreator = __webpack_require__(195);
+	var _creatorsDirectionsRendererCreator = __webpack_require__(200);
 
 	var _creatorsDirectionsRendererCreator2 = _interopRequireDefault(_creatorsDirectionsRendererCreator);
 
@@ -33616,7 +33659,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 195 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33639,27 +33682,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsDirectionsRendererEventList = __webpack_require__(196);
+	var _eventListsDirectionsRendererEventList = __webpack_require__(201);
 
 	var _eventListsDirectionsRendererEventList2 = _interopRequireDefault(_eventListsDirectionsRendererEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -33767,7 +33810,7 @@
 	exports["default"] = DirectionsRendererCreator;
 
 /***/ },
-/* 196 */
+/* 201 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#DirectionsRenderer
@@ -33781,7 +33824,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 197 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33806,11 +33849,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsDrawingManagerCreator = __webpack_require__(198);
+	var _creatorsDrawingManagerCreator = __webpack_require__(203);
 
 	var _creatorsDrawingManagerCreator2 = _interopRequireDefault(_creatorsDrawingManagerCreator);
 
@@ -33888,7 +33931,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 198 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33911,27 +33954,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsDrawingManagerEventList = __webpack_require__(199);
+	var _eventListsDrawingManagerEventList = __webpack_require__(204);
 
 	var _eventListsDrawingManagerEventList2 = _interopRequireDefault(_eventListsDrawingManagerEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -34020,7 +34063,7 @@
 	exports["default"] = DrawingManagerCreator;
 
 /***/ },
-/* 199 */
+/* 204 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#DrawingManager
@@ -34034,7 +34077,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 200 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34059,11 +34102,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsInfoWindowCreator = __webpack_require__(201);
+	var _creatorsInfoWindowCreator = __webpack_require__(206);
 
 	var _creatorsInfoWindowCreator2 = _interopRequireDefault(_creatorsInfoWindowCreator);
 
@@ -34144,7 +34187,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 201 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34167,31 +34210,31 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsInfoWindowEventList = __webpack_require__(202);
+	var _eventListsInfoWindowEventList = __webpack_require__(207);
 
 	var _eventListsInfoWindowEventList2 = _interopRequireDefault(_eventListsInfoWindowEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsSetContentForOptionalReactElement = __webpack_require__(203);
+	var _utilsSetContentForOptionalReactElement = __webpack_require__(208);
 
 	var _utilsSetContentForOptionalReactElement2 = _interopRequireDefault(_utilsSetContentForOptionalReactElement);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -34301,7 +34344,7 @@
 	exports["default"] = InfoWindowCreator;
 
 /***/ },
-/* 202 */
+/* 207 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#InfoWindow
@@ -34315,7 +34358,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 203 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34358,7 +34401,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 204 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34383,11 +34426,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsKmlLayerCreator = __webpack_require__(205);
+	var _creatorsKmlLayerCreator = __webpack_require__(210);
 
 	var _creatorsKmlLayerCreator2 = _interopRequireDefault(_creatorsKmlLayerCreator);
 
@@ -34480,7 +34523,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 205 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34503,27 +34546,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsKmlLayerEventList = __webpack_require__(206);
+	var _eventListsKmlLayerEventList = __webpack_require__(211);
 
 	var _eventListsKmlLayerEventList2 = _interopRequireDefault(_eventListsKmlLayerEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -34640,7 +34683,7 @@
 	exports["default"] = KmlLayerCreator;
 
 /***/ },
-/* 206 */
+/* 211 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#KmlLayer
@@ -34654,7 +34697,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 207 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34679,11 +34722,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsMarkerCreator = __webpack_require__(208);
+	var _creatorsMarkerCreator = __webpack_require__(213);
 
 	var _creatorsMarkerCreator2 = _interopRequireDefault(_creatorsMarkerCreator);
 
@@ -34837,7 +34880,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 208 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34860,27 +34903,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsMarkerEventList = __webpack_require__(209);
+	var _eventListsMarkerEventList = __webpack_require__(214);
 
 	var _eventListsMarkerEventList2 = _interopRequireDefault(_eventListsMarkerEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -35055,7 +35098,7 @@
 	exports["default"] = MarkerCreator;
 
 /***/ },
-/* 209 */
+/* 214 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#Marker
@@ -35069,7 +35112,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 210 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35094,11 +35137,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsOverlayViewCreator = __webpack_require__(211);
+	var _creatorsOverlayViewCreator = __webpack_require__(216);
 
 	var _creatorsOverlayViewCreator2 = _interopRequireDefault(_creatorsOverlayViewCreator);
 
@@ -35205,7 +35248,7 @@
 	// Controlled [props] - used in componentDidMount/componentDidUpdate
 
 /***/ },
-/* 211 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35230,19 +35273,19 @@
 
 	var _reactDom = __webpack_require__(34);
 
-	var _invariant = __webpack_require__(212);
+	var _invariant = __webpack_require__(217);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -35457,7 +35500,7 @@
 	exports["default"] = OverlayViewCreator;
 
 /***/ },
-/* 212 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -35515,7 +35558,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 213 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35540,11 +35583,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsPolygonCreator = __webpack_require__(214);
+	var _creatorsPolygonCreator = __webpack_require__(219);
 
 	var _creatorsPolygonCreator2 = _interopRequireDefault(_creatorsPolygonCreator);
 
@@ -35637,7 +35680,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 214 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35660,27 +35703,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsPolygonEventList = __webpack_require__(215);
+	var _eventListsPolygonEventList = __webpack_require__(220);
 
 	var _eventListsPolygonEventList2 = _interopRequireDefault(_eventListsPolygonEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -35785,7 +35828,7 @@
 	exports["default"] = PolygonCreator;
 
 /***/ },
-/* 215 */
+/* 220 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polygon
@@ -35799,7 +35842,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 216 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35824,11 +35867,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsPolylineCreator = __webpack_require__(217);
+	var _creatorsPolylineCreator = __webpack_require__(222);
 
 	var _creatorsPolylineCreator2 = _interopRequireDefault(_creatorsPolylineCreator);
 
@@ -35916,7 +35959,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 217 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35939,27 +35982,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsPolylineEventList = __webpack_require__(218);
+	var _eventListsPolylineEventList = __webpack_require__(223);
 
 	var _eventListsPolylineEventList2 = _interopRequireDefault(_eventListsPolylineEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -36060,7 +36103,7 @@
 	exports["default"] = PolylineCreator;
 
 /***/ },
-/* 218 */
+/* 223 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline
@@ -36074,7 +36117,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 219 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36099,11 +36142,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsRectangleCreator = __webpack_require__(220);
+	var _creatorsRectangleCreator = __webpack_require__(225);
 
 	var _creatorsRectangleCreator2 = _interopRequireDefault(_creatorsRectangleCreator);
 
@@ -36196,7 +36239,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 220 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36219,27 +36262,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsRectangleEventList = __webpack_require__(221);
+	var _eventListsRectangleEventList = __webpack_require__(226);
 
 	var _eventListsRectangleEventList2 = _interopRequireDefault(_eventListsRectangleEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -36340,7 +36383,7 @@
 	exports["default"] = RectangleCreator;
 
 /***/ },
-/* 221 */
+/* 226 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#Rectangle
@@ -36354,7 +36397,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 222 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36381,11 +36424,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _canUseDom = __webpack_require__(191);
+	var _canUseDom = __webpack_require__(196);
 
 	var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
-	var _creatorsSearchBoxCreator = __webpack_require__(223);
+	var _creatorsSearchBoxCreator = __webpack_require__(228);
 
 	var _creatorsSearchBoxCreator2 = _interopRequireDefault(_creatorsSearchBoxCreator);
 
@@ -36492,7 +36535,7 @@
 	// Event [onEventName]
 
 /***/ },
-/* 223 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36515,27 +36558,27 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _eventListsSearchBoxEventList = __webpack_require__(224);
+	var _eventListsSearchBoxEventList = __webpack_require__(229);
 
 	var _eventListsSearchBoxEventList2 = _interopRequireDefault(_eventListsSearchBoxEventList);
 
-	var _utilsEventHandlerCreator = __webpack_require__(183);
+	var _utilsEventHandlerCreator = __webpack_require__(188);
 
 	var _utilsEventHandlerCreator2 = _interopRequireDefault(_utilsEventHandlerCreator);
 
-	var _utilsDefaultPropsCreator = __webpack_require__(184);
+	var _utilsDefaultPropsCreator = __webpack_require__(189);
 
 	var _utilsDefaultPropsCreator2 = _interopRequireDefault(_utilsDefaultPropsCreator);
 
-	var _utilsComposeOptions = __webpack_require__(186);
+	var _utilsComposeOptions = __webpack_require__(191);
 
 	var _utilsComposeOptions2 = _interopRequireDefault(_utilsComposeOptions);
 
-	var _utilsComponentLifecycleDecorator = __webpack_require__(188);
+	var _utilsComponentLifecycleDecorator = __webpack_require__(193);
 
 	var _utilsComponentLifecycleDecorator2 = _interopRequireDefault(_utilsComponentLifecycleDecorator);
 
-	var _GoogleMapHolder = __webpack_require__(180);
+	var _GoogleMapHolder = __webpack_require__(185);
 
 	var _GoogleMapHolder2 = _interopRequireDefault(_GoogleMapHolder);
 
@@ -36649,7 +36692,7 @@
 	exports["default"] = SearchBoxCreator;
 
 /***/ },
-/* 224 */
+/* 229 */
 /***/ function(module, exports) {
 
 	// https://developers.google.com/maps/documentation/javascript/3.exp/reference#SearchBox
@@ -36663,11 +36706,12 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 225 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var dragula = __webpack_require__(226);
+
+	var ConferenceDisplay = __webpack_require__(231);
 
 	var LeagueDisplay = React.createClass({
 		displayName: "LeagueDisplay",
@@ -36676,14 +36720,9 @@
 			league: React.PropTypes.array,
 			onDrag: React.PropTypes.func
 		},
-		componentDidUpdate: function () {
-			dragula(Array.prototype.slice.call(document.querySelectorAll(".division .list"))).on("drop", function (el, container) {
-				this.props.onDrag(el.dataset.teamid, container.dataset.divid);
-			}.bind(this));
-		},
 		render: function () {
 			var nodes = this.props.league.map(function (conference, index) {
-				return React.createElement(Conference, { conference: conference, key: index, number: index, count: this.props.league.length });
+				return React.createElement(ConferenceDisplay, { conference: conference, key: index, number: index, count: this.props.league.length, onDrag: this.onDrag });
 			}, this);
 
 			return React.createElement(
@@ -36691,22 +36730,43 @@
 				{ id: "league" },
 				nodes
 			);
+		},
+		onDrag: function (team_id, div_id) {
+			this.props.onDrag(team_id, div_id);
 		}
 	});
 
-	var Conference = React.createClass({
-		displayName: "Conference",
+	module.exports = LeagueDisplay;
+
+/***/ },
+/* 231 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Division = __webpack_require__(232);
+
+	var ConferenceDisplay = React.createClass({
+		displayName: "ConferenceDisplay",
 
 		propTypes: {
 			conference: React.PropTypes.array,
 			count: React.PropTypes.number,
-			number: React.PropTypes.number
+			number: React.PropTypes.number,
+			onDrag: React.PropTypes.func
 		},
 		render: function () {
 			var division_nodes = this.props.conference.map(function (division, index) {
-				var id = this.props.number * this.props.conference.length + index + 1;
 
-				return React.createElement(Division, { division: division, key: index, count: this.props.conference.length * this.props.count, conference: this.props.number, number: index, id: id });
+				var id = this.props.number * this.props.conference.length + index + 1;
+				return React.createElement(Division, {
+					division: division,
+					key: index,
+					count: this.props.conference.length * this.props.count,
+					conference: this.props.number,
+					number: index,
+					id: id,
+					onDrag: this.onDrag
+				});
 			}, this);
 
 			var className = "conference col-" + this.props.count;
@@ -36715,18 +36775,44 @@
 				{ className: className },
 				division_nodes
 			);
+		},
+		onDrag: function (team_id, div_id) {
+			this.props.onDrag(team_id, div_id);
 		}
 	});
 
-	var Division = React.createClass({
-		displayName: "Division",
+	module.exports = ConferenceDisplay;
+
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Sortable = __webpack_require__(233);
+	var TeamCard = __webpack_require__(234);
+
+	var DivisionDisplay = React.createClass({
+		displayName: "DivisionDisplay",
 
 		propTypes: {
 			division: React.PropTypes.array,
 			count: React.PropTypes.number,
 			conference: React.PropTypes.number,
 			number: React.PropTypes.number,
-			id: React.PropTypes.number
+			id: React.PropTypes.number,
+			onDrag: React.PropTypes.func
+		},
+		initializeDragRef: function (division) {
+			Sortable.create(division, {
+				group: "division",
+				sort: true,
+				onAdd: function (evt) {
+					this.props.onDrag(evt.item.dataset.teamid, evt.from.dataset.divid);
+					return false; // If you remove this, React will flip a shit because the Virtual DOM does not match up with the real DOM.
+				}.bind(this),
+				animation: 250,
+				scroll: false
+			});
 		},
 		render: function () {
 			var team_nodes = this.props.division.map(function (team) {
@@ -36744,12 +36830,1276 @@
 				),
 				React.createElement(
 					"div",
-					{ className: "list", "data-divid": this.props.id },
+					{ className: "list", "data-divid": this.props.id, ref: this.initializeDragRef },
 					team_nodes
 				)
 			);
 		}
 	});
+
+	module.exports = DivisionDisplay;
+
+/***/ },
+/* 233 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
+	 * Sortable
+	 * @author	RubaXa   <trash@rubaxa.org>
+	 * @license MIT
+	 */
+
+
+	(function (factory) {
+		"use strict";
+
+		if (true) {
+			!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		}
+		else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+			module.exports = factory();
+		}
+		else if (typeof Package !== "undefined") {
+			Sortable = factory();  // export for Meteor.js
+		}
+		else {
+			/* jshint sub:true */
+			window["Sortable"] = factory();
+		}
+	})(function () {
+		"use strict";
+
+		var dragEl,
+			parentEl,
+			ghostEl,
+			cloneEl,
+			rootEl,
+			nextEl,
+
+			scrollEl,
+			scrollParentEl,
+
+			lastEl,
+			lastCSS,
+			lastParentCSS,
+
+			oldIndex,
+			newIndex,
+
+			activeGroup,
+			autoScroll = {},
+
+			tapEvt,
+			touchEvt,
+
+			moved,
+
+			/** @const */
+			RSPACE = /\s+/g,
+
+			expando = 'Sortable' + (new Date).getTime(),
+
+			win = window,
+			document = win.document,
+			parseInt = win.parseInt,
+
+			supportDraggable = !!('draggable' in document.createElement('div')),
+			supportCssPointerEvents = (function (el) {
+				el = document.createElement('x');
+				el.style.cssText = 'pointer-events:auto';
+				return el.style.pointerEvents === 'auto';
+			})(),
+
+			_silent = false,
+
+			abs = Math.abs,
+			slice = [].slice,
+
+			touchDragOverListeners = [],
+
+			_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl) {
+				// Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
+				if (rootEl && options.scroll) {
+					var el,
+						rect,
+						sens = options.scrollSensitivity,
+						speed = options.scrollSpeed,
+
+						x = evt.clientX,
+						y = evt.clientY,
+
+						winWidth = window.innerWidth,
+						winHeight = window.innerHeight,
+
+						vx,
+						vy
+					;
+
+					// Delect scrollEl
+					if (scrollParentEl !== rootEl) {
+						scrollEl = options.scroll;
+						scrollParentEl = rootEl;
+
+						if (scrollEl === true) {
+							scrollEl = rootEl;
+
+							do {
+								if ((scrollEl.offsetWidth < scrollEl.scrollWidth) ||
+									(scrollEl.offsetHeight < scrollEl.scrollHeight)
+								) {
+									break;
+								}
+								/* jshint boss:true */
+							} while (scrollEl = scrollEl.parentNode);
+						}
+					}
+
+					if (scrollEl) {
+						el = scrollEl;
+						rect = scrollEl.getBoundingClientRect();
+						vx = (abs(rect.right - x) <= sens) - (abs(rect.left - x) <= sens);
+						vy = (abs(rect.bottom - y) <= sens) - (abs(rect.top - y) <= sens);
+					}
+
+
+					if (!(vx || vy)) {
+						vx = (winWidth - x <= sens) - (x <= sens);
+						vy = (winHeight - y <= sens) - (y <= sens);
+
+						/* jshint expr:true */
+						(vx || vy) && (el = win);
+					}
+
+
+					if (autoScroll.vx !== vx || autoScroll.vy !== vy || autoScroll.el !== el) {
+						autoScroll.el = el;
+						autoScroll.vx = vx;
+						autoScroll.vy = vy;
+
+						clearInterval(autoScroll.pid);
+
+						if (el) {
+							autoScroll.pid = setInterval(function () {
+								if (el === win) {
+									win.scrollTo(win.pageXOffset + vx * speed, win.pageYOffset + vy * speed);
+								} else {
+									vy && (el.scrollTop += vy * speed);
+									vx && (el.scrollLeft += vx * speed);
+								}
+							}, 24);
+						}
+					}
+				}
+			}, 30),
+
+			_prepareGroup = function (options) {
+				var group = options.group;
+
+				if (!group || typeof group != 'object') {
+					group = options.group = {name: group};
+				}
+
+				['pull', 'put'].forEach(function (key) {
+					if (!(key in group)) {
+						group[key] = true;
+					}
+				});
+
+				options.groups = ' ' + group.name + (group.put.join ? ' ' + group.put.join(' ') : '') + ' ';
+			}
+		;
+
+
+
+		/**
+		 * @class  Sortable
+		 * @param  {HTMLElement}  el
+		 * @param  {Object}       [options]
+		 */
+		function Sortable(el, options) {
+			if (!(el && el.nodeType && el.nodeType === 1)) {
+				throw 'Sortable: `el` must be HTMLElement, and not ' + {}.toString.call(el);
+			}
+
+			this.el = el; // root element
+			this.options = options = _extend({}, options);
+
+
+			// Export instance
+			el[expando] = this;
+
+
+			// Default options
+			var defaults = {
+				group: Math.random(),
+				sort: true,
+				disabled: false,
+				store: null,
+				handle: null,
+				scroll: true,
+				scrollSensitivity: 30,
+				scrollSpeed: 10,
+				draggable: /[uo]l/i.test(el.nodeName) ? 'li' : '>*',
+				ghostClass: 'sortable-ghost',
+				chosenClass: 'sortable-chosen',
+				ignore: 'a, img',
+				filter: null,
+				animation: 0,
+				setData: function (dataTransfer, dragEl) {
+					dataTransfer.setData('Text', dragEl.textContent);
+				},
+				dropBubble: false,
+				dragoverBubble: false,
+				dataIdAttr: 'data-id',
+				delay: 0,
+				forceFallback: false,
+				fallbackClass: 'sortable-fallback',
+				fallbackOnBody: false
+			};
+
+
+			// Set default options
+			for (var name in defaults) {
+				!(name in options) && (options[name] = defaults[name]);
+			}
+
+			_prepareGroup(options);
+
+			// Bind all private methods
+			for (var fn in this) {
+				if (fn.charAt(0) === '_') {
+					this[fn] = this[fn].bind(this);
+				}
+			}
+
+			// Setup drag mode
+			this.nativeDraggable = options.forceFallback ? false : supportDraggable;
+
+			// Bind events
+			_on(el, 'mousedown', this._onTapStart);
+			_on(el, 'touchstart', this._onTapStart);
+
+			if (this.nativeDraggable) {
+				_on(el, 'dragover', this);
+				_on(el, 'dragenter', this);
+			}
+
+			touchDragOverListeners.push(this._onDragOver);
+
+			// Restore sorting
+			options.store && this.sort(options.store.get(this));
+		}
+
+
+		Sortable.prototype = /** @lends Sortable.prototype */ {
+			constructor: Sortable,
+
+			_onTapStart: function (/** Event|TouchEvent */evt) {
+				var _this = this,
+					el = this.el,
+					options = this.options,
+					type = evt.type,
+					touch = evt.touches && evt.touches[0],
+					target = (touch || evt).target,
+					originalTarget = target,
+					filter = options.filter;
+
+
+				if (type === 'mousedown' && evt.button !== 0 || options.disabled) {
+					return; // only left button or enabled
+				}
+
+				target = _closest(target, options.draggable, el);
+
+				if (!target) {
+					return;
+				}
+
+				// get the index of the dragged element within its parent
+				oldIndex = _index(target);
+
+				// Check filter
+				if (typeof filter === 'function') {
+					if (filter.call(this, evt, target, this)) {
+						_dispatchEvent(_this, originalTarget, 'filter', target, el, oldIndex);
+						evt.preventDefault();
+						return; // cancel dnd
+					}
+				}
+				else if (filter) {
+					filter = filter.split(',').some(function (criteria) {
+						criteria = _closest(originalTarget, criteria.trim(), el);
+
+						if (criteria) {
+							_dispatchEvent(_this, criteria, 'filter', target, el, oldIndex);
+							return true;
+						}
+					});
+
+					if (filter) {
+						evt.preventDefault();
+						return; // cancel dnd
+					}
+				}
+
+
+				if (options.handle && !_closest(originalTarget, options.handle, el)) {
+					return;
+				}
+
+
+				// Prepare `dragstart`
+				this._prepareDragStart(evt, touch, target);
+			},
+
+			_prepareDragStart: function (/** Event */evt, /** Touch */touch, /** HTMLElement */target) {
+				var _this = this,
+					el = _this.el,
+					options = _this.options,
+					ownerDocument = el.ownerDocument,
+					dragStartFn;
+
+				if (target && !dragEl && (target.parentNode === el)) {
+					tapEvt = evt;
+
+					rootEl = el;
+					dragEl = target;
+					parentEl = dragEl.parentNode;
+					nextEl = dragEl.nextSibling;
+					activeGroup = options.group;
+
+					dragStartFn = function () {
+						// Delayed drag has been triggered
+						// we can re-enable the events: touchmove/mousemove
+						_this._disableDelayedDrag();
+
+						// Make the element draggable
+						dragEl.draggable = true;
+
+						// Chosen item
+						_toggleClass(dragEl, _this.options.chosenClass, true);
+
+						// Bind the events: dragstart/dragend
+						_this._triggerDragStart(touch);
+					};
+
+					// Disable "draggable"
+					options.ignore.split(',').forEach(function (criteria) {
+						_find(dragEl, criteria.trim(), _disableDraggable);
+					});
+
+					_on(ownerDocument, 'mouseup', _this._onDrop);
+					_on(ownerDocument, 'touchend', _this._onDrop);
+					_on(ownerDocument, 'touchcancel', _this._onDrop);
+
+					if (options.delay) {
+						// If the user moves the pointer or let go the click or touch
+						// before the delay has been reached:
+						// disable the delayed drag
+						_on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
+						_on(ownerDocument, 'touchend', _this._disableDelayedDrag);
+						_on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
+						_on(ownerDocument, 'mousemove', _this._disableDelayedDrag);
+						_on(ownerDocument, 'touchmove', _this._disableDelayedDrag);
+
+						_this._dragStartTimer = setTimeout(dragStartFn, options.delay);
+					} else {
+						dragStartFn();
+					}
+				}
+			},
+
+			_disableDelayedDrag: function () {
+				var ownerDocument = this.el.ownerDocument;
+
+				clearTimeout(this._dragStartTimer);
+				_off(ownerDocument, 'mouseup', this._disableDelayedDrag);
+				_off(ownerDocument, 'touchend', this._disableDelayedDrag);
+				_off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
+				_off(ownerDocument, 'mousemove', this._disableDelayedDrag);
+				_off(ownerDocument, 'touchmove', this._disableDelayedDrag);
+			},
+
+			_triggerDragStart: function (/** Touch */touch) {
+				if (touch) {
+					// Touch device support
+					tapEvt = {
+						target: dragEl,
+						clientX: touch.clientX,
+						clientY: touch.clientY
+					};
+
+					this._onDragStart(tapEvt, 'touch');
+				}
+				else if (!this.nativeDraggable) {
+					this._onDragStart(tapEvt, true);
+				}
+				else {
+					_on(dragEl, 'dragend', this);
+					_on(rootEl, 'dragstart', this._onDragStart);
+				}
+
+				try {
+					if (document.selection) {
+						document.selection.empty();
+					} else {
+						window.getSelection().removeAllRanges();
+					}
+				} catch (err) {
+				}
+			},
+
+			_dragStarted: function () {
+				if (rootEl && dragEl) {
+					// Apply effect
+					_toggleClass(dragEl, this.options.ghostClass, true);
+
+					Sortable.active = this;
+
+					// Drag start event
+					_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, oldIndex);
+				}
+			},
+
+			_emulateDragOver: function () {
+				if (touchEvt) {
+					if (this._lastX === touchEvt.clientX && this._lastY === touchEvt.clientY) {
+						return;
+					}
+
+					this._lastX = touchEvt.clientX;
+					this._lastY = touchEvt.clientY;
+
+					if (!supportCssPointerEvents) {
+						_css(ghostEl, 'display', 'none');
+					}
+
+					var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY),
+						parent = target,
+						groupName = ' ' + this.options.group.name + '',
+						i = touchDragOverListeners.length;
+
+					if (parent) {
+						do {
+							if (parent[expando] && parent[expando].options.groups.indexOf(groupName) > -1) {
+								while (i--) {
+									touchDragOverListeners[i]({
+										clientX: touchEvt.clientX,
+										clientY: touchEvt.clientY,
+										target: target,
+										rootEl: parent
+									});
+								}
+
+								break;
+							}
+
+							target = parent; // store last element
+						}
+						/* jshint boss:true */
+						while (parent = parent.parentNode);
+					}
+
+					if (!supportCssPointerEvents) {
+						_css(ghostEl, 'display', '');
+					}
+				}
+			},
+
+
+			_onTouchMove: function (/**TouchEvent*/evt) {
+				if (tapEvt) {
+					// only set the status to dragging, when we are actually dragging
+					if (!Sortable.active) {
+						this._dragStarted();
+					}
+
+					// as well as creating the ghost element on the document body
+					this._appendGhost();
+
+					var touch = evt.touches ? evt.touches[0] : evt,
+						dx = touch.clientX - tapEvt.clientX,
+						dy = touch.clientY - tapEvt.clientY,
+						translate3d = evt.touches ? 'translate3d(' + dx + 'px,' + dy + 'px,0)' : 'translate(' + dx + 'px,' + dy + 'px)';
+
+					moved = true;
+					touchEvt = touch;
+
+					_css(ghostEl, 'webkitTransform', translate3d);
+					_css(ghostEl, 'mozTransform', translate3d);
+					_css(ghostEl, 'msTransform', translate3d);
+					_css(ghostEl, 'transform', translate3d);
+
+					evt.preventDefault();
+				}
+			},
+
+			_appendGhost: function () {
+				if (!ghostEl) {
+					var rect = dragEl.getBoundingClientRect(),
+						css = _css(dragEl),
+						options = this.options,
+						ghostRect;
+
+					ghostEl = dragEl.cloneNode(true);
+
+					_toggleClass(ghostEl, options.ghostClass, false);
+					_toggleClass(ghostEl, options.fallbackClass, true);
+
+					_css(ghostEl, 'top', rect.top - parseInt(css.marginTop, 10));
+					_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
+					_css(ghostEl, 'width', rect.width);
+					_css(ghostEl, 'height', rect.height);
+					_css(ghostEl, 'opacity', '0.8');
+					_css(ghostEl, 'position', 'fixed');
+					_css(ghostEl, 'zIndex', '100000');
+					_css(ghostEl, 'pointerEvents', 'none');
+
+					options.fallbackOnBody && document.body.appendChild(ghostEl) || rootEl.appendChild(ghostEl);
+
+					// Fixing dimensions.
+					ghostRect = ghostEl.getBoundingClientRect();
+					_css(ghostEl, 'width', rect.width * 2 - ghostRect.width);
+					_css(ghostEl, 'height', rect.height * 2 - ghostRect.height);
+				}
+			},
+
+			_onDragStart: function (/**Event*/evt, /**boolean*/useFallback) {
+				var dataTransfer = evt.dataTransfer,
+					options = this.options;
+
+				this._offUpEvents();
+
+				if (activeGroup.pull == 'clone') {
+					cloneEl = dragEl.cloneNode(true);
+					_css(cloneEl, 'display', 'none');
+					rootEl.insertBefore(cloneEl, dragEl);
+				}
+
+				if (useFallback) {
+
+					if (useFallback === 'touch') {
+						// Bind touch events
+						_on(document, 'touchmove', this._onTouchMove);
+						_on(document, 'touchend', this._onDrop);
+						_on(document, 'touchcancel', this._onDrop);
+					} else {
+						// Old brwoser
+						_on(document, 'mousemove', this._onTouchMove);
+						_on(document, 'mouseup', this._onDrop);
+					}
+
+					this._loopId = setInterval(this._emulateDragOver, 50);
+				}
+				else {
+					if (dataTransfer) {
+						dataTransfer.effectAllowed = 'move';
+						options.setData && options.setData.call(this, dataTransfer, dragEl);
+					}
+
+					_on(document, 'drop', this);
+					setTimeout(this._dragStarted, 0);
+				}
+			},
+
+			_onDragOver: function (/**Event*/evt) {
+				var el = this.el,
+					target,
+					dragRect,
+					revert,
+					options = this.options,
+					group = options.group,
+					groupPut = group.put,
+					isOwner = (activeGroup === group),
+					canSort = options.sort;
+
+				if (evt.preventDefault !== void 0) {
+					evt.preventDefault();
+					!options.dragoverBubble && evt.stopPropagation();
+				}
+
+				moved = true;
+
+				if (activeGroup && !options.disabled &&
+					(isOwner
+						? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
+						: activeGroup.pull && groupPut && (
+							(activeGroup.name === group.name) || // by Name
+							(groupPut.indexOf && ~groupPut.indexOf(activeGroup.name)) // by Array
+						)
+					) &&
+					(evt.rootEl === void 0 || evt.rootEl === this.el) // touch fallback
+				) {
+					// Smart auto-scrolling
+					_autoScroll(evt, options, this.el);
+
+					if (_silent) {
+						return;
+					}
+
+					target = _closest(evt.target, options.draggable, el);
+					dragRect = dragEl.getBoundingClientRect();
+
+					if (revert) {
+						_cloneHide(true);
+
+						if (cloneEl || nextEl) {
+							rootEl.insertBefore(dragEl, cloneEl || nextEl);
+						}
+						else if (!canSort) {
+							rootEl.appendChild(dragEl);
+						}
+
+						return;
+					}
+
+
+					if ((el.children.length === 0) || (el.children[0] === ghostEl) ||
+						(el === evt.target) && (target = _ghostIsLast(el, evt))
+					) {
+
+						if (target) {
+							if (target.animated) {
+								return;
+							}
+
+							targetRect = target.getBoundingClientRect();
+						}
+
+						_cloneHide(isOwner);
+
+						if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect) !== false) {
+							if (!dragEl.contains(el)) {
+								el.appendChild(dragEl);
+								parentEl = el; // actualization
+							}
+
+							this._animate(dragRect, dragEl);
+							target && this._animate(targetRect, target);
+						}
+					}
+					else if (target && !target.animated && target !== dragEl && (target.parentNode[expando] !== void 0)) {
+						if (lastEl !== target) {
+							lastEl = target;
+							lastCSS = _css(target);
+							lastParentCSS = _css(target.parentNode);
+						}
+
+
+						var targetRect = target.getBoundingClientRect(),
+							width = targetRect.right - targetRect.left,
+							height = targetRect.bottom - targetRect.top,
+							floating = /left|right|inline/.test(lastCSS.cssFloat + lastCSS.display)
+								|| (lastParentCSS.display == 'flex' && lastParentCSS['flex-direction'].indexOf('row') === 0),
+							isWide = (target.offsetWidth > dragEl.offsetWidth),
+							isLong = (target.offsetHeight > dragEl.offsetHeight),
+							halfway = (floating ? (evt.clientX - targetRect.left) / width : (evt.clientY - targetRect.top) / height) > 0.5,
+							nextSibling = target.nextElementSibling,
+							moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect),
+							after
+						;
+
+						if (moveVector !== false) {
+							_silent = true;
+							setTimeout(_unsilent, 30);
+
+							_cloneHide(isOwner);
+
+							if (moveVector === 1 || moveVector === -1) {
+								after = (moveVector === 1);
+							}
+							else if (floating) {
+								var elTop = dragEl.offsetTop,
+									tgTop = target.offsetTop;
+
+								if (elTop === tgTop) {
+									after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
+								} else {
+									after = tgTop > elTop;
+								}
+							} else {
+								after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
+							}
+
+							if (!dragEl.contains(el)) {
+								if (after && !nextSibling) {
+									el.appendChild(dragEl);
+								} else {
+									target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
+								}
+							}
+
+							parentEl = dragEl.parentNode; // actualization
+
+							this._animate(dragRect, dragEl);
+							this._animate(targetRect, target);
+						}
+					}
+				}
+			},
+
+			_animate: function (prevRect, target) {
+				var ms = this.options.animation;
+
+				if (ms) {
+					var currentRect = target.getBoundingClientRect();
+
+					_css(target, 'transition', 'none');
+					_css(target, 'transform', 'translate3d('
+						+ (prevRect.left - currentRect.left) + 'px,'
+						+ (prevRect.top - currentRect.top) + 'px,0)'
+					);
+
+					target.offsetWidth; // repaint
+
+					_css(target, 'transition', 'all ' + ms + 'ms');
+					_css(target, 'transform', 'translate3d(0,0,0)');
+
+					clearTimeout(target.animated);
+					target.animated = setTimeout(function () {
+						_css(target, 'transition', '');
+						_css(target, 'transform', '');
+						target.animated = false;
+					}, ms);
+				}
+			},
+
+			_offUpEvents: function () {
+				var ownerDocument = this.el.ownerDocument;
+
+				_off(document, 'touchmove', this._onTouchMove);
+				_off(ownerDocument, 'mouseup', this._onDrop);
+				_off(ownerDocument, 'touchend', this._onDrop);
+				_off(ownerDocument, 'touchcancel', this._onDrop);
+			},
+
+			_onDrop: function (/**Event*/evt) {
+				var el = this.el,
+					options = this.options;
+
+				clearInterval(this._loopId);
+				clearInterval(autoScroll.pid);
+				clearTimeout(this._dragStartTimer);
+
+				// Unbind events
+				_off(document, 'mousemove', this._onTouchMove);
+
+				if (this.nativeDraggable) {
+					_off(document, 'drop', this);
+					_off(el, 'dragstart', this._onDragStart);
+				}
+
+				this._offUpEvents();
+
+				if (evt) {
+					if (moved) {
+						evt.preventDefault();
+						!options.dropBubble && evt.stopPropagation();
+					}
+
+					ghostEl && ghostEl.parentNode.removeChild(ghostEl);
+
+					if (dragEl) {
+						if (this.nativeDraggable) {
+							_off(dragEl, 'dragend', this);
+						}
+
+						_disableDraggable(dragEl);
+
+						// Remove class's
+						_toggleClass(dragEl, this.options.ghostClass, false);
+						_toggleClass(dragEl, this.options.chosenClass, false);
+
+						if (rootEl !== parentEl) {
+							newIndex = _index(dragEl);
+
+							if (newIndex >= 0) {
+								// drag from one list and drop into another
+								_dispatchEvent(null, parentEl, 'sort', dragEl, rootEl, oldIndex, newIndex);
+								_dispatchEvent(this, rootEl, 'sort', dragEl, rootEl, oldIndex, newIndex);
+
+								// Add event
+								_dispatchEvent(null, parentEl, 'add', dragEl, rootEl, oldIndex, newIndex);
+
+								// Remove event
+								_dispatchEvent(this, rootEl, 'remove', dragEl, rootEl, oldIndex, newIndex);
+							}
+						}
+						else {
+							// Remove clone
+							cloneEl && cloneEl.parentNode.removeChild(cloneEl);
+
+							if (dragEl.nextSibling !== nextEl) {
+								// Get the index of the dragged element within its parent
+								newIndex = _index(dragEl);
+
+								if (newIndex >= 0) {
+									// drag & drop within the same list
+									_dispatchEvent(this, rootEl, 'update', dragEl, rootEl, oldIndex, newIndex);
+									_dispatchEvent(this, rootEl, 'sort', dragEl, rootEl, oldIndex, newIndex);
+								}
+							}
+						}
+
+						if (Sortable.active) {
+							if (newIndex === null || newIndex === -1) {
+								newIndex = oldIndex;
+							}
+
+							_dispatchEvent(this, rootEl, 'end', dragEl, rootEl, oldIndex, newIndex);
+
+							// Save sorting
+							this.save();
+						}
+					}
+
+					// Nulling
+					rootEl =
+					dragEl =
+					parentEl =
+					ghostEl =
+					nextEl =
+					cloneEl =
+
+					scrollEl =
+					scrollParentEl =
+
+					tapEvt =
+					touchEvt =
+
+					moved =
+					newIndex =
+
+					lastEl =
+					lastCSS =
+
+					activeGroup =
+					Sortable.active = null;
+				}
+			},
+
+
+			handleEvent: function (/**Event*/evt) {
+				var type = evt.type;
+
+				if (type === 'dragover' || type === 'dragenter') {
+					if (dragEl) {
+						this._onDragOver(evt);
+						_globalDragOver(evt);
+					}
+				}
+				else if (type === 'drop' || type === 'dragend') {
+					this._onDrop(evt);
+				}
+			},
+
+
+			/**
+			 * Serializes the item into an array of string.
+			 * @returns {String[]}
+			 */
+			toArray: function () {
+				var order = [],
+					el,
+					children = this.el.children,
+					i = 0,
+					n = children.length,
+					options = this.options;
+
+				for (; i < n; i++) {
+					el = children[i];
+					if (_closest(el, options.draggable, this.el)) {
+						order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
+					}
+				}
+
+				return order;
+			},
+
+
+			/**
+			 * Sorts the elements according to the array.
+			 * @param  {String[]}  order  order of the items
+			 */
+			sort: function (order) {
+				var items = {}, rootEl = this.el;
+
+				this.toArray().forEach(function (id, i) {
+					var el = rootEl.children[i];
+
+					if (_closest(el, this.options.draggable, rootEl)) {
+						items[id] = el;
+					}
+				}, this);
+
+				order.forEach(function (id) {
+					if (items[id]) {
+						rootEl.removeChild(items[id]);
+						rootEl.appendChild(items[id]);
+					}
+				});
+			},
+
+
+			/**
+			 * Save the current sorting
+			 */
+			save: function () {
+				var store = this.options.store;
+				store && store.set(this);
+			},
+
+
+			/**
+			 * For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
+			 * @param   {HTMLElement}  el
+			 * @param   {String}       [selector]  default: `options.draggable`
+			 * @returns {HTMLElement|null}
+			 */
+			closest: function (el, selector) {
+				return _closest(el, selector || this.options.draggable, this.el);
+			},
+
+
+			/**
+			 * Set/get option
+			 * @param   {string} name
+			 * @param   {*}      [value]
+			 * @returns {*}
+			 */
+			option: function (name, value) {
+				var options = this.options;
+
+				if (value === void 0) {
+					return options[name];
+				} else {
+					options[name] = value;
+
+					if (name === 'group') {
+						_prepareGroup(options);
+					}
+				}
+			},
+
+
+			/**
+			 * Destroy
+			 */
+			destroy: function () {
+				var el = this.el;
+
+				el[expando] = null;
+
+				_off(el, 'mousedown', this._onTapStart);
+				_off(el, 'touchstart', this._onTapStart);
+
+				if (this.nativeDraggable) {
+					_off(el, 'dragover', this);
+					_off(el, 'dragenter', this);
+				}
+
+				// Remove draggable attributes
+				Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
+					el.removeAttribute('draggable');
+				});
+
+				touchDragOverListeners.splice(touchDragOverListeners.indexOf(this._onDragOver), 1);
+
+				this._onDrop();
+
+				this.el = el = null;
+			}
+		};
+
+
+		function _cloneHide(state) {
+			if (cloneEl && (cloneEl.state !== state)) {
+				_css(cloneEl, 'display', state ? 'none' : '');
+				!state && cloneEl.state && rootEl.insertBefore(cloneEl, dragEl);
+				cloneEl.state = state;
+			}
+		}
+
+
+		function _closest(/**HTMLElement*/el, /**String*/selector, /**HTMLElement*/ctx) {
+			if (el) {
+				ctx = ctx || document;
+				selector = selector.split('.');
+
+				var tag = selector.shift().toUpperCase(),
+					re = new RegExp('\\s(' + selector.join('|') + ')(?=\\s)', 'g');
+
+				do {
+					if (
+						(tag === '>*' && el.parentNode === ctx) || (
+							(tag === '' || el.nodeName.toUpperCase() == tag) &&
+							(!selector.length || ((' ' + el.className + ' ').match(re) || []).length == selector.length)
+						)
+					) {
+						return el;
+					}
+				}
+				while (el !== ctx && (el = el.parentNode));
+			}
+
+			return null;
+		}
+
+
+		function _globalDragOver(/**Event*/evt) {
+			if (evt.dataTransfer) {
+				evt.dataTransfer.dropEffect = 'move';
+			}
+			evt.preventDefault();
+		}
+
+
+		function _on(el, event, fn) {
+			el.addEventListener(event, fn, false);
+		}
+
+
+		function _off(el, event, fn) {
+			el.removeEventListener(event, fn, false);
+		}
+
+
+		function _toggleClass(el, name, state) {
+			if (el) {
+				if (el.classList) {
+					el.classList[state ? 'add' : 'remove'](name);
+				}
+				else {
+					var className = (' ' + el.className + ' ').replace(RSPACE, ' ').replace(' ' + name + ' ', ' ');
+					el.className = (className + (state ? ' ' + name : '')).replace(RSPACE, ' ');
+				}
+			}
+		}
+
+
+		function _css(el, prop, val) {
+			var style = el && el.style;
+
+			if (style) {
+				if (val === void 0) {
+					if (document.defaultView && document.defaultView.getComputedStyle) {
+						val = document.defaultView.getComputedStyle(el, '');
+					}
+					else if (el.currentStyle) {
+						val = el.currentStyle;
+					}
+
+					return prop === void 0 ? val : val[prop];
+				}
+				else {
+					if (!(prop in style)) {
+						prop = '-webkit-' + prop;
+					}
+
+					style[prop] = val + (typeof val === 'string' ? '' : 'px');
+				}
+			}
+		}
+
+
+		function _find(ctx, tagName, iterator) {
+			if (ctx) {
+				var list = ctx.getElementsByTagName(tagName), i = 0, n = list.length;
+
+				if (iterator) {
+					for (; i < n; i++) {
+						iterator(list[i], i);
+					}
+				}
+
+				return list;
+			}
+
+			return [];
+		}
+
+
+
+		function _dispatchEvent(sortable, rootEl, name, targetEl, fromEl, startIndex, newIndex) {
+			var evt = document.createEvent('Event'),
+				options = (sortable || rootEl[expando]).options,
+				onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1);
+
+			evt.initEvent(name, true, true);
+
+			evt.to = rootEl;
+			evt.from = fromEl || rootEl;
+			evt.item = targetEl || rootEl;
+			evt.clone = cloneEl;
+
+			evt.oldIndex = startIndex;
+			evt.newIndex = newIndex;
+
+			rootEl.dispatchEvent(evt);
+
+			if (options[onName]) {
+				options[onName].call(sortable, evt);
+			}
+		}
+
+
+		function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect) {
+			var evt,
+				sortable = fromEl[expando],
+				onMoveFn = sortable.options.onMove,
+				retVal;
+
+			evt = document.createEvent('Event');
+			evt.initEvent('move', true, true);
+
+			evt.to = toEl;
+			evt.from = fromEl;
+			evt.dragged = dragEl;
+			evt.draggedRect = dragRect;
+			evt.related = targetEl || toEl;
+			evt.relatedRect = targetRect || toEl.getBoundingClientRect();
+
+			fromEl.dispatchEvent(evt);
+
+			if (onMoveFn) {
+				retVal = onMoveFn.call(sortable, evt);
+			}
+
+			return retVal;
+		}
+
+
+		function _disableDraggable(el) {
+			el.draggable = false;
+		}
+
+
+		function _unsilent() {
+			_silent = false;
+		}
+
+
+		/** @returns {HTMLElement|false} */
+		function _ghostIsLast(el, evt) {
+			var lastEl = el.lastElementChild,
+					rect = lastEl.getBoundingClientRect();
+
+			return ((evt.clientY - (rect.top + rect.height) > 5) || (evt.clientX - (rect.right + rect.width) > 5)) && lastEl; // min delta
+		}
+
+
+		/**
+		 * Generate id
+		 * @param   {HTMLElement} el
+		 * @returns {String}
+		 * @private
+		 */
+		function _generateId(el) {
+			var str = el.tagName + el.className + el.src + el.href + el.textContent,
+				i = str.length,
+				sum = 0;
+
+			while (i--) {
+				sum += str.charCodeAt(i);
+			}
+
+			return sum.toString(36);
+		}
+
+		/**
+		 * Returns the index of an element within its parent
+		 * @param  {HTMLElement} el
+		 * @return {number}
+		 */
+		function _index(el) {
+			var index = 0;
+
+			if (!el || !el.parentNode) {
+				return -1;
+			}
+
+			while (el && (el = el.previousElementSibling)) {
+				if (el.nodeName.toUpperCase() !== 'TEMPLATE') {
+					index++;
+				}
+			}
+
+			return index;
+		}
+
+		function _throttle(callback, ms) {
+			var args, _this;
+
+			return function () {
+				if (args === void 0) {
+					args = arguments;
+					_this = this;
+
+					setTimeout(function () {
+						if (args.length === 1) {
+							callback.call(_this, args[0]);
+						} else {
+							callback.apply(_this, args);
+						}
+
+						args = void 0;
+					}, ms);
+				}
+			};
+		}
+
+		function _extend(dst, src) {
+			if (dst && src) {
+				for (var key in src) {
+					if (src.hasOwnProperty(key)) {
+						dst[key] = src[key];
+					}
+				}
+			}
+
+			return dst;
+		}
+
+
+		// Export utils
+		Sortable.utils = {
+			on: _on,
+			off: _off,
+			css: _css,
+			find: _find,
+			is: function (el, selector) {
+				return !!_closest(el, selector, el);
+			},
+			extend: _extend,
+			throttle: _throttle,
+			closest: _closest,
+			toggleClass: _toggleClass,
+			index: _index
+		};
+
+
+		/**
+		 * Create sortable instance
+		 * @param {HTMLElement}  el
+		 * @param {Object}      [options]
+		 */
+		Sortable.create = function (el, options) {
+			return new Sortable(el, options);
+		};
+
+
+		// Export
+		Sortable.version = '1.4.2';
+		return Sortable;
+	});
+
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Team = __webpack_require__(174);
 
 	var TeamCard = React.createClass({
 		displayName: "TeamCard",
@@ -36778,1026 +38128,10 @@
 		}
 	});
 
-	module.exports = LeagueDisplay;
-
-/***/ },
-/* 226 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
-
-	var emitter = __webpack_require__(227);
-	var crossvent = __webpack_require__(232);
-	var classes = __webpack_require__(235);
-	var doc = document;
-	var documentElement = doc.documentElement;
-
-	function dragula (initialContainers, options) {
-	  var len = arguments.length;
-	  if (len === 1 && Array.isArray(initialContainers) === false) {
-	    options = initialContainers;
-	    initialContainers = [];
-	  }
-	  var _mirror; // mirror image
-	  var _source; // source container
-	  var _item; // item being dragged
-	  var _offsetX; // reference x
-	  var _offsetY; // reference y
-	  var _moveX; // reference move x
-	  var _moveY; // reference move y
-	  var _initialSibling; // reference sibling when grabbed
-	  var _currentSibling; // reference sibling now
-	  var _copy; // item used for copying
-	  var _renderTimer; // timer for setTimeout renderMirrorImage
-	  var _lastDropTarget = null; // last container item was over
-	  var _grabbed; // holds mousedown context until first mousemove
-
-	  var o = options || {};
-	  if (o.moves === void 0) { o.moves = always; }
-	  if (o.accepts === void 0) { o.accepts = always; }
-	  if (o.invalid === void 0) { o.invalid = invalidTarget; }
-	  if (o.containers === void 0) { o.containers = initialContainers || []; }
-	  if (o.isContainer === void 0) { o.isContainer = never; }
-	  if (o.copy === void 0) { o.copy = false; }
-	  if (o.copySortSource === void 0) { o.copySortSource = false; }
-	  if (o.revertOnSpill === void 0) { o.revertOnSpill = false; }
-	  if (o.removeOnSpill === void 0) { o.removeOnSpill = false; }
-	  if (o.direction === void 0) { o.direction = 'vertical'; }
-	  if (o.ignoreInputTextSelection === void 0) { o.ignoreInputTextSelection = true; }
-	  if (o.mirrorContainer === void 0) { o.mirrorContainer = doc.body; }
-
-	  var drake = emitter({
-	    containers: o.containers,
-	    start: manualStart,
-	    end: end,
-	    cancel: cancel,
-	    remove: remove,
-	    destroy: destroy,
-	    canMove: canMove,
-	    dragging: false
-	  });
-
-	  if (o.removeOnSpill === true) {
-	    drake.on('over', spillOver).on('out', spillOut);
-	  }
-
-	  events();
-
-	  return drake;
-
-	  function isContainer (el) {
-	    return drake.containers.indexOf(el) !== -1 || o.isContainer(el);
-	  }
-
-	  function events (remove) {
-	    var op = remove ? 'remove' : 'add';
-	    touchy(documentElement, op, 'mousedown', grab);
-	    touchy(documentElement, op, 'mouseup', release);
-	  }
-
-	  function eventualMovements (remove) {
-	    var op = remove ? 'remove' : 'add';
-	    touchy(documentElement, op, 'mousemove', startBecauseMouseMoved);
-	  }
-
-	  function movements (remove) {
-	    var op = remove ? 'remove' : 'add';
-	    crossvent[op](documentElement, 'selectstart', preventGrabbed); // IE8
-	    crossvent[op](documentElement, 'click', preventGrabbed);
-	  }
-
-	  function destroy () {
-	    events(true);
-	    release({});
-	  }
-
-	  function preventGrabbed (e) {
-	    if (_grabbed) {
-	      e.preventDefault();
-	    }
-	  }
-
-	  function grab (e) {
-	    _moveX = e.clientX;
-	    _moveY = e.clientY;
-
-	    var ignore = whichMouseButton(e) !== 1 || e.metaKey || e.ctrlKey;
-	    if (ignore) {
-	      return; // we only care about honest-to-god left clicks and touch events
-	    }
-	    var item = e.target;
-	    var context = canStart(item);
-	    if (!context) {
-	      return;
-	    }
-	    _grabbed = context;
-	    eventualMovements();
-	    if (e.type === 'mousedown') {
-	      if (isInput(item)) { // see also: https://github.com/bevacqua/dragula/issues/208
-	        item.focus(); // fixes https://github.com/bevacqua/dragula/issues/176
-	      } else {
-	        e.preventDefault(); // fixes https://github.com/bevacqua/dragula/issues/155
-	      }
-	    }
-	  }
-
-	  function startBecauseMouseMoved (e) {
-	    if (!_grabbed) {
-	      return;
-	    }
-	    if (whichMouseButton(e) === 0) {
-	      release({});
-	      return; // when text is selected on an input and then dragged, mouseup doesn't fire. this is our only hope
-	    }
-	    // truthy check fixes #239, equality fixes #207
-	    if (e.clientX !== void 0 && e.clientX === _moveX && e.clientY !== void 0 && e.clientY === _moveY) {
-	      return;
-	    }
-	    if (o.ignoreInputTextSelection) {
-	      var clientX = getCoord('clientX', e);
-	      var clientY = getCoord('clientY', e);
-	      var elementBehindCursor = doc.elementFromPoint(clientX, clientY);
-	      if (isInput(elementBehindCursor)) {
-	        return;
-	      }
-	    }
-
-	    var grabbed = _grabbed; // call to end() unsets _grabbed
-	    eventualMovements(true);
-	    movements();
-	    end();
-	    start(grabbed);
-
-	    var offset = getOffset(_item);
-	    _offsetX = getCoord('pageX', e) - offset.left;
-	    _offsetY = getCoord('pageY', e) - offset.top;
-
-	    classes.add(_copy || _item, 'gu-transit');
-	    renderMirrorImage();
-	    drag(e);
-	  }
-
-	  function canStart (item) {
-	    if (drake.dragging && _mirror) {
-	      return;
-	    }
-	    if (isContainer(item)) {
-	      return; // don't drag container itself
-	    }
-	    var handle = item;
-	    while (getParent(item) && isContainer(getParent(item)) === false) {
-	      if (o.invalid(item, handle)) {
-	        return;
-	      }
-	      item = getParent(item); // drag target should be a top element
-	      if (!item) {
-	        return;
-	      }
-	    }
-	    var source = getParent(item);
-	    if (!source) {
-	      return;
-	    }
-	    if (o.invalid(item, handle)) {
-	      return;
-	    }
-
-	    var movable = o.moves(item, source, handle, nextEl(item));
-	    if (!movable) {
-	      return;
-	    }
-
-	    return {
-	      item: item,
-	      source: source
-	    };
-	  }
-
-	  function canMove (item) {
-	    return !!canStart(item);
-	  }
-
-	  function manualStart (item) {
-	    var context = canStart(item);
-	    if (context) {
-	      start(context);
-	    }
-	  }
-
-	  function start (context) {
-	    if (isCopy(context.item, context.source)) {
-	      _copy = context.item.cloneNode(true);
-	      drake.emit('cloned', _copy, context.item, 'copy');
-	    }
-
-	    _source = context.source;
-	    _item = context.item;
-	    _initialSibling = _currentSibling = nextEl(context.item);
-
-	    drake.dragging = true;
-	    drake.emit('drag', _item, _source);
-	  }
-
-	  function invalidTarget () {
-	    return false;
-	  }
-
-	  function end () {
-	    if (!drake.dragging) {
-	      return;
-	    }
-	    var item = _copy || _item;
-	    drop(item, getParent(item));
-	  }
-
-	  function ungrab () {
-	    _grabbed = false;
-	    eventualMovements(true);
-	    movements(true);
-	  }
-
-	  function release (e) {
-	    ungrab();
-
-	    if (!drake.dragging) {
-	      return;
-	    }
-	    var item = _copy || _item;
-	    var clientX = getCoord('clientX', e);
-	    var clientY = getCoord('clientY', e);
-	    var elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
-	    var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
-	    if (dropTarget && ((_copy && o.copySortSource) || (!_copy || dropTarget !== _source))) {
-	      drop(item, dropTarget);
-	    } else if (o.removeOnSpill) {
-	      remove();
-	    } else {
-	      cancel();
-	    }
-	  }
-
-	  function drop (item, target) {
-	    var parent = getParent(item);
-	    if (_copy && o.copySortSource && target === _source) {
-	      parent.removeChild(_item);
-	    }
-	    if (isInitialPlacement(target)) {
-	      drake.emit('cancel', item, _source, _source);
-	    } else {
-	      drake.emit('drop', item, target, _source, _currentSibling);
-	    }
-	    cleanup();
-	  }
-
-	  function remove () {
-	    if (!drake.dragging) {
-	      return;
-	    }
-	    var item = _copy || _item;
-	    var parent = getParent(item);
-	    if (parent) {
-	      parent.removeChild(item);
-	    }
-	    drake.emit(_copy ? 'cancel' : 'remove', item, parent, _source);
-	    cleanup();
-	  }
-
-	  function cancel (revert) {
-	    if (!drake.dragging) {
-	      return;
-	    }
-	    var reverts = arguments.length > 0 ? revert : o.revertOnSpill;
-	    var item = _copy || _item;
-	    var parent = getParent(item);
-	    var initial = isInitialPlacement(parent);
-	    if (initial === false && reverts) {
-	      if (_copy) {
-	        if (parent) {
-	          parent.removeChild(_copy);
-	        }
-	      } else {
-	        _source.insertBefore(item, _initialSibling);
-	      }
-	    }
-	    if (initial || reverts) {
-	      drake.emit('cancel', item, _source, _source);
-	    } else {
-	      drake.emit('drop', item, parent, _source, _currentSibling);
-	    }
-	    cleanup();
-	  }
-
-	  function cleanup () {
-	    var item = _copy || _item;
-	    ungrab();
-	    removeMirrorImage();
-	    if (item) {
-	      classes.rm(item, 'gu-transit');
-	    }
-	    if (_renderTimer) {
-	      clearTimeout(_renderTimer);
-	    }
-	    drake.dragging = false;
-	    if (_lastDropTarget) {
-	      drake.emit('out', item, _lastDropTarget, _source);
-	    }
-	    drake.emit('dragend', item);
-	    _source = _item = _copy = _initialSibling = _currentSibling = _renderTimer = _lastDropTarget = null;
-	  }
-
-	  function isInitialPlacement (target, s) {
-	    var sibling;
-	    if (s !== void 0) {
-	      sibling = s;
-	    } else if (_mirror) {
-	      sibling = _currentSibling;
-	    } else {
-	      sibling = nextEl(_copy || _item);
-	    }
-	    return target === _source && sibling === _initialSibling;
-	  }
-
-	  function findDropTarget (elementBehindCursor, clientX, clientY) {
-	    var target = elementBehindCursor;
-	    while (target && !accepted()) {
-	      target = getParent(target);
-	    }
-	    return target;
-
-	    function accepted () {
-	      var droppable = isContainer(target);
-	      if (droppable === false) {
-	        return false;
-	      }
-
-	      var immediate = getImmediateChild(target, elementBehindCursor);
-	      var reference = getReference(target, immediate, clientX, clientY);
-	      var initial = isInitialPlacement(target, reference);
-	      if (initial) {
-	        return true; // should always be able to drop it right back where it was
-	      }
-	      return o.accepts(_item, target, _source, reference);
-	    }
-	  }
-
-	  function drag (e) {
-	    if (!_mirror) {
-	      return;
-	    }
-	    e.preventDefault();
-
-	    var clientX = getCoord('clientX', e);
-	    var clientY = getCoord('clientY', e);
-	    var x = clientX - _offsetX;
-	    var y = clientY - _offsetY;
-
-	    _mirror.style.left = x + 'px';
-	    _mirror.style.top = y + 'px';
-
-	    var item = _copy || _item;
-	    var elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
-	    var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
-	    var changed = dropTarget !== null && dropTarget !== _lastDropTarget;
-	    if (changed || dropTarget === null) {
-	      out();
-	      _lastDropTarget = dropTarget;
-	      over();
-	    }
-	    var parent = getParent(item);
-	    if (dropTarget === _source && _copy && !o.copySortSource) {
-	      if (parent) {
-	        parent.removeChild(item);
-	      }
-	      return;
-	    }
-	    var reference;
-	    var immediate = getImmediateChild(dropTarget, elementBehindCursor);
-	    if (immediate !== null) {
-	      reference = getReference(dropTarget, immediate, clientX, clientY);
-	    } else if (o.revertOnSpill === true && !_copy) {
-	      reference = _initialSibling;
-	      dropTarget = _source;
-	    } else {
-	      if (_copy && parent) {
-	        parent.removeChild(item);
-	      }
-	      return;
-	    }
-	    if (
-	      (reference === null && changed) ||
-	      reference !== item &&
-	      reference !== nextEl(item)
-	    ) {
-	      _currentSibling = reference;
-	      dropTarget.insertBefore(item, reference);
-	      drake.emit('shadow', item, dropTarget, _source);
-	    }
-	    function moved (type) { drake.emit(type, item, _lastDropTarget, _source); }
-	    function over () { if (changed) { moved('over'); } }
-	    function out () { if (_lastDropTarget) { moved('out'); } }
-	  }
-
-	  function spillOver (el) {
-	    classes.rm(el, 'gu-hide');
-	  }
-
-	  function spillOut (el) {
-	    if (drake.dragging) { classes.add(el, 'gu-hide'); }
-	  }
-
-	  function renderMirrorImage () {
-	    if (_mirror) {
-	      return;
-	    }
-	    var rect = _item.getBoundingClientRect();
-	    _mirror = _item.cloneNode(true);
-	    _mirror.style.width = getRectWidth(rect) + 'px';
-	    _mirror.style.height = getRectHeight(rect) + 'px';
-	    classes.rm(_mirror, 'gu-transit');
-	    classes.add(_mirror, 'gu-mirror');
-	    o.mirrorContainer.appendChild(_mirror);
-	    touchy(documentElement, 'add', 'mousemove', drag);
-	    classes.add(o.mirrorContainer, 'gu-unselectable');
-	    drake.emit('cloned', _mirror, _item, 'mirror');
-	  }
-
-	  function removeMirrorImage () {
-	    if (_mirror) {
-	      classes.rm(o.mirrorContainer, 'gu-unselectable');
-	      touchy(documentElement, 'remove', 'mousemove', drag);
-	      getParent(_mirror).removeChild(_mirror);
-	      _mirror = null;
-	    }
-	  }
-
-	  function getImmediateChild (dropTarget, target) {
-	    var immediate = target;
-	    while (immediate !== dropTarget && getParent(immediate) !== dropTarget) {
-	      immediate = getParent(immediate);
-	    }
-	    if (immediate === documentElement) {
-	      return null;
-	    }
-	    return immediate;
-	  }
-
-	  function getReference (dropTarget, target, x, y) {
-	    var horizontal = o.direction === 'horizontal';
-	    var reference = target !== dropTarget ? inside() : outside();
-	    return reference;
-
-	    function outside () { // slower, but able to figure out any position
-	      var len = dropTarget.children.length;
-	      var i;
-	      var el;
-	      var rect;
-	      for (i = 0; i < len; i++) {
-	        el = dropTarget.children[i];
-	        rect = el.getBoundingClientRect();
-	        if (horizontal && (rect.left + rect.width / 2) > x) { return el; }
-	        if (!horizontal && (rect.top + rect.height / 2) > y) { return el; }
-	      }
-	      return null;
-	    }
-
-	    function inside () { // faster, but only available if dropped inside a child element
-	      var rect = target.getBoundingClientRect();
-	      if (horizontal) {
-	        return resolve(x > rect.left + getRectWidth(rect) / 2);
-	      }
-	      return resolve(y > rect.top + getRectHeight(rect) / 2);
-	    }
-
-	    function resolve (after) {
-	      return after ? nextEl(target) : target;
-	    }
-	  }
-
-	  function isCopy (item, container) {
-	    return typeof o.copy === 'boolean' ? o.copy : o.copy(item, container);
-	  }
-	}
-
-	function touchy (el, op, type, fn) {
-	  var touch = {
-	    mouseup: 'touchend',
-	    mousedown: 'touchstart',
-	    mousemove: 'touchmove'
-	  };
-	  var pointers = {
-	    mouseup: 'pointerup',
-	    mousedown: 'pointerdown',
-	    mousemove: 'pointermove'
-	  };
-	  var microsoft = {
-	    mouseup: 'MSPointerUp',
-	    mousedown: 'MSPointerDown',
-	    mousemove: 'MSPointerMove'
-	  };
-	  if (global.navigator.pointerEnabled) {
-	    crossvent[op](el, pointers[type], fn);
-	  } else if (global.navigator.msPointerEnabled) {
-	    crossvent[op](el, microsoft[type], fn);
-	  } else {
-	    crossvent[op](el, touch[type], fn);
-	    crossvent[op](el, type, fn);
-	  }
-	}
-
-	function whichMouseButton (e) {
-	  if (e.touches !== void 0) { return e.touches.length; }
-	  if (e.which !== void 0 && e.which !== 0) { return e.which; } // see https://github.com/bevacqua/dragula/issues/261
-	  if (e.buttons !== void 0) { return e.buttons; }
-	  var button = e.button;
-	  if (button !== void 0) { // see https://github.com/jquery/jquery/blob/99e8ff1baa7ae341e94bb89c3e84570c7c3ad9ea/src/event.js#L573-L575
-	    return button & 1 ? 1 : button & 2 ? 3 : (button & 4 ? 2 : 0);
-	  }
-	}
-
-	function getOffset (el) {
-	  var rect = el.getBoundingClientRect();
-	  return {
-	    left: rect.left + getScroll('scrollLeft', 'pageXOffset'),
-	    top: rect.top + getScroll('scrollTop', 'pageYOffset')
-	  };
-	}
-
-	function getScroll (scrollProp, offsetProp) {
-	  if (typeof global[offsetProp] !== 'undefined') {
-	    return global[offsetProp];
-	  }
-	  if (documentElement.clientHeight) {
-	    return documentElement[scrollProp];
-	  }
-	  return doc.body[scrollProp];
-	}
-
-	function getElementBehindPoint (point, x, y) {
-	  var p = point || {};
-	  var state = p.className;
-	  var el;
-	  p.className += ' gu-hide';
-	  el = doc.elementFromPoint(x, y);
-	  p.className = state;
-	  return el;
-	}
-
-	function never () { return false; }
-	function always () { return true; }
-	function getRectWidth (rect) { return rect.width || (rect.right - rect.left); }
-	function getRectHeight (rect) { return rect.height || (rect.bottom - rect.top); }
-	function getParent (el) { return el.parentNode === doc ? null : el.parentNode; }
-	function isInput (el) { return el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || isEditable(el); }
-	function isEditable (el) {
-	  if (!el) { return false; } // no parents were editable
-	  if (el.contentEditable === 'false') { return false; } // stop the lookup
-	  if (el.contentEditable === 'true') { return true; } // found a contentEditable element in the chain
-	  return isEditable(getParent(el)); // contentEditable is set to 'inherit'
-	}
-
-	function nextEl (el) {
-	  return el.nextElementSibling || manually();
-	  function manually () {
-	    var sibling = el;
-	    do {
-	      sibling = sibling.nextSibling;
-	    } while (sibling && sibling.nodeType !== 1);
-	    return sibling;
-	  }
-	}
-
-	function getEventHost (e) {
-	  // on touchend event, we have to use `e.changedTouches`
-	  // see http://stackoverflow.com/questions/7192563/touchend-event-properties
-	  // see https://github.com/bevacqua/dragula/issues/34
-	  if (e.targetTouches && e.targetTouches.length) {
-	    return e.targetTouches[0];
-	  }
-	  if (e.changedTouches && e.changedTouches.length) {
-	    return e.changedTouches[0];
-	  }
-	  return e;
-	}
-
-	function getCoord (coord, e) {
-	  var host = getEventHost(e);
-	  var missMap = {
-	    pageX: 'clientX', // IE8
-	    pageY: 'clientY' // IE8
-	  };
-	  if (coord in missMap && !(coord in host) && missMap[coord] in host) {
-	    coord = missMap[coord];
-	  }
-	  return host[coord];
-	}
-
-	module.exports = dragula;
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 227 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var atoa = __webpack_require__(228);
-	var debounce = __webpack_require__(229);
-
-	module.exports = function emitter (thing, options) {
-	  var opts = options || {};
-	  var evt = {};
-	  if (thing === undefined) { thing = {}; }
-	  thing.on = function (type, fn) {
-	    if (!evt[type]) {
-	      evt[type] = [fn];
-	    } else {
-	      evt[type].push(fn);
-	    }
-	    return thing;
-	  };
-	  thing.once = function (type, fn) {
-	    fn._once = true; // thing.off(fn) still works!
-	    thing.on(type, fn);
-	    return thing;
-	  };
-	  thing.off = function (type, fn) {
-	    var c = arguments.length;
-	    if (c === 1) {
-	      delete evt[type];
-	    } else if (c === 0) {
-	      evt = {};
-	    } else {
-	      var et = evt[type];
-	      if (!et) { return thing; }
-	      et.splice(et.indexOf(fn), 1);
-	    }
-	    return thing;
-	  };
-	  thing.emit = function () {
-	    var args = atoa(arguments);
-	    return thing.emitterSnapshot(args.shift()).apply(this, args);
-	  };
-	  thing.emitterSnapshot = function (type) {
-	    var et = (evt[type] || []).slice(0);
-	    return function () {
-	      var args = atoa(arguments);
-	      var ctx = this || thing;
-	      if (type === 'error' && opts.throws !== false && !et.length) { throw args.length === 1 ? args[0] : args; }
-	      et.forEach(function emitter (listen) {
-	        if (opts.async) { debounce(listen, args, ctx); } else { listen.apply(ctx, args); }
-	        if (listen._once) { thing.off(type, listen); }
-	      });
-	      return thing;
-	    };
-	  };
-	  return thing;
-	};
-
-
-/***/ },
-/* 228 */
-/***/ function(module, exports) {
-
-	module.exports = function atoa (a, n) { return Array.prototype.slice.call(a, n); }
-
-
-/***/ },
-/* 229 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ticky = __webpack_require__(230);
-
-	module.exports = function debounce (fn, args, ctx) {
-	  if (!fn) { return; }
-	  ticky(function run () {
-	    fn.apply(ctx || null, args || []);
-	  });
-	};
-
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(setImmediate) {var si = typeof setImmediate === 'function', tick;
-	if (si) {
-	  tick = function (fn) { setImmediate(fn); };
-	} else {
-	  tick = function (fn) { setTimeout(fn, 0); };
-	}
-
-	module.exports = tick;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(231).setImmediate))
-
-/***/ },
-/* 231 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(3).nextTick;
-	var apply = Function.prototype.apply;
-	var slice = Array.prototype.slice;
-	var immediateIds = {};
-	var nextImmediateId = 0;
-
-	// DOM APIs, for completeness
-
-	exports.setTimeout = function() {
-	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-	};
-	exports.setInterval = function() {
-	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-	};
-	exports.clearTimeout =
-	exports.clearInterval = function(timeout) { timeout.close(); };
-
-	function Timeout(id, clearFn) {
-	  this._id = id;
-	  this._clearFn = clearFn;
-	}
-	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-	Timeout.prototype.close = function() {
-	  this._clearFn.call(window, this._id);
-	};
-
-	// Does not start the time, just sets up the members needed.
-	exports.enroll = function(item, msecs) {
-	  clearTimeout(item._idleTimeoutId);
-	  item._idleTimeout = msecs;
-	};
-
-	exports.unenroll = function(item) {
-	  clearTimeout(item._idleTimeoutId);
-	  item._idleTimeout = -1;
-	};
-
-	exports._unrefActive = exports.active = function(item) {
-	  clearTimeout(item._idleTimeoutId);
-
-	  var msecs = item._idleTimeout;
-	  if (msecs >= 0) {
-	    item._idleTimeoutId = setTimeout(function onTimeout() {
-	      if (item._onTimeout)
-	        item._onTimeout();
-	    }, msecs);
-	  }
-	};
-
-	// That's not how node.js implements it but the exposed api is the same.
-	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
-	  var id = nextImmediateId++;
-	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
-
-	  immediateIds[id] = true;
-
-	  nextTick(function onNextTick() {
-	    if (immediateIds[id]) {
-	      // fn.call() is faster so we optimize for the common use-case
-	      // @see http://jsperf.com/call-apply-segu
-	      if (args) {
-	        fn.apply(null, args);
-	      } else {
-	        fn.call(null);
-	      }
-	      // Prevent ids from leaking
-	      exports.clearImmediate(id);
-	    }
-	  });
-
-	  return id;
-	};
-
-	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
-	  delete immediateIds[id];
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(231).setImmediate, __webpack_require__(231).clearImmediate))
-
-/***/ },
-/* 232 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
-
-	var customEvent = __webpack_require__(233);
-	var eventmap = __webpack_require__(234);
-	var doc = global.document;
-	var addEvent = addEventEasy;
-	var removeEvent = removeEventEasy;
-	var hardCache = [];
-
-	if (!global.addEventListener) {
-	  addEvent = addEventHard;
-	  removeEvent = removeEventHard;
-	}
-
-	module.exports = {
-	  add: addEvent,
-	  remove: removeEvent,
-	  fabricate: fabricateEvent
-	};
-
-	function addEventEasy (el, type, fn, capturing) {
-	  return el.addEventListener(type, fn, capturing);
-	}
-
-	function addEventHard (el, type, fn) {
-	  return el.attachEvent('on' + type, wrap(el, type, fn));
-	}
-
-	function removeEventEasy (el, type, fn, capturing) {
-	  return el.removeEventListener(type, fn, capturing);
-	}
-
-	function removeEventHard (el, type, fn) {
-	  var listener = unwrap(el, type, fn);
-	  if (listener) {
-	    return el.detachEvent('on' + type, listener);
-	  }
-	}
-
-	function fabricateEvent (el, type, model) {
-	  var e = eventmap.indexOf(type) === -1 ? makeCustomEvent() : makeClassicEvent();
-	  if (el.dispatchEvent) {
-	    el.dispatchEvent(e);
-	  } else {
-	    el.fireEvent('on' + type, e);
-	  }
-	  function makeClassicEvent () {
-	    var e;
-	    if (doc.createEvent) {
-	      e = doc.createEvent('Event');
-	      e.initEvent(type, true, true);
-	    } else if (doc.createEventObject) {
-	      e = doc.createEventObject();
-	    }
-	    return e;
-	  }
-	  function makeCustomEvent () {
-	    return new customEvent(type, { detail: model });
-	  }
-	}
-
-	function wrapperFactory (el, type, fn) {
-	  return function wrapper (originalEvent) {
-	    var e = originalEvent || global.event;
-	    e.target = e.target || e.srcElement;
-	    e.preventDefault = e.preventDefault || function preventDefault () { e.returnValue = false; };
-	    e.stopPropagation = e.stopPropagation || function stopPropagation () { e.cancelBubble = true; };
-	    e.which = e.which || e.keyCode;
-	    fn.call(el, e);
-	  };
-	}
-
-	function wrap (el, type, fn) {
-	  var wrapper = unwrap(el, type, fn) || wrapperFactory(el, type, fn);
-	  hardCache.push({
-	    wrapper: wrapper,
-	    element: el,
-	    type: type,
-	    fn: fn
-	  });
-	  return wrapper;
-	}
-
-	function unwrap (el, type, fn) {
-	  var i = find(el, type, fn);
-	  if (i) {
-	    var wrapper = hardCache[i].wrapper;
-	    hardCache.splice(i, 1); // free up a tad of memory
-	    return wrapper;
-	  }
-	}
-
-	function find (el, type, fn) {
-	  var i, item;
-	  for (i = 0; i < hardCache.length; i++) {
-	    item = hardCache[i];
-	    if (item.element === el && item.type === type && item.fn === fn) {
-	      return i;
-	    }
-	  }
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 233 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {
-	var NativeCustomEvent = global.CustomEvent;
-
-	function useNative () {
-	  try {
-	    var p = new NativeCustomEvent('cat', { detail: { foo: 'bar' } });
-	    return  'cat' === p.type && 'bar' === p.detail.foo;
-	  } catch (e) {
-	  }
-	  return false;
-	}
-
-	/**
-	 * Cross-browser `CustomEvent` constructor.
-	 *
-	 * https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.CustomEvent
-	 *
-	 * @public
-	 */
-
-	module.exports = useNative() ? NativeCustomEvent :
-
-	// IE >= 9
-	'function' === typeof document.createEvent ? function CustomEvent (type, params) {
-	  var e = document.createEvent('CustomEvent');
-	  if (params) {
-	    e.initCustomEvent(type, params.bubbles, params.cancelable, params.detail);
-	  } else {
-	    e.initCustomEvent(type, false, false, void 0);
-	  }
-	  return e;
-	} :
-
-	// IE <= 8
-	function CustomEvent (type, params) {
-	  var e = document.createEventObject();
-	  e.type = type;
-	  if (params) {
-	    e.bubbles = Boolean(params.bubbles);
-	    e.cancelable = Boolean(params.cancelable);
-	    e.detail = params.detail;
-	  } else {
-	    e.bubbles = false;
-	    e.cancelable = false;
-	    e.detail = void 0;
-	  }
-	  return e;
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 234 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
-
-	var eventmap = [];
-	var eventname = '';
-	var ron = /^on/;
-
-	for (eventname in global) {
-	  if (ron.test(eventname)) {
-	    eventmap.push(eventname.slice(2));
-	  }
-	}
-
-	module.exports = eventmap;
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+	module.exports = TeamCard;
 
 /***/ },
 /* 235 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var cache = {};
-	var start = '(?:^|\\s)';
-	var end = '(?:\\s|$)';
-
-	function lookupClass (className) {
-	  var cached = cache[className];
-	  if (cached) {
-	    cached.lastIndex = 0;
-	  } else {
-	    cache[className] = cached = new RegExp(start + className + end, 'g');
-	  }
-	  return cached;
-	}
-
-	function addClass (el, className) {
-	  var current = el.className;
-	  if (!current.length) {
-	    el.className = className;
-	  } else if (!lookupClass(className).test(current)) {
-	    el.className += ' ' + className;
-	  }
-	}
-
-	function rmClass (el, className) {
-	  el.className = el.className.replace(lookupClass(className), ' ').trim();
-	}
-
-	module.exports = {
-	  add: addClass,
-	  rm: rmClass
-	};
-
-
-/***/ },
-/* 236 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

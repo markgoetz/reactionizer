@@ -8,7 +8,8 @@ var SettingsMenu = React.createClass({
 		divisions: React.PropTypes.number,
 		teams: React.PropTypes.array,
 		cities: React.PropTypes.array,
-		onConferenceChange: React.PropTypes.func
+		onConferenceChange: React.PropTypes.func,
+		onRelocate: React.PropTypes.func
 	},
 	getInitialState: function() {
 		return {menu_open:false};
@@ -24,7 +25,7 @@ var SettingsMenu = React.createClass({
       </h2>
       <div id="settings_menu" className={menu_class}>
         <ConferenceSelector conferences={this.props.conferences} divisions={this.props.divisions} onConferenceChange={this.onConferenceChange} />
-        <Relocationizer teams={this.props.teams} cities={this.props.cities} />
+        <Relocationizer teams={this.props.teams} cities={this.props.cities} onRelocate={this.props.onRelocate} />
       </div>
     </div>);  
 	},

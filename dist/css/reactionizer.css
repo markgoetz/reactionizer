@@ -45,28 +45,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-.gu-mirror {
-  position: fixed !important;
-  margin: 0 !important;
-  z-index: 9999 !important;
-  opacity: 0.8;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-  filter: alpha(opacity=80); }
-
-.gu-hide {
-  display: none !important; }
-
-.gu-unselectable {
-  -webkit-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-  user-select: none !important; }
-
-.gu-transit {
-  opacity: 0.2;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-  filter: alpha(opacity=20); }
-
 div, span, input, select {
   box-sizing: border-box; }
 
@@ -139,7 +117,7 @@ body {
   border-radius: 3px;
   margin: 2px;
   color: #2A2F38;
-  transition: background .5s;
+  transition: background-color .5s;
   box-shadow: 0px 1px 1px #2A2F38; }
   .team:hover {
     background: linear-gradient(to bottom, #E4E38A 0%, #dfde75 50%, #d6d44c 50%, #d1cf37 100%); }
@@ -297,60 +275,50 @@ h3 {
   #league {
     display: flex;
     flex-direction: column; }
-
   .conference {
     display: flex;
     flex-direction: column;
     width: 100%; }
-
   .division .list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap; }
-
   .team {
     text-align: center;
     width: 44px;
     max-height: 44px; }
-
   .team .city, .team .name {
     display: none; }
-
   .team-logo {
     display: inline-block;
     min-height: 100%; } }
+
 @media (min-width: 700px) and (max-width: 899px), (min-width: 1025px) {
   #league {
     display: flex;
     flex-direction: row; }
-
   .conference {
     display: flex;
     flex-direction: row;
     flex-grow: 1; }
-
   .team {
     text-align: left;
     justify-content: flex-start; }
-
   .division {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     flex-grow: 1; }
-
   .team .city, .team .name {
     display: inline; }
-
   .division .list {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    width: 100%; }
-
+    width: 100%;
+    flex-grow: 1; }
   .division.col-3 .team .name, .division.col-6 .team .name {
     display: none; }
-
   .division.col-3 .list, .division.col-2 .list {
     flex-wrap: wrap;
     flex-direction: row;
@@ -358,6 +326,7 @@ h3 {
     align-content: flex-start; }
     .division.col-3 .list .team, .division.col-2 .list .team {
       width: calc(50% - 4px); } }
+
 /* Tablet Portrait */
 @media (min-width: 700px) {
   #settings_menu {
@@ -367,14 +336,13 @@ h3 {
       flex-grow: 1; }
     #settings_menu > :first-child {
       margin-right: 15px; }
-
   #map {
     flex-grow: 1; } }
+
 /* Tablet Landscape */
 @media (min-width: 900px) {
   .application {
     flex-direction: row; }
-
   #settings_menu, #settings_menu.closed {
     display: block;
     align-self: stretch;
@@ -383,62 +351,47 @@ h3 {
     opacity: 1; }
     #settings_menu :first-child, #settings_menu.closed :first-child {
       margin-right: auto; }
-
   #settings_container {
     min-width: 206px; }
-
   #settings_header {
     display: none; }
-
   .field {
     margin-bottom: 30px; }
-
   h3 {
     font-size: 26px; }
-
   button.action {
     font-size: 26px; } }
+
 @media (min-width: 1025px) {
   .subfield select, .subfield input[type=text] {
     padding: 7px; }
-
   button.selector {
     height: auto;
     width: auto;
     padding: 7px; }
-
   button {
     min-height: 0; }
-
   .team {
     min-height: 0; } }
+
 @media (min-width: 1281px) {
   .team .city, .team .name {
     font-size: 24px; }
-
   .team-logo, .team-logo img {
     min-height: 0;
     min-width: 0;
     max-height: none;
     max-width: none;
     display: inline-block; }
-
   .field {
     margin-bottom: 50px; }
-
   h3 {
     font-size: 30px; }
-
   button.action {
     font-size: 30px; }
-
   .division > .name {
     font-size: 30px; }
-
   .division.col-6 .team .city, .division.col-6 .team .name {
     font-size: 18px; }
-
   .division.col-6 .team .name {
     display: inline; } }
-
-/*# sourceMappingURL=reactionizer.css.map */

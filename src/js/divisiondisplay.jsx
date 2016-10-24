@@ -12,6 +12,8 @@ var DivisionDisplay = React.createClass({
 		onDrag: React.PropTypes.func
 	},
 	initializeDragRef: function(division) {
+		if (division == null) return; // Called when an element is removed from the DOM; we don't need to do anything.
+
 		Sortable.create(division, {
 			group: "division",
 			sort: true,

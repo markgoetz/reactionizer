@@ -16,9 +16,6 @@ var Divisionizer = React.createClass({
 		initDivisions: React.PropTypes.number,
 		dataurl: React.PropTypes.string
 	},
-	componentWillMount: function() {
-		this.data = {defaultdivs:[],teams:[],cities:[]};
-	},
 	componentDidMount: function() {
 		$( document ).ajaxError(function( event, jqxhr, settings, thrownError ) {
 			alert( thrownError );
@@ -29,15 +26,16 @@ var Divisionizer = React.createClass({
 			context: this,
 			dataType: "json"			
 		}).done(function(json) {
-			this.data = {
-				teams: json.teams.map(function(t) { return new Team(t); }),
-				cities: json.cities,
-				defaultdivs: json.defaultdivs
-			};
+			var teams = json.teams.map(function(t) { return new Team(t); });
+			var cities = json.cities;
+			var defaultdivs = json.defaultdivs;
 
 			this.setState({
-				league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.defaultdivs, this.data.teams),
-				max_id: this.data.teams.length + 1
+				teams: teams,
+				cities: cities,
+				defaultdivs: defaultdivs,
+				league: this._getLeague(this.props.initConferences, this.props.initDivisions, defaultdivs, teams),
+				max_id: teams.length + 1
 			});
 		});
 	},
@@ -46,27 +44,29 @@ var Divisionizer = React.createClass({
 			conference_count:this.props.initConferences,
 			division_count:this.props.initDivisions,
 			league:[],
+			defaultdivs:[],
+			teams:[],
+			cities:[],
 			max_id: 0
 		};
 	},
 	onRelocateTeam: function(teamid, cityid) {
-		var teams = this.data.teams;
+		var teams = this.state.teams;
 		var team = teams[teamid];
 		var city = this.state.cities[cityid];
 
-		team.cityname = city.name;
+		team.cityname = city.state;
 		team.lat = city.lat;
 		team.lon = city.lon;
 
-		this.data.teams = teams;
-
 		this.setState({
-			league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.default_divs, this.data.teams)
+			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.defaultdivs, teams),
+			teams: teams
 		});
 		this._getDivisions();
 	},
 	onAddTeam: function(name, cityid) {
-		var city = this.data.cities[cityid];
+		var city = this.state.cities[cityid];
 		var team = {
 			id: this.state.max_id++,
 			name: name,
@@ -75,37 +75,41 @@ var Divisionizer = React.createClass({
 			lon: city.lon
 		};
 
-		var teams = this.data.teams;
+		var teams = this.state.teams;
 		teams.push(team);
-		this.data.teams = teams;
 
 		//TODO: Update the default division strings.
 
 		this.setState({
-			league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.defaultdivs, this.data.teams),
+			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.defaultdivs, teams),
+			teams: teams
 		});
 	},
 	onConferenceChange: function(c, d) {
 		this.setState({
 			conference_count: c,
 			division_count: d,
-			league: this._getLeague(c, d, this.data.defaultdivs, this.data.teams)
+			league: this._getLeague(c, d, this.state.defaultdivs, this.state.teams)
 		});
 	},
 	onDrag: function(team, division) {
-		var default_div = this.data.defaultdivs[this.state.division_count].string;
-		default_div = default_div.setCharAt(team-1, division.toString());
-		this.data.defaultdivs[this.state.division_count].string = default_div;
+		var defaultdivs = this.state.defaultdivs;
+
+		var div_string = defaultdivs[this.state.division_count].string;
+		div_string = div_string.setCharAt(team-1, division.toString());
+
+		defaultdivs[this.state.division_count].string = div_string;
 
 		this.setState({
-			league: this._getLeague(this.state.conference_count, this.state.division_count, this.data.defaultdivs, this.data.teams)
+			league: this._getLeague(this.state.conference_count, this.state.division_count, defaultdivs, this.state.teams),
+			defaultdivs: defaultdivs
 		});
 	},
-	_getLeague: function(conf_count, div_count) {
-		var div_string = this.data.defaultdivs[div_count];
+	_getLeague: function(conf_count, div_count, defaultdivs, teams) {
+		var div_string = defaultdivs[div_count];
 
 		if (div_string) {
-			var division = new DivisionList(div_string, conf_count, div_count, this.data.teams);
+			var division = new DivisionList(div_string, conf_count, div_count, teams);
 			return division.toArray();
 		}
 		else {
@@ -121,8 +125,8 @@ var Divisionizer = React.createClass({
 					<SettingsMenu
             conferences={this.state.conference_count} 
             divisions={this.state.division_count}
-            teams={this.data.teams}
-            cities={this.data.cities}
+            teams={this.state.teams}
+            cities={this.state.cities}
             onRelocateTeam={this.onRelocateTeam}
             onAddTeam={this.onAddTeam}
             onConferenceChange={this.onConferenceChange}

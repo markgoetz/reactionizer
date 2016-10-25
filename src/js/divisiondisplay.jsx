@@ -18,7 +18,7 @@ var DivisionDisplay = React.createClass({
 			group: "division",
 			sort: true,
 			onAdd: function(evt) {
-				this.props.onDrag(evt.item.dataset.teamid, evt.from.dataset.divid);
+				this.props.onDrag(evt.item.dataset.teamid, this.props.id);
 				return false; // If you remove this, React will flip a shit because the Virtual DOM does not match up with the real DOM.
 			}.bind(this),
 			animation: 250,

@@ -8,6 +8,7 @@ var PATHS = {
 };
 
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var webpack = require("webpack");
 
 module.exports = {
 	entry: PATHS.src_js + "interface.jsx",
@@ -31,7 +32,10 @@ module.exports = {
 		}]
 	},
 	plugins: [
-		new ExtractTextPlugin("css/reactionizer.css")
+		new ExtractTextPlugin("css/reactionizer.css"),
+		new webpack.ProvidePlugin({
+			"fetch": "imports?this=>global!exports?global.fetch!whatwg-fetch"
+		})
 	],
 	resolve: {
 		extensions: ["", ".js", ".jsx"]

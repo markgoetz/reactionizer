@@ -1,5 +1,4 @@
 var React = require("react");
-var Sortable = require("sortablejs");
 var TeamCard = require("./teamcard");
 
 var DivisionDisplay = React.createClass({
@@ -14,16 +13,7 @@ var DivisionDisplay = React.createClass({
 	initializeDragRef: function(division) {
 		if (division == null) return; // Called when an element is removed from the DOM; we don't need to do anything.
 
-		Sortable.create(division, {
-			group: "division",
-			sort: true,
-			onAdd: function(evt) {
-				this.props.onDrag(evt.item.dataset.teamid, this.props.id);
-				return false; // If you remove this, React will flip a shit because the Virtual DOM does not match up with the real DOM.
-			}.bind(this),
-			animation: 250,
-			scroll: false
-		});
+		// TODO: Initialize drag and drop
 	},
 	render: function() {
 		var team_nodes = this.props.division.map(function (team) {

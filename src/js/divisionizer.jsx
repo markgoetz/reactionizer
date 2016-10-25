@@ -2,13 +2,13 @@ var React = require("react");
 var DivisionList = require("./division.class");
 var Team = require("./team.class");
 
-var $ = require("jquery");
-
 var Header = require("./header");
 var Footer = require("./footer");
 var SettingsMenu = require("./settingsmenu");
 var Map = require("./map");
 var LeagueDisplay = require("./leaguedisplay");
+
+require("whatwg-fetch");
 
 var Divisionizer = React.createClass({
 	propTypes: {
@@ -17,27 +17,25 @@ var Divisionizer = React.createClass({
 		dataurl: React.PropTypes.string
 	},
 	componentDidMount: function() {
-		$( document ).ajaxError(function( event, jqxhr, settings, thrownError ) {
-			alert( thrownError );
-		});
+		window.fetch(this.props.dataurl).then(
+			function(response) {
+				return response.json();
+			}
+		).then(
+			function(json) {
+				var teams = json.teams.map(function(t) { return new Team(t); });
+				var cities = json.cities;
+				var defaultdivs = json.defaultdivs;
 
-		$.ajax({
-			url: this.props.dataurl,
-			context: this,
-			dataType: "json"			
-		}).done(function(json) {
-			var teams = json.teams.map(function(t) { return new Team(t); });
-			var cities = json.cities;
-			var defaultdivs = json.defaultdivs;
-
-			this.setState({
-				teams: teams,
-				cities: cities,
-				defaultdivs: defaultdivs,
-				league: this._getLeague(this.props.initConferences, this.props.initDivisions, defaultdivs, teams),
-				max_id: teams.length + 1
-			});
-		});
+				this.setState({
+					teams: teams,
+					cities: cities,
+					defaultdivs: defaultdivs,
+					league: this._getLeague(this.props.initConferences, this.props.initDivisions, defaultdivs, teams),
+					max_id: teams.length + 1
+				});
+			}.bind(this)
+		);
 	},
 	getInitialState: function() {
 		return {

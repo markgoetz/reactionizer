@@ -31,6 +31,7 @@ module.exports = {
 			loader: ExtractTextPlugin.extract("css!sass")
 		}]
 	},
+	devtool: "source-map",
 	plugins: [
 		new ExtractTextPlugin("css/reactionizer.css"),
 		new webpack.ProvidePlugin({

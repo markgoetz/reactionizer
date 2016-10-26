@@ -5,15 +5,15 @@ var DragTypes = require("./utils/dragtypes");
 
 var spec = {
 	drop: function(props, monitor, component) {
-		var item = monitor.getItem();
-		component.onDrag(item.id, props.id);
+		var team = monitor.getItem().team;
+		component.props.onDrag(team.id, props.id);
 	}
 };
 
 var collect = function(connect, monitor) {
 	return {
 		connectDropTarget: connect.dropTarget(),
-		canDrop: monitor.canDrop()
+		canDrop: monitor.canDrop
 	};
 };
 
@@ -34,12 +34,14 @@ var DivisionDisplay = React.createClass({
 		});
 
 		var className = "division col-" + this.props.count + " conf-" + this.props.conference + " div-" + this.props.number;
-		return <div className={className}>
-			<div className="name">{this.props.division.name}</div>
-			<div className="list">
-				{team_nodes}
+		return this.props.connectDropTarget(
+			<div className={className}>
+				<div className="name">{this.props.division.name}</div>
+				<div className="list">
+					{team_nodes}
+				</div>
 			</div>
-		</div>;
+		);
 	}
 });
 

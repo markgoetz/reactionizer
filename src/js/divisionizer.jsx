@@ -2,11 +2,16 @@ var React = require("react");
 var DivisionList = require("./division.class");
 var Team = require("./team.class");
 
+var DragDropContext = require("react-dnd").DragDropContext;
+var DnDBackend = require("react-dnd-html5-backend");
+
 var Header = require("./header");
 var Footer = require("./footer");
 var SettingsMenu = require("./settingsmenu");
 var Map = require("./map");
 var LeagueDisplay = require("./leaguedisplay");
+
+require("./utils/setcharat-polyfill");
 
 require("whatwg-fetch");
 
@@ -141,4 +146,4 @@ var Divisionizer = React.createClass({
 	}
 });
 
-module.exports = Divisionizer;
+module.exports = DragDropContext(DnDBackend)(Divisionizer);

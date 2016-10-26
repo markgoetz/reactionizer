@@ -1,5 +1,21 @@
 var React = require("react");
+var DropTarget = require("react-dnd").DropTarget;
 var TeamCard = require("./teamcard");
+var DragTypes = require("./utils/dragtypes");
+
+var spec = {
+	drop: function(props, monitor, component) {
+		var item = monitor.getItem();
+		component.onDrag(item.id, props.id);
+	}
+};
+
+var collect = function(connect, monitor) {
+	return {
+		connectDropTarget: connect.dropTarget(),
+		canDrop: monitor.canDrop()
+	};
+};
 
 var DivisionDisplay = React.createClass({
 	propTypes: {
@@ -8,12 +24,9 @@ var DivisionDisplay = React.createClass({
 		conference: React.PropTypes.number,
 		number: React.PropTypes.number,
 		id: React.PropTypes.number,
-		onDrag: React.PropTypes.func
-	},
-	initializeDragRef: function(division) {
-		if (division == null) return; // Called when an element is removed from the DOM; we don't need to do anything.
-
-		// TODO: Initialize drag and drop
+		onDrag: React.PropTypes.func,
+		connectDropTarget: React.PropTypes.func,
+		canDrop: React.PropTypes.func
 	},
 	render: function() {
 		var team_nodes = this.props.division.map(function (team) {
@@ -23,11 +36,11 @@ var DivisionDisplay = React.createClass({
 		var className = "division col-" + this.props.count + " conf-" + this.props.conference + " div-" + this.props.number;
 		return <div className={className}>
 			<div className="name">{this.props.division.name}</div>
-			<div className="list" data-divid={this.props.id} ref={this.initializeDragRef}>
+			<div className="list">
 				{team_nodes}
 			</div>
 		</div>;
 	}
 });
 
-module.exports = DivisionDisplay;
+module.exports = DropTarget(DragTypes.TEAM, spec, collect)(DivisionDisplay);

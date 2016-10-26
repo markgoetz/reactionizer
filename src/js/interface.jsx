@@ -55,8 +55,4 @@ function setBookmark(div_string) {
 	$("#tw_share").attr("href", "http://www.twitter.com/home?status=http://www.divisionizer.com/%23" + div_string);
 }
 
-String.prototype.setCharAt = function(index, newChar) {
-	return this.substring(0, index).concat(newChar, this.substring(index+1,this.length));
-};
-
 initialize("container", 2, 4);

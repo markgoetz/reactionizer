@@ -1,17 +1,17 @@
 var React = require("react");
-var DivisionList = require("./division.class");
-var Team = require("./team.class");
+var DivisionList = require("../league/division.model");
+var Team = require("../league/team.model");
 
 var DragDropContext = require("react-dnd").DragDropContext;
 var DnDBackend = require("react-dnd-html5-backend");
 
 var Header = require("./header");
 var Footer = require("./footer");
-var SettingsMenu = require("./settingsmenu");
-var Map = require("./map");
-var LeagueDisplay = require("./leaguedisplay");
+var SettingsMenu = require("../settings/settingsmenu");
+var Map = require("../map/map");
+var LeagueDisplay = require("../league/leaguedisplay");
 
-require("./utils/setcharat-polyfill");
+require("../global/setcharat-polyfill");
 
 require("whatwg-fetch");
 

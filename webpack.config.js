@@ -11,7 +11,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var webpack = require("webpack");
 
 module.exports = {
-	entry: PATHS.src_js + "interface.jsx",
+	entry: PATHS.src_js + "entry.jsx",
 	output: {
 		path: PATHS.dist,
 		filename: "js/reactionizer.js"

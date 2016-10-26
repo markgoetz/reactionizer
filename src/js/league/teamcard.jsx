@@ -1,7 +1,7 @@
 var React = require("react");
-var Team = require("./team.class");
 var DragSource = require("react-dnd").DragSource;
-var DragTypes = require("./utils/dragtypes");
+var DragTypes = require("../global/dragtypes");
+var Team = require("./team.model");
 
 var dragSpec = {
 	beginDrag: function(props) {

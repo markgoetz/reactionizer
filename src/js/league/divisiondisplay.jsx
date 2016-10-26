@@ -1,7 +1,7 @@
 var React = require("react");
 var DropTarget = require("react-dnd").DropTarget;
 var TeamCard = require("./teamcard");
-var DragTypes = require("./utils/dragtypes");
+var DragTypes = require("../global/dragtypes");
 
 var spec = {
 	drop: function(props, monitor, component) {

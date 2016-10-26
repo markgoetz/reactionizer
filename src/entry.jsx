@@ -1,7 +1,10 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
+
+require("./global/_global.scss");
+
 var Divisionizer = require("./containers/divisionizer");
-require("../scss/reactionizer.scss");
+
 
 var global_markers;
 var global_relocated_teams = new Array();

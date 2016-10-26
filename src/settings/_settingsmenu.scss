@@ -1,0 +1,180 @@
+@import "../global/_variables";
+
+#settings_menu {
+	transition: .4s;
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+
+	&.closed {
+		max-height: 0px;
+		opacity: 0;
+		z-index: -1000;
+	}
+
+	&.open {
+		max-height: auto;
+		align-self: stretch;
+		opacity: 1;
+		z-index: 9000000000001;
+	}
+
+	& > div {
+		flex-grow: 1;
+	}
+}
+
+.selector-container {
+	display: flex;
+	width: 100%;
+
+	button {
+		flex-grow: 1;
+		flex-basis: 44px;
+	}	
+}
+
+.subfield {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.field	{
+	margin-top: 5px;
+	margin-bottom: 50px;
+}
+
+.subfield {
+	text-align: right;	
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+	label {
+		font-size: 14px;
+		font-family: $font-ui;
+		color: $lightest-blue;
+		margin-right: 10px;
+		width: 25%;
+	}
+
+	select, input[type=text] {
+		padding: auto;
+		font-family: $font-ui;
+		background: $light-grey;
+		font-size: 14px;
+		border: solid 2px darken($light-grey, 30%);
+		padding: 15px;
+		border-radius: $radius;
+		color: $medium-blue;
+		width: 75%;
+
+		@include button-hover($light-grey);
+	}
+
+	select {
+		-webkit-appearance: none;
+    	-moz-appearance: none;
+    	appearance: none;
+
+    	background-image:
+		    linear-gradient(45deg, transparent 50%, $medium-blue 50%),
+		    linear-gradient(135deg, $medium-blue 50%, transparent 50%),
+		    linear-gradient(to right, $medium-blue, $medium-blue);
+		background-position:
+		    calc(100% - 15px) 1em,
+		    calc(100% - 10px) 1em,
+		    calc(100% - 2em) 0.5em;
+		background-size:
+		    5px 5px,
+		    5px 5px,
+		    1px 1.5em;
+		background-repeat: no-repeat;
+	}
+}
+
+#settings_container {
+	background: $primary-blue;
+	color: $lightest-blue;
+
+	& > * {
+		padding: 15px;
+	}
+}
+
+#settings_menu {
+	background: $primary-blue;
+}
+
+h3 {
+	font-size: 30px;
+	margin-bottom: 0px;
+}
+
+/* Tablet Portrait */
+@media (min-width: 700px) {
+	#settings_menu {
+		flex-direction: row;
+		justify-content: space-between;
+
+		& div {
+			flex-grow: 1;
+		}
+
+		& > :first-child {
+			margin-right: 15px;
+		}
+	}
+}
+
+@media (min-width: 900px) {
+	#settings_menu, #settings_menu.closed {
+		display: block;
+		align-self: stretch;
+		position: static;
+		max-height: auto;
+		opacity: 1;
+
+		& :first-child {
+			margin-right: auto;
+		}
+	}
+
+	#settings_container {
+		min-width: 44px * 4 + 30px;
+	}
+
+	#settings_header {
+		display: none;
+	}
+
+	.field {
+		margin-bottom: 30px;
+	}
+
+	h3 {
+		font-size: 26px;
+	}
+
+	button.action {
+		font-size: 26px;
+	}
+}
+
+
+@media (min-width: 1025px) {
+	.subfield select, .subfield input[type=text] {
+		padding: 7px;
+	}
+}
+
+@media (min-width: 1281px) {
+	.field {
+		margin-bottom: 50px;
+	}
+
+	h3 {
+		font-size: 30px;
+	}
+}

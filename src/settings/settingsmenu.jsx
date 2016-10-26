@@ -1,6 +1,8 @@
 var React = require("react");
+var MenuHeader = require("./menuheader");
 var ConferenceSelector = require("./conferenceselector");
 var Relocationizer = require("./relocationizer");
+require("./_settingsmenu.scss");
 
 var SettingsMenu = React.createClass({
 	propTypes: {
@@ -19,15 +21,12 @@ var SettingsMenu = React.createClass({
 		var button_label = (this.state.menu_open) ? "close" : "open";
 
 		return (<div id="settings_container">
-      <h2 id="settings_header">
-        <span>Settings</span>
-        <button onClick={this.toggleMenu}>{button_label}</button>
-      </h2>
-      <div id="settings_menu" className={menu_class}>
-        <ConferenceSelector conferences={this.props.conferences} divisions={this.props.divisions} onConferenceChange={this.onConferenceChange} />
-        <Relocationizer teams={this.props.teams} cities={this.props.cities} onRelocate={this.props.onRelocate} />
-      </div>
-    </div>);  
+			<MenuHeader click={this.toggleMenu} open={this.state.menu_open} />
+			<div id="settings_menu" className={menu_class}>
+				<ConferenceSelector conferences={this.props.conferences} divisions={this.props.divisions} onConferenceChange={this.onConferenceChange} />
+				<Relocationizer teams={this.props.teams} cities={this.props.cities} onRelocate={this.props.onRelocate} />
+			</div>
+		</div>);  
 	},
 	onConferenceChange: function(c,d) {
 		this.props.onConferenceChange(c,d);

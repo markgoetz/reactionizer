@@ -1,0 +1,84 @@
+@import "../global/_variables";
+
+.team {
+	min-height: 44px;
+	min-width: 44px;
+	display: inline-block;
+	@include team-gradient($light-grey);
+	font-size: 18px;
+	padding: 5px;
+	border-radius: $radius;
+	margin: 2px;
+	color: $black;
+	transition: background-color .5s;
+	box-shadow: 0px 1px 1px $black;
+
+	&:hover {
+		@include team-gradient($light-yellow);
+	}
+
+	&.moved {
+		@include team-gradient($medium-blue);
+	}
+
+	&.created {
+		@include team-gradient($primary-blue);
+		color: $lightest-blue;
+	}
+}
+
+.team-logo {
+	display: inline-block;
+}
+
+@media (min-width:700px) and (max-width:899px),(min-width:1025px) {
+	.team {
+		text-align: left;
+		justify-content: flex-start;
+	}
+
+	.team .city, .team .name {
+		display: inline;
+	}
+
+	.division.col-3 .team .name, .division.col-6 .team .name {
+		display: none;
+	}
+}
+
+@media (max-width: 699px),(min-width:900px) and (max-width:1024px) {
+	.team {
+		text-align: center;
+		width: 44px;
+		max-height: 44px;
+	}
+
+	.team .city, .team .name {
+		display: none;
+	}
+
+	.team-logo {
+		display: inline-block;
+		min-height: 100%;
+	}
+}
+
+@media (min-width: 1025px) {
+	.team {
+		min-height: 0;
+	}
+}
+
+@media (min-width: 1281px) {
+	.team .city, .team .name {
+		font-size: 24px;
+	}
+
+	.team-logo, .team-logo img {
+		min-height: 0;
+		min-width: 0;
+		max-height: none;
+		max-width: none;
+		display: inline-block;
+	}
+}

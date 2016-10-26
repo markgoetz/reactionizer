@@ -1,0 +1,15 @@
+@media (min-width:700px) and (max-width:899px),(min-width:1025px) {
+	.conference {
+		display: flex;
+		flex-direction: row;
+		flex-grow: 1;
+	}
+}
+
+@media (max-width: 699px),(min-width:900px) and (max-width:1024px) {
+	.conference {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+}

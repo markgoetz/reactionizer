@@ -1,4 +1,5 @@
 var React = require("react");
+require("./_selectorbutton.scss");
 
 var SelectorButton = React.createClass({
 	propTypes: {

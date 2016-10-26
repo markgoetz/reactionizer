@@ -3,6 +3,8 @@ var DragSource = require("react-dnd").DragSource;
 var DragTypes = require("../global/dragtypes");
 var Team = require("./team.model");
 
+require("./_teamcard.scss");
+
 var dragSpec = {
 	beginDrag: function(props) {
 		return { team: props.team };

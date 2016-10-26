@@ -1,0 +1,11 @@
+@import "../global/_variables";
+
+#map {
+	flex-grow: 1;
+}
+
+@media (min-width: 700px) {
+	#map {
+		flex-grow: 1;
+	}
+}

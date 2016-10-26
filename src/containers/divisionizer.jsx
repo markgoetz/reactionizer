@@ -1,9 +1,12 @@
 var React = require("react");
+require("whatwg-fetch");
 var DivisionList = require("../league/division.model");
 var Team = require("../league/team.model");
 
 var DragDropContext = require("react-dnd").DragDropContext;
 var DnDBackend = require("react-dnd-html5-backend");
+
+require("./_divisionizer.scss");
 
 var Header = require("./header");
 var Footer = require("./footer");
@@ -13,7 +16,7 @@ var LeagueDisplay = require("../league/leaguedisplay");
 
 require("../global/setcharat-polyfill");
 
-require("whatwg-fetch");
+
 
 var Divisionizer = React.createClass({
 	propTypes: {

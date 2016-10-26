@@ -1,5 +1,6 @@
 var React = require("react");
 var Division = require("./divisiondisplay");
+require("./_conferencedisplay.scss");
 
 var ConferenceDisplay = React.createClass({
 	propTypes: {

@@ -3,6 +3,8 @@ var DropTarget = require("react-dnd").DropTarget;
 var TeamCard = require("./teamcard");
 var DragTypes = require("../global/dragtypes");
 
+require("./_divisiondisplay.scss");
+
 var spec = {
 	drop: function(props, monitor, component) {
 		var team = monitor.getItem().team;

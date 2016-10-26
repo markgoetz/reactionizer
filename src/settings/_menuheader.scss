@@ -1,0 +1,22 @@
+@import "../global/_variables";
+
+#settings_header {
+	font-size: 24px;
+	width: 100%;
+
+	& span {
+		padding-right: auto;
+	}
+
+	& button {
+		border-radius: $radius;
+		@include button-hover($light-grey);
+		@include button-shadow($light-grey);
+		min-height: 44px;
+		min-width: 44px;
+		padding-left: auto;
+		font-size: 18px;
+
+		margin: 5px;
+	}
+}

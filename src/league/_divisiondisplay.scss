@@ -1,0 +1,83 @@
+@import "../global/_variables";
+
+.division > .name {
+	text-align: center;
+	font-size: 24px;
+	border-bottom: 3px inset;
+	padding: 3px 0px;
+	margin: 0px auto;
+}
+
+.division.conf-0 {
+	background: $conf-0-bg;
+	& > .name {
+		color: $conf-0-color;
+		border-color: $conf-0-color;
+	}
+}
+
+.division.conf-1 {
+	background: $conf-1-bg;
+	& > .name {
+		color: $conf-1-color;
+		border-color: $conf-1-color;
+	}
+}
+
+.division.conf-2 {
+	background: $conf-2-bg;
+	& > .name {
+		color: $conf-2-color;
+		border-color: $conf-2-color;
+	}
+}
+
+@media (min-width:700px) and (max-width:899px),(min-width:1025px) {
+	.division {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		flex-grow: 1;
+	}
+
+	.division .list {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
+		flex-grow: 1;
+	}
+
+	.division.col-3 .list, .division.col-2 .list {
+		flex-wrap: wrap;
+		flex-direction: row;
+		align-items: flex-start;
+		align-content: flex-start;
+
+		& .team {
+			width: calc(50% - 4px);
+		}
+	}
+}
+
+@media (max-width: 699px),(min-width:900px) and (max-width:1024px) {
+	.division .list {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+}
+
+@media (min-width: 1281px) {
+	.division > .name {
+		font-size: 30px;
+	}
+
+	.division.col-6 .team .city, .division.col-6 .team .name {
+		font-size: 18px;
+	}
+
+	.division.col-6 .team .name {
+		display: inline;
+	}
+}

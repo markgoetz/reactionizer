@@ -1,6 +1,8 @@
 var React = require("react");
 var ReactGoogleMaps = require("react-google-maps");
 
+require("./_map.scss");
+
 var GoogleMapLoader = ReactGoogleMaps.GoogleMapLoader;
 var GoogleMap = ReactGoogleMaps.GoogleMap;
 var Marker = ReactGoogleMaps.Marker;

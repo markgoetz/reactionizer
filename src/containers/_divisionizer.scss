@@ -1,0 +1,34 @@
+@import "../global/_variables";
+
+#divisionizer {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	align-items: stretch;
+	justify-content:space-between;
+}
+
+.application {
+	flex-grow: 1;
+	display: flex;
+	align-items:stretch;
+	flex-direction: column;
+}
+
+.content {
+	flex-grow: 1;
+	align-items:stretch;
+	display: flex;
+	flex-direction: column;
+}
+
+body {
+	font-family: $font-primary;
+	background: $lightest-blue;
+}
+
+@media (min-width: 900px) {
+	.application {
+		flex-direction: row;	
+	}
+}

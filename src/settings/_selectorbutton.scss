@@ -1,0 +1,51 @@
+@import "../global/_variables";
+
+button {
+	font-family: $font-primary;
+	text-align: center;
+	border: 0;
+	@include button-hover($light-grey);
+	cursor: pointer;
+
+	&.action {
+		font-size: 30px;
+		background: $primary-red;
+		color: $lightest-blue;
+		width: 100%;
+		border-radius: $radius;
+		@include button-shadow($primary-red);
+		@include button-hover($primary-red);
+	}
+
+	&.selector {
+		height: 44px;
+		width: 44px;
+		color: $black;
+		font-size: 22px;
+		@include button-shadow($light-grey);
+
+		&.selected {
+			background: $primary-red;
+			color: $lightest-blue;
+
+			@include button-shadow($primary-red);
+			@include button-hover($primary-red);
+		}
+
+		&.disabled {
+			background: $disabled-bg-color;
+			color: $disabled-text-color;
+			@include button-shadow($disabled-bg-color);
+			cursor: default;
+			/* do not put the hover here, it's disabled. */
+		}
+
+		&:first-child {
+			border-radius: $radius 0 0 $radius;
+		}
+
+		&:last-child {
+			border-radius: 0 $radius $radius 0;
+		}
+	}
+}

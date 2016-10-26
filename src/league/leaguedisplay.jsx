@@ -2,6 +2,8 @@ var React = require("react");
 
 var ConferenceDisplay = require("./conferencedisplay.jsx");
 
+require("./_leaguedisplay.scss");
+
 var LeagueDisplay = React.createClass({
 	propTypes: {
 		league: React.PropTypes.array,

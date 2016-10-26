@@ -1,4 +1,5 @@
 var React = require("react");
+require("./_relocationizer.scss");
 
 var Relocationizer = React.createClass({
 	propTypes: {

@@ -1,6 +1,5 @@
 var PATHS = {
 	src: "./src/",
-	src_js: "./src/js/",
 	dist: "./dist/",
 	dist_js: "./dist/js/",
 	dist_css: "./dist/css/",
@@ -11,7 +10,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var webpack = require("webpack");
 
 module.exports = {
-	entry: PATHS.src_js + "entry.jsx",
+	entry: PATHS.src + "entry.jsx",
 	output: {
 		path: PATHS.dist,
 		filename: "js/reactionizer.js"

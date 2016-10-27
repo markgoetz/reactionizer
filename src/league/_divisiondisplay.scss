@@ -1,4 +1,5 @@
 @import "../global/_variables";
+@import "../global/_conferencecolors";
 
 .division > .name {
 	text-align: center;
@@ -9,26 +10,26 @@
 }
 
 .division.conf-0 {
-	background: $conf-0-bg;
+	background: rgba($c0d0color, .1);
 	& > .name {
-		color: $conf-0-color;
-		border-color: $conf-0-color;
+		color: $c0d0color;
+		border-color: $c0d0color;
 	}
 }
 
 .division.conf-1 {
-	background: $conf-1-bg;
+	background: rgba($c1d0color, .1);
 	& > .name {
-		color: $conf-1-color;
-		border-color: $conf-1-color;
+		color: $c1d0color;
+		border-color: $c1d0color;
 	}
 }
 
 .division.conf-2 {
-	background: $conf-2-bg;
+	background: rgba($c2d0color, .1);
 	& > .name {
-		color: $conf-2-color;
-		border-color: $conf-2-color;
+		color: $c2d0color;
+		border-color: $c2d0color;
 	}
 }
 

@@ -5,7 +5,9 @@ require("./_map.scss");
 
 var GoogleMapLoader = ReactGoogleMaps.GoogleMapLoader;
 var GoogleMap = ReactGoogleMaps.GoogleMap;
-var Marker = ReactGoogleMaps.Marker;
+
+var MarkerIcon = require("./markericon");
+var MarkerBackground = require("./markerbackground");
 
 var Map = React.createClass({
 	propTypes: {
@@ -13,23 +15,7 @@ var Map = React.createClass({
 	},
 
 	_getMarkers: function(league) {
-		var markers = [];
-
-		var icon_background = {
-			path: "M -11 -9 " +
-				"A 2 2 0 0 0 -9 -11 " +
-				"L 9 -11 " +
-				"A 2 2 0 0 0 11 -9 " +
-				"L 11 9 " +
-				"A 2 2 0 0 0 9 11 " +
-				"L -9 11 " +
-				"A 2 2 0 0 0 -11 9" +
-				"L -11 -9",
-			strokeColor: "#777777",
-			strokeWeight: 3,
-			fillColor: "#ffffff",
-			fillOpacity: 1
-		};
+		var markers = [];	
 
 		for (var c = 0; c < league.length; c++) {
 			var conference = league[c];
@@ -39,21 +25,8 @@ var Map = React.createClass({
 				for (var t = 0; t < division.length; t++) {
 					var team = division[t];
 
-					markers.push(<Marker
-						position={ { lat: team.lat, lng: team.lon } }
-						key={ "b" + team.id }
-						icon={ icon_background }
-						title={team.name}
-						zIndex={-99}
-					/>);
-					markers.push(<Marker
-						position={ { lat: team.lat, lng: team.lon } }
-						icon={ {url: team.getLogoURL(), anchor: {x:10, y:10}} }
-						key={team.id}
-						title={team.name}
-						zIndex={2}
-					/>);
-
+					markers.push(<MarkerBackground team={team} conference={c} division={d} key={"bg" + team.id} />);
+					markers.push(<MarkerIcon team={team} key={"icon" + team.id} />);
 				}
 			}
 		}
@@ -62,8 +35,6 @@ var Map = React.createClass({
 	},
 
 	render: function() {
-		var marker_nodes = this._getMarkers(this.props.league);
-
 		return <GoogleMapLoader
 			containerElement={<div id="map" />}
 			googleMapElement={
@@ -72,7 +43,7 @@ var Map = React.createClass({
 					maxZoom={6}
 					minZoom={3}
 					defaultCenter={ {lat: 41, lng: -96} }>
-						{marker_nodes}
+						{this._getMarkers(this.props.league)}
 				</GoogleMap>
 			} 
 		/>;

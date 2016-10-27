@@ -17,14 +17,6 @@ $radius: 3px;
 
 $shadow-height: 3px;
 
-$conf-0-color: $primary-red;
-$conf-1-color: $medium-blue;
-$conf-2-color: $yellow;
-
-$conf-0-bg: rgba($conf-0-color, .1);
-$conf-1-bg: rgba($conf-1-color, .1);
-$conf-2-bg: rgba($conf-2-color, .1);
-
 @mixin button-shadow($color) {
 	box-shadow: 0px $shadow-height 0px darken($color, 20%);
 }

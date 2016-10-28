@@ -11,7 +11,8 @@ var MarkerBackground = require("./markerbackground");
 
 var Map = React.createClass({
 	propTypes: {
-		league: React.PropTypes.array
+		league: React.PropTypes.array,
+		mapHolderRef: React.PropTypes.object
 	},
 
 	_getMarkers: function(league) {
@@ -25,8 +26,8 @@ var Map = React.createClass({
 				for (var t = 0; t < division.length; t++) {
 					var team = division[t];
 
-					markers.push(<MarkerBackground team={team} conference={c} division={d} key={"bg" + team.id} />);
-					markers.push(<MarkerIcon team={team} key={"icon" + team.id} />);
+					markers.push(<MarkerBackground team={team} conference={c} division={d} key={"bg" + team.id} mapHolderRef={this.props.mapHolderRef} />);
+					markers.push(<MarkerIcon team={team} key={"icon" + team.id} mapHolderRef={this.props.mapHolderRef} />);
 				}
 			}
 		}

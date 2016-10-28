@@ -28,14 +28,16 @@ module.exports = {
 			test: /\.scss$/,
 			exclude: PATHS.exclude,
 			loader: ExtractTextPlugin.extract("css!sass")
+		},
+		{
+			test: /\.json$/,
+			exlude: PATHS.exclude,
+			loader: "json"
 		}]
 	},
 	devtool: "source-map",
 	plugins: [
-		new ExtractTextPlugin("css/reactionizer.css"),
-		new webpack.ProvidePlugin({
-			"fetch": "imports?this=>global!exports?global.fetch!whatwg-fetch"
-		})
+		new ExtractTextPlugin("css/reactionizer.css")
 	],
 	resolve: {
 		extensions: ["", ".js", ".jsx"]

@@ -13,8 +13,7 @@
     "react-dnd": "^2.1.4",
     "react-dnd-html5-backend": "^2.1.2",
     "react-dom": "^15.3.2",
-    "react-google-maps": "^4.11.0",
-    "whatwg-fetch": "^1.0.0"
+    "react-google-maps": "^4.11.0"
   },
   "devDependencies": {
     "autoprefixer": "latest",
@@ -28,11 +27,9 @@
     "eslint": "^3.7.1",
     "eslint-config-google": "^0.6.0",
     "eslint-plugin-react": "^6.3.0",
-    "exports-loader": "^0.6.3",
     "extract-text-webpack-plugin": "^1.0.1",
-    "html-webpack-plugin": "^2.22.0",
-    "imports-loader": "^0.6.5",
     "jasmine": "^2.5.2",
+    "json-loader": "^0.5.4",
     "node-sass": "^3.10.1",
     "sass-imports": "0.0.1",
     "sass-loader": "^4.0.2",

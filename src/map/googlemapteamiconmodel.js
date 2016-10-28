@@ -12,7 +12,7 @@ var GoogleMapTeamIconModel = function(color) {
 		strokeWeight: 3,
 		fillColor: color,
 		strokeColor: color,
-		fillOpacity: 1
+		fillOpacity: .75
 	};
 };
 

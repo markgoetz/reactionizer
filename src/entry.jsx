@@ -21,7 +21,7 @@ function initialize(container_id, conferences, divisions) {
 	//updateCosts();
 	
 	ReactDOM.render(
-		<Divisionizer initConferences={conferences} initDivisions={divisions} dataurl="data/data.json" />,
+		<Divisionizer initConferences={conferences} initDivisions={divisions} />,
 		document.getElementById(container_id)
     );  
 	//updateTableFormat(divisions);

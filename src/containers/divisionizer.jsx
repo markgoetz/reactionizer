@@ -1,5 +1,4 @@
 var React = require("react");
-require("whatwg-fetch");
 var DivisionList = require("../league/division.model");
 var Team = require("../league/team.model");
 
@@ -16,44 +15,26 @@ var LeagueDisplay = require("../league/leaguedisplay");
 
 require("../global/setcharat-polyfill");
 
-
+var jsonTeams = require("../data/teams.json");
+var jsonCities = require("../data/cities.json");
+var jsonDefaultDivs = require("../data/defaultdivs.json");
 
 var Divisionizer = React.createClass({
 	propTypes: {
 		initConferences: React.PropTypes.number,
-		initDivisions: React.PropTypes.number,
-		dataurl: React.PropTypes.string
-	},
-	componentDidMount: function() {
-		window.fetch(this.props.dataurl).then(
-			function(response) {
-				return response.json();
-			}
-		).then(
-			function(json) {
-				var teams = json.teams.map(function(t) { return new Team(t); });
-				var cities = json.cities;
-				var defaultdivs = json.defaultdivs;
-
-				this.setState({
-					teams: teams,
-					cities: cities,
-					defaultdivs: defaultdivs,
-					league: this._getLeague(this.props.initConferences, this.props.initDivisions, defaultdivs, teams),
-					max_id: teams.length + 1
-				});
-			}.bind(this)
-		);
+		initDivisions: React.PropTypes.number
 	},
 	getInitialState: function() {
+		var teams = jsonTeams.map(function(t) { return new Team(t); });
+
 		return {
-			conference_count:this.props.initConferences,
-			division_count:this.props.initDivisions,
-			league:[],
-			defaultdivs:[],
-			teams:[],
-			cities:[],
-			max_id: 0
+			conference_count: this.props.initConferences,
+			division_count: this.props.initDivisions,
+			league: this._getLeague(this.props.initConferences, this.props.initDivisions, jsonDefaultDivs, teams),
+			defaultdivs: jsonDefaultDivs,
+			teams: teams,
+			cities: jsonCities,
+			max_id: jsonTeams.length + 1
 		};
 	},
 	onRelocateTeam: function(teamid, cityid) {

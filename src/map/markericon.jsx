@@ -5,7 +5,7 @@ var Marker = require("react-google-maps").Marker;
 var MarkerIcon = React.createClass({
 	propTypes: {
 		team: React.PropTypes.instanceOf(Team).isRequired,
-		mapHolderRef: React.PropTypes.object.isRequired
+		mapHolderRef: React.PropTypes.objects
 	},
 	render: function() {
 		return <Marker

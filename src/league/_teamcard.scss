@@ -29,6 +29,8 @@
 
 .team-logo {
 	display: inline-block;
+	max-width: 34px;
+	max-height: 34px;
 }
 
 @media (min-width:700px) and (max-width:899px),(min-width:1025px) {
@@ -39,10 +41,16 @@
 
 	.team .city, .team .name {
 		display: inline;
+		line-height: 18px;
 	}
 
 	.division.col-3 .team .name, .division.col-6 .team .name {
 		display: none;
+	}
+
+	.team-logo {
+		max-width: none;
+		margin-right: 5px;
 	}
 }
 
@@ -67,18 +75,21 @@
 	.team {
 		min-height: 0;
 	}
+
+	.team-logo {
+		width: 18px;
+		height: 18px;
+	}
 }
 
 @media (min-width: 1281px) {
 	.team .city, .team .name {
 		font-size: 24px;
+		line-height: 24px;
 	}
 
 	.team-logo, .team-logo img {
-		min-height: 0;
-		min-width: 0;
-		max-height: none;
-		max-width: none;
-		display: inline-block;
+		height: 24px;
+		width: 24px;
 	}
 }

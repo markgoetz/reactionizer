@@ -6,6 +6,6 @@ module.exports = function(data) {
 	this.lon = data.lon;
 
 	this.getLogoURL = function() {
-		return "logos/" + this.name.toLowerCase().replace(" ", "") + ".png";	
+		return "logos/" + this.name.toLowerCase().replace(" ", "") + ".svg";	
 	};
 };

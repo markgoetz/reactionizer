@@ -9,7 +9,7 @@ var MarkerBackground = React.createClass({
 		team: React.PropTypes.instanceOf(Team).isRequired,
 		division: React.PropTypes.number.isRequired,
 		conference: React.PropTypes.number.isRequired,
-		mapHolderRef: React.PropTypes.object.isRequired
+		mapHolderRef: React.PropTypes.object
 	},
 	render: function() {
 		var color = getColor(this.props.conference, this.props.division);

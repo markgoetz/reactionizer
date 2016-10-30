@@ -47,6 +47,7 @@ var Divisionizer = React.createClass({
 		team.city = city.city;
 		team.lat = city.lat;
 		team.lon = city.lon;
+		team.relocated = true;
 
 		teams[teamid] = team;
 

@@ -18,12 +18,18 @@
 	}
 
 	&.moved {
-		@include team-gradient($medium-blue);
+		@include team-gradient($light-blue);
+		&:hover {
+			@include team-gradient($light-yellow);
+		}
 	}
 
 	&.created {
-		@include team-gradient($primary-blue);
+		@include team-gradient($medium-blue);
 		color: $lightest-blue;
+		&:hover {
+			@include team-gradient($light-yellow);
+		}
 	}
 }
 

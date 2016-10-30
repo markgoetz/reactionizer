@@ -26,8 +26,17 @@ var TeamCard = React.createClass({
 	},
 	render: function() {
 		var source=this.props.team.getLogoURL();
+
+		var additionalClass = "";
+		if (this.props.team.relocated) {
+			additionalClass = " moved";
+		}
+		if (this.props.team.expansion) {
+			additionalClass = " created";
+		}
+
 		return this.props.connectDragSource(
-			<div className="team">
+			<div className={"team" + additionalClass}>
 				<img className="team-logo" src={source} /><span className="city">{this.props.team.city}</span><span className="name">&nbsp;{this.props.team.name}</span>
 			</div>
 		);

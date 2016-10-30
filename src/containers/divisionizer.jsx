@@ -38,19 +38,22 @@ var Divisionizer = React.createClass({
 		};
 	},
 	onRelocateTeam: function(teamid, cityid) {
+		teamid--; cityid--;
+
 		var teams = this.state.teams;
 		var team = teams[teamid];
 		var city = this.state.cities[cityid];
 
-		team.cityname = city.state;
+		team.city = city.city;
 		team.lat = city.lat;
 		team.lon = city.lon;
+
+		teams[teamid] = team;
 
 		this.setState({
 			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.defaultdivs, teams),
 			teams: teams
 		});
-		this._getDivisions();
 	},
 	onAddTeam: function(name, cityid) {
 		var city = this.state.cities[cityid];
@@ -114,7 +117,7 @@ var Divisionizer = React.createClass({
             divisions={this.state.division_count}
             teams={this.state.teams}
             cities={this.state.cities}
-            onRelocateTeam={this.onRelocateTeam}
+            onRelocate={this.onRelocateTeam}
             onAddTeam={this.onAddTeam}
             onConferenceChange={this.onConferenceChange}
             />

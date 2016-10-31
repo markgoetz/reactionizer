@@ -3,9 +3,10 @@ require("./_relocationizer.scss");
 
 var Relocationizer = React.createClass({
 	propTypes: {
-		teams: React.PropTypes.array,
-		cities: React.PropTypes.array,
-		onRelocate: React.PropTypes.func
+		teams: React.PropTypes.array.isRequired,
+		cities: React.PropTypes.array.isRequired,
+		onRelocate: React.PropTypes.func.isRequired,
+		onExpansion: React.PropTypes.func.isRequired
 	},
 	getInitialState: function() {
 		return {
@@ -36,12 +37,15 @@ var Relocationizer = React.createClass({
 				<h3>Expansion team</h3>
 				<div className="subfield"><label>city</label><select value={this.state.expansion_city} onChange={this.handleExpansionCitySelect}>{city_nodes}</select></div>
 				<div className="subfield"><label>name</label><input type="text" value={this.state.expansion_name} onChange={this.handleExpansionCityName} /></div>
-				<div><button className="action">Create Team</button></div>
+				<div><button className="action" onClick={this.expand}>Create Team</button></div>
 			</div>
 		</div>;
 	},
 	relocate: function() {
 		this.props.onRelocate(this.state.relocate_team, this.state.relocate_city);
+	},
+	expand: function() {
+		this.props.onExpansion(this.state.expansion_name, this.state.expansion_city);
 	},
 	handleExpansionCityName: function(event) {
 		this.setState({expansion_name: event.target.value});

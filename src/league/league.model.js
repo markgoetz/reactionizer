@@ -1,4 +1,4 @@
-function DivisionList(division, conference_count, division_count, all_teams) {
+function LeagueModel(division, conference_count, division_count, all_teams) {
 	this.all_teams = all_teams;
 	this.div_count = division_count;
 	this.conf_count = conference_count;
@@ -47,4 +47,4 @@ function DivisionList(division, conference_count, division_count, all_teams) {
 	};
 }
 
-module.exports = DivisionList;
+module.exports = LeagueModel;

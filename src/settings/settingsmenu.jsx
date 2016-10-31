@@ -6,25 +6,25 @@ require("./_settingsmenu.scss");
 
 var SettingsMenu = React.createClass({
 	propTypes: {
-		conferences: React.PropTypes.number,
-		divisions: React.PropTypes.number,
-		teams: React.PropTypes.array,
-		cities: React.PropTypes.array,
-		onConferenceChange: React.PropTypes.func,
-		onRelocate: React.PropTypes.func
+		conferences: React.PropTypes.number.isRequired,
+		divisions: React.PropTypes.number.isRequired,
+		teams: React.PropTypes.array.isRequired,
+		cities: React.PropTypes.array.isRequired,
+		onConferenceChange: React.PropTypes.func.isRequired,
+		onRelocate: React.PropTypes.func.isRequired,
+		onExpansion: React.PropTypes.func.isRequired
 	},
 	getInitialState: function() {
 		return {menu_open:false};
 	},
 	render: function() {
 		var menu_class = (this.state.menu_open) ? "open" : "closed";
-		var button_label = (this.state.menu_open) ? "close" : "open";
 
 		return (<div id="settings_container">
 			<MenuHeader click={this.toggleMenu} open={this.state.menu_open} />
 			<div id="settings_menu" className={menu_class}>
 				<ConferenceSelector conferences={this.props.conferences} divisions={this.props.divisions} onConferenceChange={this.onConferenceChange} />
-				<Relocationizer teams={this.props.teams} cities={this.props.cities} onRelocate={this.props.onRelocate} />
+				<Relocationizer teams={this.props.teams} cities={this.props.cities} onRelocate={this.props.onRelocate} onExpansion={this.props.onExpansion} />
 			</div>
 		</div>);  
 	},

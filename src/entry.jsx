@@ -3,7 +3,7 @@ var ReactDOM = require("react-dom");
 
 require("./global/_global.scss");
 
-var Divisionizer = require("./containers/divisionizer");
+var DivisionizerController = require("./containers/divisionizercontroller");
 
 
 var global_markers;
@@ -21,7 +21,7 @@ function initialize(container_id, conferences, divisions) {
 	//updateCosts();
 	
 	ReactDOM.render(
-		<Divisionizer initConferences={conferences} initDivisions={divisions} />,
+		<DivisionizerController initConferences={conferences} initDivisions={divisions} />,
 		document.getElementById(container_id)
     );  
 	//updateTableFormat(divisions);

@@ -36,29 +36,24 @@ var DivisionizerController = React.createClass({
 
 		var teams = this.state.teams;
 		var team = teams[teamid];
-		var city = this.state.cities[cityid];
-
-		team.city = city.city;
-		team.lat = city.lat;
-		team.lon = city.lon;
-		team.relocated = true;
+		team.relocate(this.state.cities[cityid]);
 
 		teams[teamid] = team;
 
 		this.setState({
-			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.defaultdivs, teams),
+			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.defaultleagues, teams),
 			teams: teams
 		});
 	},
 	onAddTeam: function(name, cityid) {
 		var city = this.state.cities[cityid];
-		var team = {
+		var team = new Team({
 			id: this.state.max_id++,
 			name: name,
 			city: city.name,
 			lat: city.lat,
 			lon: city.lon
-		};
+		});
 
 		var teams = this.state.teams;
 		teams.push(team);
@@ -79,7 +74,7 @@ var DivisionizerController = React.createClass({
 		});
 	},
 	onDrag: function(team, division) {
-		var defaultleagues = this.state.defaultleages;
+		var defaultleagues = this.state.defaultleagues;
 
 		var div_string = defaultleagues[this.state.division_count].string;
 		div_string = div_string.setCharAt(team-1, division.toString());

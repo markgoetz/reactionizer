@@ -8,4 +8,11 @@ module.exports = function(data) {
 	this.getLogoURL = function() {
 		return "logos/" + this.name.toLowerCase().replace(" ", "") + ".svg";	
 	};
+
+	this.relocate = function(city) {
+		this.city = city.city;
+		this.lat = city.lat;
+		this.lon = city.lon;
+		this.relocated = true;
+	};
 };

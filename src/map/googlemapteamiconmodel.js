@@ -1,18 +1,11 @@
 var GoogleMapTeamIconModel = function(color) {
 	return {
-		path: "M -11 -9 " +
-			"A 2 2 0 0 0 -9 -11 " +
-			"L 9 -11 " +
-			"A 2 2 0 0 0 11 -9 " +
-			"L 11 9 " +
-			"A 2 2 0 0 0 9 11 " +
-			"L -9 11 " +
-			"A 2 2 0 0 0 -11 9" +
-			"L -11 -9",
-		strokeWeight: 3,
+		path: "M -20 0 " +
+			"A 20 20 0 0 0  20 0" +
+			"A 20 20 0 0 0 -20 0",
 		fillColor: color,
-		strokeColor: color,
-		fillOpacity: .75
+		fillOpacity: .9,
+		strokeWeight: 0
 	};
 };
 

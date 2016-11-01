@@ -10,10 +10,10 @@ var Relocationizer = React.createClass({
 	},
 	getInitialState: function() {
 		return {
-			relocate_team: 1,
-			relocate_city: 1,
+			relocate_team: 0,
+			relocate_city: 0,
 			expansion_name: "",
-			expansion_city: 1
+			expansion_city: 0
 		};
 	},
 	render: function() {

@@ -1,12 +1,18 @@
-module.exports = function(data) {
+var max_id = 0;
+
+var Team = function(data, expansion) {
 	this.name = data.name;
-	this.id = data.id;
+	this.id = max_id++;
 	this.city = data.city;
 	this.lat = data.lat;
 	this.lon = data.lon;
+	this.expansion = expansion;
 
 	this.getLogoURL = function() {
-		return "logos/" + this.name.toLowerCase().replace(" ", "") + ".svg";	
+		if (!this.expansion)
+			return "logos/" + this.name.toLowerCase().replace(" ", "") + ".svg";	
+		else
+			return "logos/knights.svg";
 	};
 
 	this.relocate = function(city) {
@@ -16,3 +22,5 @@ module.exports = function(data) {
 		this.relocated = true;
 	};
 };
+
+module.exports = Team;

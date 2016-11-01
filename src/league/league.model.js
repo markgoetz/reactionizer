@@ -1,9 +1,11 @@
-function LeagueModel(division, conference_count, division_count, all_teams) {
+require("../global/setcharat-polyfill");
+
+function LeagueModel(league, conference_count, division_count, all_teams) {
 	this.all_teams = all_teams;
 	this.div_count = division_count;
 	this.conf_count = conference_count;
-	this.div_string = division.string;
-	this.div_names = division.names;
+	this.div_string = league.string;
+	this.div_names = league.names;
 	var _divisions;
 
 	var _setDivisions = function() {
@@ -30,20 +32,38 @@ function LeagueModel(division, conference_count, division_count, all_teams) {
 
 			_divisions[conference][division].push(this.all_teams[i]);
 		}
-	};
+	}.bind(this);
 
-	(_setDivisions.bind(this))();
+	_setDivisions();
 
 	this.toArray = function() {
 		return _divisions;
 	};
 
-	this.moveTeam = function(team, div_number) {
-		if (team < 0 || team > all_teams.length) return;
+	this.addTeam = function(team, div_number) {
+		this.div_string = this.div_string + div_number + "";
+		this.all_teams.push(team);
+		_setDivisions();
+	};
+
+	this.setTeamDivision = function(team_id, div_number) {
+		if (team_id < 1 || team_id > all_teams.length + 1) return;
 		if (div_number < 0 || div_number > division_count) return;
 
-		this.div_string[team] = div_number;
+		this.div_string = this.div_string.setCharAt(team_id - 1, div_number);
 		_setDivisions();
+	};
+
+	this.getDivisionCounts = function() {
+		var div_counts = [];
+		for (var i = 0; i < this.div_string.length; i++) {
+			div_counts[this.div_string[i]]++;
+		}
+		return div_counts;
+	};
+
+	this.setTeams = function(teams) {
+		this.all_teams = teams;
 	};
 }
 

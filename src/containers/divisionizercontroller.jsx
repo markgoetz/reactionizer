@@ -1,13 +1,11 @@
 var React = require("react");
-var League = require("../league/league.model");
+var LeagueManager = require("../containers/leaguemanager.model");
 var Team = require("../league/team.model");
 
 var DragDropContext = require("react-dnd").DragDropContext;
 var DnDBackend = require("react-dnd-html5-backend");
 
 var Divisionizer = require("./divisionizer");
-
-require("../global/setcharat-polyfill");
 
 var jsonTeams = require("../data/teams.json");
 var jsonCities = require("../data/cities.json");
@@ -20,82 +18,52 @@ var DivisionizerController = React.createClass({
 	},
 	getInitialState: function() {
 		var teams = jsonTeams.map(function(t) { return new Team(t); });
+		this.leaguemanager = new LeagueManager(teams, jsonDefaultLeagues);
 
 		return {
 			conference_count: this.props.initConferences,
 			division_count: this.props.initDivisions,
-			league: this._getLeague(this.props.initConferences, this.props.initDivisions, jsonDefaultLeagues, teams),
-			defaultleagues: jsonDefaultLeagues,
+			league: this.leaguemanager.getLeague(this.props.initConferences, this.props.initDivisions).toArray(),
 			teams: teams,
-			cities: jsonCities,
-			max_id: jsonTeams.length + 1
+			cities: jsonCities
 		};
 	},
 	onRelocateTeam: function(teamid, cityid) {
 		teamid--; cityid--;
-
-		var teams = this.state.teams;
-		var team = teams[teamid];
-		team.relocate(this.state.cities[cityid]);
-
-		teams[teamid] = team;
+		this.leaguemanager.relocateTeam(teamid, jsonCities[cityid]);
 
 		this.setState({
-			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.defaultleagues, teams),
-			teams: teams
+			league: this._getLeague(),
 		});
 	},
 	onAddTeam: function(name, cityid) {
-		var city = this.state.cities[cityid];
-		var team = new Team({
-			id: this.state.max_id++,
-			name: name,
-			city: city.name,
-			lat: city.lat,
-			lon: city.lon
-		});
 
-		var teams = this.state.teams;
-		teams.push(team);
-
-		//TODO: Update the default division strings.
-
+		this.leaguemanager.addTeam(name, this.state.cities[cityid]);
 
 		this.setState({
-			league: this._getLeague(this.state.conference_count, this.state.division_count, this.state.defaultleagues, teams),
-			teams: teams
+			league: this._getLeague(),
+			teams: this.leaguemanager.getTeams()
 		});
 	},
 	onConferenceChange: function(c, d) {
 		this.setState({
 			conference_count: c,
 			division_count: d,
-			league: this._getLeague(c, d, this.state.defaultleagues, this.state.teams)
+			league: this._getLeague(c, d)
 		});
 	},
 	onDrag: function(team, division) {
-		var defaultleagues = this.state.defaultleagues;
-
-		var div_string = defaultleagues[this.state.division_count].string;
-		div_string = div_string.setCharAt(team-1, division.toString());
-
-		defaultleagues[this.state.division_count].string = div_string;
+		this.leaguemanager.changeTeamDivision(team, division, this.state.division_count);
 
 		this.setState({
-			league: this._getLeague(this.state.conference_count, this.state.division_count, defaultleagues, this.state.teams),
-			defaultleagues: defaultleagues
+			league: this._getLeague()
 		});
 	},
-	_getLeague: function(conf_count, div_count, defaultleagues, teams) {
-		var league_string = defaultleagues[div_count];
+	_getLeague: function(conf_count, division_count) {
+		if (!conf_count) conf_count = this.state.conference_count;
+		if (!division_count) division_count = this.state.division_count;
 
-		if (league_string) {
-			var league = new League(league_string, conf_count, div_count, teams);
-			return league.toArray();
-		}
-		else {
-			return [];
-		}
+		return (this.leaguemanager.getLeague(conf_count, division_count)).toArray();
 	},
 	render: function() {
 		return (<Divisionizer

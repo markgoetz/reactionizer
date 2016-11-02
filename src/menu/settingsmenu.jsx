@@ -2,6 +2,7 @@ var React = require("react");
 var MenuHeader = require("./menuheader");
 var ConferenceSelector = require("./conferenceselector");
 var Relocationizer = require("./relocationizer");
+var ChangeView = require("./changeview");
 require("./_settingsmenu.scss");
 
 var SettingsMenu = React.createClass({
@@ -10,9 +11,13 @@ var SettingsMenu = React.createClass({
 		divisions: React.PropTypes.number.isRequired,
 		teams: React.PropTypes.array.isRequired,
 		cities: React.PropTypes.array.isRequired,
+		relocatedTeams: React.PropTypes.array,
+		expansionTeams: React.PropTypes.array,
 		onConferenceChange: React.PropTypes.func.isRequired,
 		onRelocate: React.PropTypes.func.isRequired,
-		onExpansion: React.PropTypes.func.isRequired
+		onExpansion: React.PropTypes.func.isRequired,
+		onUndoRelocation: React.PropTypes.func.isRequired,
+		onUndoExpansion: React.PropTypes.func.isRequired
 	},
 	getInitialState: function() {
 		return {menu_open:false};
@@ -23,8 +28,23 @@ var SettingsMenu = React.createClass({
 		return (<div id="settings_container">
 			<MenuHeader click={this.toggleMenu} open={this.state.menu_open} />
 			<div id="settings_menu" className={menu_class}>
-				<ConferenceSelector conferences={this.props.conferences} divisions={this.props.divisions} onConferenceChange={this.onConferenceChange} />
-				<Relocationizer teams={this.props.teams} cities={this.props.cities} onRelocate={this.props.onRelocate} onExpansion={this.props.onExpansion} />
+				<ConferenceSelector
+					conferences={this.props.conferences}
+					divisions={this.props.divisions}
+					onConferenceChange={this.onConferenceChange}
+				/>
+				<Relocationizer
+					teams={this.props.teams}
+					cities={this.props.cities}
+					onRelocate={this.props.onRelocate}
+					onExpansion={this.props.onExpansion}
+				/>
+				<ChangeView
+					relocatedTeams={this.props.relocatedTeams}
+					expansionTeams={this.props.expansionTeams}
+					onUndoRelocation={this.props.onUndoRelocation}
+					onUndoExpansion={this.props.onUndoExpansion}
+				/>
 			</div>
 		</div>);  
 	},

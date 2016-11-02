@@ -1,6 +1,6 @@
 var React = require("react");
 var LeagueManager = require("../containers/leaguemanager.model");
-var Team = require("../league/team.model");
+var TeamManager = require("../containers/teammanager.model");
 
 var DragDropContext = require("react-dnd").DragDropContext;
 var DnDBackend = require("react-dnd-html5-backend");
@@ -16,52 +16,40 @@ var DivisionizerController = React.createClass({
 		initConferences: React.PropTypes.number,
 		initDivisions: React.PropTypes.number
 	},
+
 	getInitialState: function() {
-		var teams = jsonTeams.map(function(t) { return new Team(t); });
+		this.teammanager = new TeamManager(jsonTeams);
 		this.leaguemanager = new LeagueManager(jsonDefaultLeagues);
 
 		return {
 			conference_count: this.props.initConferences,
 			division_count: this.props.initDivisions,
-			league: this._getLeague(this.props.initConferences, this.props.initDivisions, teams),
-			teams: teams,
+			league: this._getLeague(this.props.initConferences, this.props.initDivisions),
 			cities: jsonCities
 		};
 	},
+
 	onRelocateTeam: function(teamid, cityid) {
-		this.state.teams[teamid].relocate(jsonCities[cityid]);
-
-		var teams = this.state.teams;
-		var team = teams[teamid];
-		team.relocate(jsonCities[cityid]);
-		teams[teamid] = team;
-
-		this.setState({
-			teams: teams,
-			league: this._getLeague(null, null, teams),
-		});
+		this.teammanager.relocateTeam(teamid, jsonCities[cityid]);
+		this._updateLeague();
 	},
+
+	onUndoRelocate: function(teamid) {
+		this.teammanager.resetTeam(teamid);
+		this._updateLeague();
+	},
+
 	onAddTeam: function(name, cityid) {
-		var city = jsonCities[cityid];
-		var team = new Team(
-			{
-				name: name,
-				city: city.city,
-				lat: city.lat,
-				lon: city.lon
-			},
-			true
-		);
-		var teams = this.state.teams;
-		teams.push(team);
-
+		this.teammanager.addTeam(name, jsonCities[cityid]);
 		this.leaguemanager.addTeam();
-
-		this.setState({
-			league: this._getLeague(null, null, teams),
-			teams: teams
-		});
+		this._updateLeague();
 	},
+
+	onUndoExpansion: function(teamid) {
+		this.leaguemanager.removeTeam(teamid);
+		this._updateLeague();
+	},
+
 	onConferenceChange: function(c, d) {
 		this.setState({
 			conference_count: c,
@@ -69,21 +57,30 @@ var DivisionizerController = React.createClass({
 			league: this._getLeague(c, d)
 		});
 	},
+
 	onDrag: function(team, division) {
 		this.leaguemanager.changeTeamDivision(team, division, this.state.division_count);
-
-		this.setState({
-			league: this._getLeague()
-		});
+		this._updateLeague();
 	},
+
 	_getLeague: function(conf_count, division_count, teams) { // The optional parameters are a hack to fix scenarios where you have to call React.setState() on both the league and the division/conference count.
 		if (!conf_count) conf_count = this.state.conference_count;
 		if (!division_count) division_count = this.state.division_count;
 
 		return this._leagueToArray(this.leaguemanager.getLeague(conf_count, division_count), teams);
 	},
+
+	_updateLeague: function() {
+		var teams = this.teammanager.teams;
+
+		this.setState({
+			league: this._getLeague(null, null, teams),
+			teams: teams
+		});
+	},
+
 	_leagueToArray: function(league, teams) {
-		if (!teams) teams = this.state.teams;
+		if (!teams) teams = this.teammanager.teams;
 
 		var league_array = league.toArray();
 
@@ -98,11 +95,12 @@ var DivisionizerController = React.createClass({
 		
 		return league_array;
 	},
+
 	render: function() {
 		return (<Divisionizer
 			conferences={this.state.conference_count}
 			divisions={this.state.division_count}
-			teams={this.state.teams}
+			teams={this.teammanager.teams}
 			cities={this.state.cities}
 			league={this.state.league}
 			onRelocate={this.onRelocateTeam}

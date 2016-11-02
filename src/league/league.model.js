@@ -10,6 +10,10 @@ function LeagueModel(league, conference_count, division_count) {
 		this.div_string = this.div_string + div_number + "";
 	};
 
+	this.removeTeam = function(index) {
+		this.div_string = this.div_string.setCharAt(index, "");
+	};
+
 	this.setTeamDivision = function(team_id, div_number) {
 		if (team_id < 0 || team_id > this.div_string.length) return;
 		if (div_number < 0 || div_number > division_count) return;

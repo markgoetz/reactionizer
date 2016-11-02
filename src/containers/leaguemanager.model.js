@@ -26,13 +26,22 @@ var LeagueManager = function(defaultleaguestrings) {
 	};
 	
 	this.addTeam = function() {
-		// Put the new team in the team with the lowest number of teams.
+		// Put the new team in the division with the lowest number of teams.
 		for (var c = 1; c <= 3; c++) {
 			for (var d = 1; d < this.defaultleagues[c].length; d++) {
 				if (!this.defaultleagues[c][d]) continue;
 
 				var team_counts = this.defaultleagues[c][d].getDivisionCounts();
 				this.defaultleagues[c][d].addTeam(team_counts.getMinValueIndex() + 1);
+			}
+		}
+	};
+
+	this.removeTeam = function(id) {
+		for (var c = 1; c <= 3; c++) {
+			for (var d = 1; d < this.defaultleagues[c].length; d++) {
+				if (!this.defaultleagues[c][d]) continue;
+				this.defaultleagues[c][d].removeTeam(id);
 			}
 		}
 	};

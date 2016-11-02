@@ -97,17 +97,20 @@ var DivisionizerController = React.createClass({
 	},
 
 	render: function() {
-		return (<Divisionizer
+		return <Divisionizer
 			conferences={this.state.conference_count}
 			divisions={this.state.division_count}
 			teams={this.teammanager.teams}
 			cities={this.state.cities}
 			league={this.state.league}
+			relocatedTeams={this.teammanager.getRelocatedTeams()}
+			expansionTeams={this.teammanager.getExpansionTeams()}
 			onRelocate={this.onRelocateTeam}
 			onExpansion={this.onAddTeam}
+			onUndoRelocation={this.onUndoRelocate}
+			onUndoExpansion={this.onUndoExpansion}
 			onConferenceChange={this.onConferenceChange}
-			onDrag={this.onDrag} />
-		);
+			onDrag={this.onDrag} />;
 	}
 });
 

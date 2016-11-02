@@ -1,7 +1,10 @@
 var Team = require("../league/team.model");
 
 var TeamManager = function(jsonTeams) {
-	this.teams = jsonTeams.map(function(t) { return new Team(t); });
+	this.teams = jsonTeams.map(function(t, index) {
+		t.id = index;
+		return new Team(t);
+	});
 
 	this.relocateTeam = function(teamid, city) {
 		this.teams[teamid].relocate(city);
@@ -15,6 +18,7 @@ var TeamManager = function(jsonTeams) {
 		this.teams.push(new Team(
 			{
 				name: name,
+				id: this.teams.length,
 				city: city.city,
 				lat: city.lat,
 				lon: city.lon
@@ -25,6 +29,10 @@ var TeamManager = function(jsonTeams) {
 
 	this.removeTeam = function(id) {
 		this.teams.splice(id, 1);
+
+		for (var i = 0; i < this.teams.length; i++) {
+			this.teams[i].id = i;
+		}
 	};
 
 	this.getRelocatedTeams = function() {

@@ -47,6 +47,7 @@ var DivisionizerController = React.createClass({
 
 	onUndoExpansion: function(teamid) {
 		this.leaguemanager.removeTeam(teamid);
+		this.teammanager.removeTeam(teamid);
 		this._updateLeague();
 	},
 

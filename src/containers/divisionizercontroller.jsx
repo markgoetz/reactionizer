@@ -55,6 +55,7 @@ var DivisionizerController = React.createClass({
 		var teams = this.state.teams;
 		teams.push(team);
 
+		this.leaguemanager.addTeam();
 
 		this.setState({
 			league: this._getLeague(null, null, teams),

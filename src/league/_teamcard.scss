@@ -29,6 +29,7 @@
 		color: $lightest-blue;
 		&:hover {
 			@include team-gradient($light-yellow);
+			color: $black;
 		}
 	}
 }

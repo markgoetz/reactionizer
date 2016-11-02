@@ -19,8 +19,13 @@ function LeagueModel(league, conference_count, division_count) {
 
 	this.getDivisionCounts = function() {
 		var div_counts = [];
+
+		for (var d = 0; d < this.div_count; d++) {
+			div_counts.push(0);
+		}
+
 		for (var i = 0; i < this.div_string.length; i++) {
-			div_counts[this.div_string[i]]++;
+			div_counts[this.div_string[i] - 1]++;
 		}
 		return div_counts;
 	};

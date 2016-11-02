@@ -46,6 +46,7 @@ var Relocationizer = React.createClass({
 	},
 	expand: function() {
 		this.props.onExpansion(this.state.expansion_name, this.state.expansion_city);
+		this.setState({expansion_name: ""});
 	},
 	handleExpansionCityName: function(event) {
 		this.setState({expansion_name: event.target.value});

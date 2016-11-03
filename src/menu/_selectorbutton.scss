@@ -1,12 +1,6 @@
 @import "../global/_variables";
 
 button {
-	font-family: $font-primary;
-	text-align: center;
-	border: 0;
-	@include button-hover($light-grey);
-	cursor: pointer;
-
 	&.action {
 		font-size: 30px;
 		background: $primary-red;
@@ -18,11 +12,7 @@ button {
 	}
 
 	&.selector {
-		height: 44px;
-		width: 44px;
-		color: $black;
-		font-size: 22px;
-		@include button-shadow($light-grey);
+		border-radius: 0;
 
 		&.selected {
 			background: $primary-red;

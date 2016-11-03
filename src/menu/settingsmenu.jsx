@@ -28,23 +28,27 @@ var SettingsMenu = React.createClass({
 		return (<div id="settings_container">
 			<MenuHeader click={this.toggleMenu} open={this.state.menu_open} />
 			<div id="settings_menu" className={menu_class}>
-				<ConferenceSelector
-					conferences={this.props.conferences}
-					divisions={this.props.divisions}
-					onConferenceChange={this.onConferenceChange}
-				/>
-				<Relocationizer
-					teams={this.props.teams}
-					cities={this.props.cities}
-					onRelocate={this.props.onRelocate}
-					onExpansion={this.props.onExpansion}
-				/>
-				<ChangeView
-					relocatedTeams={this.props.relocatedTeams}
-					expansionTeams={this.props.expansionTeams}
-					onUndoRelocation={this.props.onUndoRelocation}
-					onUndoExpansion={this.props.onUndoExpansion}
-				/>
+				<div className="pane" id="main">
+					<ConferenceSelector
+						conferences={this.props.conferences}
+						divisions={this.props.divisions}
+						onConferenceChange={this.onConferenceChange}
+					/>
+					<Relocationizer
+						teams={this.props.teams}
+						cities={this.props.cities}
+						onRelocate={this.props.onRelocate}
+						onExpansion={this.props.onExpansion}
+					/>
+				</div>
+				<div className="pane" id="secondary">
+					<ChangeView
+						relocatedTeams={this.props.relocatedTeams}
+						expansionTeams={this.props.expansionTeams}
+						onUndoRelocation={this.props.onUndoRelocation}
+						onUndoExpansion={this.props.onUndoExpansion}
+					/>
+				</div>
 			</div>
 		</div>);  
 	},

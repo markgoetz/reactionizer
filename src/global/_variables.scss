@@ -18,6 +18,24 @@ $radius: 3px;
 
 $shadow-height: 3px;
 
+$breakpoint-mobile: 400px;
+$breakpoint-tablet: 700px;
+$breakpoint-tablethd: 900px;
+$breakpoint-desktop: 1025px;
+$breakpoint-desktophd: 1280px;
+
+@mixin media-league-teamlist {
+	@media (min-width: $breakpoint-tablet) and (max-width:$breakpoint-tablethd), (min-width:$breakpoint-desktop) {
+		@content;
+	}
+}
+
+@mixin media-league-teamgrid {
+	@media (max-width: $breakpoint-tablet), (min-width:$breakpoint-tablethd) and (max-width:$breakpoint-desktop) {
+		@content;
+	}
+}
+
 @mixin button-shadow($color) {
 	box-shadow: 0px $shadow-height 0px darken($color, 20%);
 }

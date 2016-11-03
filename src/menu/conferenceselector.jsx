@@ -38,7 +38,7 @@ var ConferenceSelector = React.createClass({
       this
     );
 
-		return (<div>
+		return (<div className="fieldgroup">
       <div className="field">
         <h3>Conferences</h3>
         <div className="subfield">

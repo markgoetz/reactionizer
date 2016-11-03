@@ -1,0 +1,17 @@
+@import "../global/_variables";
+
+.changed_teams {
+	header {
+		text-align: left;
+		font-size: 18px;
+		padding: 15px;
+
+		display: flex;
+		align-content: center;
+
+		@media (max-width: $breakpoint-tablethd) {
+			height: 44px;
+		}
+
+	}
+}

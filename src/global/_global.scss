@@ -1,11 +1,28 @@
 @import "./_reset";
+@import "./_variables";
 
 div, span, input, select {
 	box-sizing: border-box;
 }
 
-@media (min-width: 1025px) {
-	button {
-		min-height: 0;
+button {
+	font-family: $font-primary;
+	text-align: center;
+	border: 0;
+	cursor: pointer;
+	min-height: 44px;
+	min-width: 44px;
+	color: $black;
+	font-size: 22px;
+	@include button-hover($light-grey);
+	@include button-shadow($light-grey);
+	border-radius: $radius;
+
+	@media (min-width: 1025px) {
+		button {
+			min-height: 0;
+			min-width: 0;
+			padding: 5px;
+		}
 	}
 }

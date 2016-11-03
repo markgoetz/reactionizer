@@ -1,6 +1,8 @@
 var React = require("react");
 var ChangedTeamView = require("./changedteamview");
 
+require("./_changeview.scss");
+
 var ChangeView = React.createClass({
 	propTypes: {
 		relocatedTeams: React.PropTypes.array,
@@ -25,11 +27,13 @@ var ChangeView = React.createClass({
 		}, this);
 
 		var class_name = this.state.open ? "open" : "closed";
+		var button_label = this.state.open ? "close" : "open";
 
 		return <div className="changed_teams">
 			<header>
-				View Changes
+				<div className="title">View Changes</div>
 				<div className="change_count">{change_count}</div>
+				<button onClick={this.toggle}>{button_label}</button>
 			</header>
 			<div className={class_name}>
 				{relocated_nodes}

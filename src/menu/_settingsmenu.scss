@@ -1,11 +1,22 @@
 @import "../global/_variables";
 
+#settings_container {
+	background: $primary-blue;
+	color: $lightest-blue;
+	display: flex;
+}
+
+#settings_header {
+	padding: 5px 15px;
+}
+
 #settings_menu {
 	transition: .4s;
 	position: absolute;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	background: $primary-blue;
 
 	&.closed {
 		max-height: 0px;
@@ -20,8 +31,9 @@
 		z-index: 9000000000001;
 	}
 
-	& > div {
+	& .pane#main {
 		flex-grow: 1;
+		overflow: hidden;
 	}
 }
 
@@ -35,18 +47,19 @@
 	}	
 }
 
+.fieldgroup {
+	display: flex;
+	flex-direction: column;
+}
+
+.field	{
+	margin: 15px 15px 30px;
+}
+
 .subfield {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-}
-
-.field	{
-	margin-top: 5px;
-	margin-bottom: 50px;
-}
-
-.subfield {
 	text-align: right;	
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -94,18 +107,6 @@
 	}
 }
 
-#settings_container {
-	background: $primary-blue;
-	color: $lightest-blue;
-
-	& > * {
-		padding: 15px;
-	}
-}
-
-#settings_menu {
-	background: $primary-blue;
-}
 
 h3 {
 	font-size: 30px;
@@ -114,43 +115,39 @@ h3 {
 
 /* Tablet Portrait */
 @media (min-width: 700px) {
-	#settings_menu {
+	.fieldgroup {
 		flex-direction: row;
-		justify-content: space-between;
+	}
 
-		& div {
-			flex-grow: 1;
-		}
-
-		& > :first-child {
-			margin-right: 15px;
-		}
+	.field {
+		flex-grow: 1;
 	}
 }
 
 @media (min-width: 900px) {
 	#settings_menu, #settings_menu.closed {
-		display: block;
+		display: flex;
 		align-self: stretch;
 		position: static;
-		max-height: auto;
+		max-height: none;
 		opacity: 1;
-
-		& :first-child {
-			margin-right: auto;
-		}
+		z-index: 1;
 	}
 
 	#settings_container {
-		min-width: 44px * 4 + 30px;
+		width: 44px * 4 + 30px;
 	}
 
 	#settings_header {
 		display: none;
 	}
 
+	.fieldgroup {
+		flex-direction: column;
+	}
+
 	.field {
-		margin-bottom: 30px;
+		flex-grow: 0;
 	}
 
 	h3 {

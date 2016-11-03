@@ -25,7 +25,7 @@ var Relocationizer = React.createClass({
 			return <option key={city.id} value={city.id}>{city.city}</option>;
 		});
 
-		return <div>
+		return <div className="fieldgroup">
 			<div className="field">
 				<h3>Relocate team</h3>
 				<div className="subfield"><label>team</label><select value={this.state.relocate_team} onChange={this.handleRelocateTeamSelect}>{team_nodes}</select></div>

@@ -3,17 +3,18 @@
 #settings_container {
 	background: $primary-blue;
 	color: $lightest-blue;
-	display: flex;
 }
 
 #settings_header {
 	padding: 5px 15px;
+	z-index: 9000000000001;
 }
 
 #settings_menu {
 	transition: .4s;
 	position: absolute;
 	display: flex;
+	flex-grow: 1;
 	flex-direction: column;
 	width: 100%;
 	background: $primary-blue;
@@ -29,6 +30,7 @@
 		align-self: stretch;
 		opacity: 1;
 		z-index: 9000000000001;
+		box-shadow: 0px 0px 2px 3px $black;
 	}
 
 	& .pane#main {
@@ -53,7 +55,7 @@
 }
 
 .field	{
-	margin: 15px 15px 30px;
+	margin: 15px;
 }
 
 .subfield {
@@ -132,9 +134,12 @@ h3 {
 		max-height: none;
 		opacity: 1;
 		z-index: 1;
+		box-shadow: none;
 	}
 
 	#settings_container {
+		display: flex;
+		flex-direction: column;
 		width: 44px * 4 + 30px;
 	}
 
@@ -168,7 +173,7 @@ h3 {
 
 @media (min-width: 1281px) {
 	.field {
-		margin-bottom: 50px;
+		margin-bottom: 30px;
 	}
 
 	h3 {

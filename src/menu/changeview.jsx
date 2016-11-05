@@ -12,7 +12,7 @@ var ChangeView = React.createClass({
 	},
 	getInitialState: function() {
 		return {
-			open: true
+			open: false
 		};
 	},
 	render: function() {
@@ -29,13 +29,16 @@ var ChangeView = React.createClass({
 		var class_name = this.state.open ? "open" : "closed";
 		var button_label = this.state.open ? "close" : "open";
 
+		var change_count_indicator = (change_count > 0) ? <span className="change_count">{change_count}</span> : "";
+
 		return <div className="changed_teams">
-			<header>
-				<div className="title">View Changes</div>
-				<div className="change_count">{change_count}</div>
-				<button onClick={this.toggle}>{button_label}</button>
-			</header>
-			<div className={class_name}>
+			<h3>
+				<span>Changes</span>
+				{change_count_indicator}
+				<div className="button_container"><button onClick={this.toggle} disabled={change_count == 0}>{button_label}</button></div>
+			</h3>
+
+			<div id="changelist" className={class_name}>
 				{relocated_nodes}
 				{expansion_nodes}
 			</div>

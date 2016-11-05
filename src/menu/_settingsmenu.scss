@@ -7,7 +7,6 @@
 
 #settings_header {
 	padding: 5px 15px;
-	z-index: 9000000000001;
 }
 
 #settings_menu {
@@ -30,7 +29,7 @@
 		align-self: stretch;
 		opacity: 1;
 		z-index: 9000000000001;
-		box-shadow: 0px 0px 2px 3px $black;
+		box-shadow: 0px 3px 2px 0px $black;
 	}
 
 	& .pane#main {
@@ -54,7 +53,7 @@
 	flex-direction: column;
 }
 
-.field	{
+.field {
 	margin: 15px;
 }
 
@@ -134,6 +133,9 @@ h3 {
 		max-height: none;
 		opacity: 1;
 		z-index: 1;
+	}
+
+	#settings_menu.open {
 		box-shadow: none;
 	}
 
@@ -168,15 +170,5 @@ h3 {
 @media (min-width: 1025px) {
 	.subfield select, .subfield input[type=text] {
 		padding: 7px;
-	}
-}
-
-@media (min-width: 1281px) {
-	.field {
-		margin-bottom: 30px;
-	}
-
-	h3 {
-		font-size: 30px;
 	}
 }

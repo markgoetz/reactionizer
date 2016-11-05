@@ -19,10 +19,22 @@ button {
 	border-radius: $radius;
 
 	@media (min-width: 1025px) {
-		button {
-			min-height: 0;
-			min-width: 0;
-			padding: 5px;
-		}
+		min-height: 0;
+		min-width: 0;
+		padding: 5px;
 	}
+
+	&:disabled {
+		background: $disabled-bg-color;
+		color: $disabled-text-color;
+		@include button-shadow($disabled-bg-color);
+		cursor: default;
+		/* do not put the hover here, it's disabled. */
+	}
+}
+
+div.button_container {
+	display: inline-block;
+	flex-grow: 1;
+	text-align: right;
 }

@@ -1,17 +1,50 @@
 @import "../global/_variables";
 
 .changed_teams {
-	header {
+	h3 {
+		background: $medium-blue;
 		text-align: left;
-		font-size: 18px;
+		font-size: 22px;
 		padding: 15px;
 
 		display: flex;
-		align-content: center;
+		align-items: center;
 
-		@media (max-width: $breakpoint-tablethd) {
-			height: 44px;
+		.change_count {
+			background: $primary-red;
+			border-radius: 50%;
+			font-size: 18px;
+			width: 23px;
+			margin: 5px;
+			padding: 5px;
+			text-align: center;
+		}
+	}
+
+	#changelist {
+		background: $light-blue;
+		color: $black;
+
+		&.open {
+			max-height: none;
 		}
 
+		&.closed {
+			max-height: 0;
+			overflow: hidden;
+		}
+	}
+}
+
+@media (min-width: $breakpoint-tablethd) {
+	.pane#secondary {
+		position: relative;
+	}
+
+	.changed_teams {
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
 	}
 }

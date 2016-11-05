@@ -10,7 +10,7 @@ var SelectorButton = React.createClass({
 		onButtonClick: React.PropTypes.func
 	},
 	render: function() {
-		var className = "div_button selector " + (this.props.selected ? " selected" : "") + (this.props.disabled ? " disabled" : "");
+		var className = "div_button selector" + (this.props.selected ? " selected" : "");
 		var id = this.props.type + "_count_selector_" + this.props.value;
 		return (<button
       className={className}

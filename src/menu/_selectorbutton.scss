@@ -22,14 +22,6 @@ button {
 			@include button-hover($primary-red);
 		}
 
-		&.disabled {
-			background: $disabled-bg-color;
-			color: $disabled-text-color;
-			@include button-shadow($disabled-bg-color);
-			cursor: default;
-			/* do not put the hover here, it's disabled. */
-		}
-
 		&:first-child {
 			border-radius: $radius 0 0 $radius;
 		}

@@ -12,7 +12,7 @@ var MenuHeader = React.createClass({
 		return (
 			<h2 id="settings_header">
 				<span>Settings</span>
-				<button onClick={this.props.click}>{button_label}</button>
+				<div className="button_container"><button onClick={this.props.click}>{button_label}</button></div>
 			</h2>
 		);
 	}

@@ -1,0 +1,22 @@
+@import "../global/_variables";
+
+.changedteam {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: no-wrap;
+	padding: 5px 15px;
+	align-items: center;
+	font-size: 22px;
+
+	span {
+		flex-grow: 1;
+	}
+
+	@media (min-width: $breakpoint-tablethd) {
+		font-size: 14px;
+
+		button {
+			font-size: 14px;
+		}
+	}
+}

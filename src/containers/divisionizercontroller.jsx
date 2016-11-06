@@ -4,6 +4,7 @@ var TeamManager = require("../containers/teammanager.model");
 
 var DragDropContext = require("react-dnd").DragDropContext;
 var DnDBackend = require("react-dnd-html5-backend");
+var URLController = require("./urlcontroller");
 
 var Divisionizer = require("./divisionizer");
 
@@ -20,6 +21,7 @@ var DivisionizerController = React.createClass({
 	getInitialState: function() {
 		this.teammanager = new TeamManager(jsonTeams);
 		this.leaguemanager = new LeagueManager(jsonDefaultLeagues);
+		this.urlcontroller = new URLController();
 
 		return {
 			conference_count: this.props.initConferences,
@@ -77,6 +79,12 @@ var DivisionizerController = React.createClass({
 		this.setState({
 			league: this._getLeague(null, null, teams),
 			teams: teams
+		});
+
+		this.urlcontroller.update({
+			leagues: this.leaguemanager.getStrings(),
+			relocations: this.teammanager.getRelocatedTeams(),
+			expansions: this.teammanager.getExpansionTeams()
 		});
 	},
 

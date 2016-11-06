@@ -6,6 +6,8 @@ function LeagueModel(league, conference_count, division_count) {
 	this.div_string = league.string;
 	this.div_names = league.names;
 
+	this.getString = function() { return this.div_string; };
+
 	this.addTeam = function(div_number) {
 		this.div_string = this.div_string + div_number + "";
 	};

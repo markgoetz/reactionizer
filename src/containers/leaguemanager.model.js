@@ -24,6 +24,20 @@ var LeagueManager = function(defaultleaguestrings) {
 	this.getLeague = function(conferences, divisions) {
 		return this.defaultleagues[conferences][divisions];
 	};
+
+	this.getStrings = function() {
+		var leagues = [];
+
+		for (var c = 1; c < this.defaultleagues.length; c++) {
+			for (var d = 1; d < this.defaultleagues[c].length; d++) {
+				if (!this.defaultleagues[c][d]) continue;				
+
+				leagues[d] = this.defaultleagues[c][d].getString();
+			}
+		}		
+
+		return leagues;
+	};
 	
 	this.addTeam = function() {
 		// Put the new team in the division with the lowest number of teams.

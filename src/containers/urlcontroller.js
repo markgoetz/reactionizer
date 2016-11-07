@@ -1,7 +1,7 @@
 var jsURL = require("jsurl");
 
-function _setURL(url_string) {
-	window.location.search = url_string;
+function _setURL(data, url_string) {
+	window.history.pushState(data, "", "?" + url_string);
 }
 
 function _getURL() {
@@ -22,7 +22,7 @@ function URLController() {
 			}
 		);
 
-		_setURL(url_string);
+		_setURL(data, url_string);
 	};
 
 	this.getData = function() {

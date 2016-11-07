@@ -1,8 +1,8 @@
 {
   "name": "reactionizer",
   "version": "0.0.0",
-  "description": "Tutorial for teaching myself React.",
-  "main": "server.js",
+  "description": "Application to help visitors play around with divisions for NHL teams.",
+  "main": "entry.jsx",
   "repository": {
     "type": "git",
     "url": "https://github.com/markgoetz/reactionizer.git"

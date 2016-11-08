@@ -19,6 +19,7 @@ var TeamManager = function(jsonTeams) {
 			{
 				name: name,
 				id: this.teams.length,
+				cityid: city.id,
 				city: city.city,
 				lat: city.lat,
 				lon: city.lon

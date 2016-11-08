@@ -2,23 +2,23 @@ var League = require("../league/league.model");
 
 require("../global/getminvalueindex-polyfill");
 
-var LeagueManager = function(defaultleaguestrings) {
-	var _getInitLeagues = function(strings) {
+var LeagueManager = function(defaultleagues) {
+	var _getInitLeagues = function(init_leagues) {
 		var leagues = [null, [], [], []];
 
 		for (var c = 1; c < leagues.length; c++) {
-			for (var div_count in strings) {
+			for (var div_count in init_leagues) {
 				if (div_count % c != 0) continue;
 
-				var string = strings[div_count];
-				leagues[c][div_count] = new League(string, c, div_count);
+				var init_league = init_leagues[div_count];
+				leagues[c][div_count] = new League(init_league, c, div_count);
 			}
 		}
 
 		return leagues;
-	}.bind(this);
+	};
 
-	this.defaultleagues = _getInitLeagues(defaultleaguestrings);
+	this.defaultleagues = _getInitLeagues(defaultleagues);
 
 
 	this.getLeague = function(conferences, divisions) {
@@ -33,6 +33,20 @@ var LeagueManager = function(defaultleaguestrings) {
 				if (!this.defaultleagues[c][d]) continue;				
 
 				leagues[d] = this.defaultleagues[c][d].getString();
+			}
+		}		
+
+		return leagues;
+	};
+
+	this.setStrings = function(strings) {
+		var leagues = [];
+
+		for (var c = 1; c < this.defaultleagues.length; c++) {
+			for (var d = 1; d < this.defaultleagues[c].length; d++) {
+				if (!this.defaultleagues[c][d]) continue;				
+
+				this.defaultleagues[c][d].setString(strings[d]);
 			}
 		}		
 

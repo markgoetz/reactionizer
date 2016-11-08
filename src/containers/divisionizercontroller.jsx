@@ -4,7 +4,8 @@ var TeamManager = require("../containers/teammanager.model");
 
 var DragDropContext = require("react-dnd").DragDropContext;
 var DnDBackend = require("react-dnd-html5-backend");
-var URLController = require("./urlcontroller");
+var Serializer = require("./serializer");
+var QueryString = require("./querystring");
 
 var Divisionizer = require("./divisionizer");
 
@@ -18,10 +19,32 @@ var DivisionizerController = React.createClass({
 		initDivisions: React.PropTypes.number
 	},
 
+	parseQueryString: function() {
+		var data = this.serializer.deserialize(this.querystring.get());
+
+		if (data.leagues)
+			this.leaguemanager.setStrings(data.leagues);
+
+		if (data.relocations) {
+			data.relocations.forEach(function (t) {
+				this.teammanager.relocateTeam(t.id, jsonCities[t.city]);
+			}, this);
+		}
+
+		if (data.expansions) {
+			data.expansions.forEach(function (t) {
+				this.teammanager.addTeam(t.name, jsonCities[t.city]);
+			}, this);
+		}
+	},
+
 	getInitialState: function() {
 		this.teammanager = new TeamManager(jsonTeams);
 		this.leaguemanager = new LeagueManager(jsonDefaultLeagues);
-		this.urlcontroller = new URLController();
+		this.querystring = new QueryString();
+		this.serializer = new Serializer();
+
+		this.parseQueryString();
 
 		return {
 			conference_count: this.props.initConferences,
@@ -76,16 +99,21 @@ var DivisionizerController = React.createClass({
 	_updateLeague: function() {
 		var teams = this.teammanager.teams;
 
+		var query_string = this.serializer.serialize(
+			this.leaguemanager.getStrings(),
+			this.teammanager.getRelocatedTeams(),
+			this.teammanager.getExpansionTeams()
+		);
+
+		this.querystring.set(query_string);
+
 		this.setState({
 			league: this._getLeague(null, null, teams),
-			teams: teams
+			teams: teams,
+			query_string: query_string
 		});
 
-		this.urlcontroller.update({
-			leagues: this.leaguemanager.getStrings(),
-			relocations: this.teammanager.getRelocatedTeams(),
-			expansions: this.teammanager.getExpansionTeams()
-		});
+		
 	},
 
 	_leagueToArray: function(league, teams) {
@@ -119,7 +147,8 @@ var DivisionizerController = React.createClass({
 			onUndoRelocation={this.onUndoRelocate}
 			onUndoExpansion={this.onUndoExpansion}
 			onConferenceChange={this.onConferenceChange}
-			onDrag={this.onDrag} />;
+			onDrag={this.onDrag}
+			queryString={this.state.querystring} />;
 	}
 });
 

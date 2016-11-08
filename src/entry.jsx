@@ -5,41 +5,11 @@ require("./global/_global.scss");
 
 var DivisionizerController = require("./containers/divisionizercontroller");
 
-
-var global_markers;
-var global_relocated_teams = new Array();
-
-function moveTeamMarker(team, lat, lon) {
-	global_markers[team].setPosition(new google.maps.LatLng(lat, lon));
-	global_markers[team].setAnimation(google.maps.Animation.DROP);
-}
-
 function initialize(container_id, conferences, divisions) {
-	//initMap();
-	processBookmark();
-
-	//updateCosts();
-	
 	ReactDOM.render(
 		<DivisionizerController initConferences={conferences} initDivisions={divisions} />,
 		document.getElementById(container_id)
-    );  
-	//updateTableFormat(divisions);
-	//setBookmark(divisions.string);
-}
-
-function processBookmark() {
-	if (location.hash) {
-		var hash_pieces = location.hash.substring(1).split(":");
-		global_conference_count = hash_pieces[0];
-		global_division_count = hash_pieces[1];
-		
-		for (var i = 3; i < hash_pieces.length; i++) {
-			var relocated_team = hash_pieces[i];
-			var team_pieces = relocated_team.split("^");
-			changeTeamCity(team_pieces[0], team_pieces[1]);
-		}
-	}
+    ); 
 }
 
 

@@ -2,6 +2,7 @@
 
 var Team = function(data, expansion) {
 	this.name = data.name;
+	this.cityid = data.cityid;
 	this.city = data.city;
 	this.lat = data.lat;
 	this.lon = data.lon;
@@ -19,6 +20,7 @@ var Team = function(data, expansion) {
 
 	this.relocate = function(city) {
 		this.city = city.city;
+		this.cityid = city.id;
 		this.lat = city.lat;
 		this.lon = city.lon;
 		this.relocated = true;

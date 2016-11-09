@@ -9,20 +9,19 @@ var Serializer = function() {
 		return string;
 	};
 
-	this.serialize = function(leagues, relocations, expansions) {
-		var data = {};
+	this.serialize = function(conferences, divisions, league, relocations, expansions) {
+		var data = [];
 
-		leagues.splice(0,2);
+		data.push(conferences, divisions);
 
-		data.l = leagues.map(function(s) {
-			return compressLeagueString(s);
-		});
-		data.r = relocations.map(function(t) {
+		data.push(compressLeagueString(league));
+
+		data.push(relocations.map(function(t) {
 			return [ t.id, t.cityid ];
-		});
-		data.e = expansions.map(function(t) {
+		}));
+		data.push(expansions.map(function(t) {
 			return [ t.name, t.cityid ];
-		});
+		}));
 
 		return jsURL.stringify(data);
 	};
@@ -33,14 +32,14 @@ var Serializer = function() {
 
 		var response = {};
 
-		response.leagues = data.l.map(function(s) {
-			return decompressLeagueString(s);
-		});
-		response.leagues.unshift(null,null);
-		response.relocations = data.r.map(function(d) {
+		response.conferences = data[0];
+		response.divisions = data[1];
+		response.league = decompressLeagueString(data[2]);
+
+		response.relocations = data[3].map(function(d) {
 			return { id: d[0], city: d[1] };
 		});
-		response.expansions = data.e.map(function(d) {
+		response.expansions = data[4].map(function(d) {
 			return { name: d[0], city: d[1] };
 		});
 		

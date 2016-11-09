@@ -22,8 +22,14 @@ var DivisionizerController = React.createClass({
 	parseQueryString: function() {
 		var data = this.serializer.deserialize(this.querystring.get());
 
-		if (data.leagues)
-			this.leaguemanager.setStrings(data.leagues);
+		if (data.conferences)
+			this.initConferences = data.conferences;
+
+		if (data.divisions)
+			this.initDivisions = data.divisions;
+
+		if (data.league)
+			this.leaguemanager.setString(data.league, this.initDivisions);
 
 		if (data.relocations) {
 			data.relocations.forEach(function (t) {
@@ -44,12 +50,15 @@ var DivisionizerController = React.createClass({
 		this.querystring = new QueryString();
 		this.serializer = new Serializer();
 
+		this.initConferences = this.props.initConferences;
+		this.initDivisions = this.props.initDivisions;
+
 		this.parseQueryString();
 
 		return {
-			conference_count: this.props.initConferences,
-			division_count: this.props.initDivisions,
-			league: this._getLeague(this.props.initConferences, this.props.initDivisions),
+			conference_count: this.initConferences,
+			division_count: this.initDivisions,
+			league: this._getLeague(this.initConferences, this.initDivisions),
 			cities: jsonCities
 		};
 	},
@@ -77,11 +86,7 @@ var DivisionizerController = React.createClass({
 	},
 
 	onConferenceChange: function(c, d) {
-		this.setState({
-			conference_count: c,
-			division_count: d,
-			league: this._getLeague(c, d)
-		});
+		this._updateLeague(c, d);
 	},
 
 	onDrag: function(team, division) {
@@ -89,18 +94,24 @@ var DivisionizerController = React.createClass({
 		this._updateLeague();
 	},
 
-	_getLeague: function(conf_count, division_count, teams) { // The optional parameters are a hack to fix scenarios where you have to call React.setState() on both the league and the division/conference count.
+	// The optional parameters are a hack to fix scenarios where you have to call React.setState() on both the league and the division/conference count.
+	_getLeague: function(conf_count, division_count, teams) {
 		if (!conf_count) conf_count = this.state.conference_count;
 		if (!division_count) division_count = this.state.division_count;
 
 		return this._leagueToArray(this.leaguemanager.getLeague(conf_count, division_count), teams);
 	},
 
-	_updateLeague: function() {
+	_updateLeague: function(conf_count, division_count) {
+		if (!conf_count) conf_count = this.state.conference_count;
+		if (!division_count) division_count = this.state.division_count;
+
 		var teams = this.teammanager.teams;
 
 		var query_string = this.serializer.serialize(
-			this.leaguemanager.getStrings(),
+			conf_count,
+			division_count,
+			this.leaguemanager.getLeague(conf_count, division_count).getString(),
 			this.teammanager.getRelocatedTeams(),
 			this.teammanager.getExpansionTeams()
 		);
@@ -108,12 +119,12 @@ var DivisionizerController = React.createClass({
 		this.querystring.set(query_string);
 
 		this.setState({
-			league: this._getLeague(null, null, teams),
+			conference_count: conf_count,
+			division_count: division_count,
+			league: this._getLeague(conf_count, division_count, teams),
 			teams: teams,
 			query_string: query_string
 		});
-
-		
 	},
 
 	_leagueToArray: function(league, teams) {

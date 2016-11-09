@@ -39,18 +39,12 @@ var LeagueManager = function(defaultleagues) {
 		return leagues;
 	};
 
-	this.setStrings = function(strings) {
-		var leagues = [];
+	this.setString = function(string, div_count) {
+		for (var c = 1; c <= 3; c++) {
+			if (!this.defaultleagues[c][div_count]) continue;
 
-		for (var c = 1; c < this.defaultleagues.length; c++) {
-			for (var d = 1; d < this.defaultleagues[c].length; d++) {
-				if (!this.defaultleagues[c][d]) continue;				
-
-				this.defaultleagues[c][d].setString(strings[d]);
-			}
-		}		
-
-		return leagues;
+			this.defaultleagues[c][div_count].setString(string);
+		}
 	};
 	
 	this.addTeam = function() {

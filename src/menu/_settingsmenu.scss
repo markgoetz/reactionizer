@@ -142,7 +142,8 @@ h3 {
 	#settings_container {
 		display: flex;
 		flex-direction: column;
-		width: 44px * 4 + 30px;
+		min-width: 44px * 4 + 30px;
+		max-width: 44px * 4 + 30px;
 	}
 
 	#settings_header {

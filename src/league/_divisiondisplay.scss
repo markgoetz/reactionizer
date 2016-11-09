@@ -11,10 +11,21 @@
 
 .division.conf-0 {
 	background: rgba($c0d0color, .1);
+
 	& > .name {
 		color: $c0d0color;
 		border-color: $c0d0color;
 	}
+
+	&.div-1 > .name {
+		color: $c0d1color;
+		border-color: $c0d1color;	
+	}
+
+	&.div-2 > .name {
+		color: $c0d2color;
+		border-color: $c0d2color;	
+	}	
 }
 
 .division.conf-1 {
@@ -23,6 +34,16 @@
 		color: $c1d0color;
 		border-color: $c1d0color;
 	}
+
+	&.div-1 > .name {
+		color: $c1d1color;
+		border-color: $c1d1color;	
+	}
+
+	&.div-2 > .name {
+		color: $c1d2color;
+		border-color: $c1d2color;	
+	}	
 }
 
 .division.conf-2 {
@@ -30,6 +51,11 @@
 	& > .name {
 		color: $c2d0color;
 		border-color: $c2d0color;
+	}
+
+	&.div-1 > .name {
+		color: $c2d1color;
+		border-color: $c2d1color;	
 	}
 }
 

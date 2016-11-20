@@ -9,10 +9,19 @@ var MarkerBackground = React.createClass({
 		team: React.PropTypes.instanceOf(Team).isRequired,
 		division: React.PropTypes.number.isRequired,
 		conference: React.PropTypes.number.isRequired,
+		singleConference: React.PropTypes.bool.isRequired,
 		mapHolderRef: React.PropTypes.object
 	},
 	render: function() {
-		var color = getColor(this.props.conference, this.props.division);
+		var color;
+
+		if (!this.props.singleConference) {
+			color = getColor(this.props.conference, this.props.division);
+		}
+		else {
+			color = getColor(this.props.division, 0);
+		}
+
 		var icon_background = new GoogleMapTeamIconModel(color);
 
 		return <Marker

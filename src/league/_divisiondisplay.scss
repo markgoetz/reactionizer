@@ -12,7 +12,7 @@
 .division.conf-0 {
 	background: rgba($c0d0color, .1);
 
-	& > .name {
+	&.div-0 > .name {
 		color: $c0d0color;
 		border-color: $c0d0color;
 	}
@@ -30,7 +30,7 @@
 
 .division.conf-1 {
 	background: rgba($c1d0color, .1);
-	& > .name {
+	&.div-0 > .name {
 		color: $c1d0color;
 		border-color: $c1d0color;
 	}
@@ -48,7 +48,7 @@
 
 .division.conf-2 {
 	background: rgba($c2d0color, .1);
-	& > .name {
+	&.div-0 > .name {
 		color: $c2d0color;
 		border-color: $c2d0color;
 	}
@@ -56,6 +56,56 @@
 	&.div-1 > .name {
 		color: $c2d1color;
 		border-color: $c2d1color;	
+	}
+}
+
+.col-1 .division {
+	&.div-0 {
+		background: rgba($c0d0color, .1);
+		& > .name {
+			color: $c0d0color;
+			border-color: $c0d0color;
+		}
+	}
+
+	&.div-1 {
+		background: rgba($c1d0color, .1);
+		& > .name {
+			color: $c1d0color;
+			border-color: $c1d0color;
+		}
+	}
+
+	&.div-2 {
+		background: rgba($c2d0color, .1);
+		& > .name {
+			color: $c2d0color;
+			border-color: $c2d0color;
+		}
+	}
+	
+	&.div-3 {
+		background: rgba($c3d0color, .1);
+		& > .name {
+			color: $c3d0color;
+			border-color: $c3d0color;
+		}
+	}
+
+	&.div-4 {
+		background: rgba($c4d0color, .1);
+		& > .name {
+			color: $c4d0color;
+			border-color: $c4d0color;
+		}
+	}
+
+	&.div-5 {
+		background: rgba($c5d0color, .1);
+		& > .name {
+			color: $c5d0color;
+			border-color: $c5d0color;
+		}
 	}
 }
 

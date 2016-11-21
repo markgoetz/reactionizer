@@ -3,7 +3,9 @@ require("./_header.scss");
 
 var Header = React.createClass({
 	render: function() {
-		return <header>header</header>;
+		return <header>
+			<img src="/images/logo.png" width="176" height="40" />
+		</header>;
 	}
 });	
 

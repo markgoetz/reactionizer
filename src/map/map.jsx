@@ -8,6 +8,7 @@ var GoogleMap = ReactGoogleMaps.GoogleMap;
 
 var MarkerIcon = require("./markericon");
 var MarkerBackground = require("./markerbackground");
+var map_style = require("./mapstyle.json");
 
 var Map = React.createClass({
 	propTypes: {
@@ -43,7 +44,7 @@ var Map = React.createClass({
 						key={"bg" + team.id}
 						mapHolderRef={this.props.mapHolderRef}
 					/>);
-					
+
 					markers.push(<MarkerIcon
 						team={team}
 						key={"icon" + team.id}
@@ -62,7 +63,7 @@ var Map = React.createClass({
 			maxZoom={6}
 			minZoom={3}
 			defaultCenter={ {lat: 41, lng: -96} }
-			mapTypeControl={ false }>
+			options={ { mapTypeControl: false, streetViewControl: false, styles: map_style } }>
 				{this._getMarkers(this.props.league)}
 		</GoogleMap>;
 	}

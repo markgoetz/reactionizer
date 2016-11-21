@@ -3,7 +3,7 @@
 header {
 	text-align: center;
 	font-size: 40px;
-	@include team-gradient($light-grey);
+	@include team-gradient($medium-blue);
 	height: 60px;
 	& img {
 		margin: 10px;

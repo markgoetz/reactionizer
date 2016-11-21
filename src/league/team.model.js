@@ -15,7 +15,7 @@ var Team = function(data, expansion) {
 		if (!this.expansion)
 			return "logos/" + this.name.toLowerCase().replace(" ", "") + ".svg";	
 		else
-			return "logos/knights.svg";
+			return "logos/expansion.svg";
 	};
 
 	this.relocate = function(city) {

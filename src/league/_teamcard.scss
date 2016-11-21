@@ -3,9 +3,12 @@
 .team {
 	min-height: 44px;
 	min-width: 44px;
-	display: inline-block;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 	@include team-gradient($light-grey);
 	font-size: 18px;
+	line-height: 18px;
 	padding: 5px;
 	border-radius: $radius;
 	margin: 2px;
@@ -43,11 +46,10 @@
 @media (min-width:700px) and (max-width:899px),(min-width:1025px) {
 	.team {
 		text-align: left;
-		justify-content: flex-start;
 	}
 
 	.team .city, .team .name {
-		display: inline;
+		display: inline-block;
 		line-height: 18px;
 	}
 

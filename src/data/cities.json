@@ -1,10 +1,11 @@
 [
 	{"id": 0, "city": "Atlanta",     "lat":33.755,     "lon":-84.39},
-	{"id": 1, "city": "Hartford",    "lat":41.762736,  "lon":-72.674286},
-	{"id": 2, "city": "Hamilton",    "lat":43.255278,  "lon":-79.873056},
-	{"id": 3, "city": "Houston",     "lat":29.762778,  "lon":-95.383056},
-	{"id": 4, "city": "Kansas City", "lat":39.109722,  "lon":-94.588611},
-	{"id": 5, "city": "Milwaukee",   "lat":43.0522222, "lon":-87.955833},
-	{"id": 6, "city": "Quebec City", "lat":46.816667,  "lon":-71.216667},
-	{"id": 7, "city": "Seattle",     "lat":47.609722,  "lon":-122.333056}
+	{"id": 1, "city": "Cleveland",   "lat":41.4993,    "lon":-81.6944},
+	{"id": 2, "city": "Hartford",    "lat":41.762736,  "lon":-72.674286},
+	{"id": 3, "city": "Hamilton",    "lat":43.255278,  "lon":-79.873056},
+	{"id": 4, "city": "Houston",     "lat":29.762778,  "lon":-95.383056},
+	{"id": 5, "city": "Kansas City", "lat":39.109722,  "lon":-94.588611},
+	{"id": 6, "city": "Milwaukee",   "lat":43.0522222, "lon":-87.955833},
+	{"id": 7, "city": "Quebec City", "lat":46.816667,  "lon":-71.216667},
+	{"id": 8, "city": "Seattle",     "lat":47.609722,  "lon":-122.333056}
 ]

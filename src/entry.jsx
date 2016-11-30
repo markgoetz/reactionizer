@@ -12,20 +12,4 @@ function initialize(container_id, conferences, divisions) {
     ); 
 }
 
-
-
-function setBookmark(div_string) {
-	div_string = global_conference_count + ":" + global_division_count + ":" + div_string;
-	
-	for (var i = 0; i < global_teams.length; i++) {
-		if (global_relocated_teams[i]) {
-			div_string += (":" + i + "^" + global_relocated_teams[i]);
-		}
-	}
-	
-	location.hash = "#" + div_string;
-	$("#fb_share").attr("href", "http://www.facebook.com/sharer/sharer.php?u=http://www.divisionizer.com/%23" + div_string);
-	$("#tw_share").attr("href", "http://www.twitter.com/home?status=http://www.divisionizer.com/%23" + div_string);
-}
-
 initialize("container", 2, 4);

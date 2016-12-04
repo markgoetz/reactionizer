@@ -32,7 +32,7 @@ function LeagueModel(league, conference_count, division_count) {
 		}
 
 		for (var i = 0; i < this.div_string.length; i++) {
-			div_counts[this.div_string[i] - 1]++;
+			div_counts[this.div_string[i]]++;
 		}
 		return div_counts;
 	};
@@ -53,7 +53,7 @@ function LeagueModel(league, conference_count, division_count) {
 		}
 
 		for (var team_id = 0; team_id < this.div_string.length; team_id++) {
-			var total_div_number = this.div_string[team_id] - 1;
+			var total_div_number = this.div_string[team_id];
 
 			var divs_per_conference = this.div_count / this.conf_count;
 

@@ -30,11 +30,11 @@ var LeagueManager = function(defaultleagues) {
 
 		for (var c = 1; c < this.defaultleagues.length; c++) {
 			for (var d = 1; d < this.defaultleagues[c].length; d++) {
-				if (!this.defaultleagues[c][d]) continue;				
+				if (!this.defaultleagues[c][d]) continue;
 
 				leagues[d] = this.defaultleagues[c][d].getString();
 			}
-		}		
+		}
 
 		return leagues;
 	};
@@ -46,7 +46,7 @@ var LeagueManager = function(defaultleagues) {
 			this.defaultleagues[c][div_count].setString(string);
 		}
 	};
-	
+
 	this.addTeam = function() {
 		// Put the new team in the division with the lowest number of teams.
 		for (var c = 1; c <= 3; c++) {
@@ -54,7 +54,7 @@ var LeagueManager = function(defaultleagues) {
 				if (!this.defaultleagues[c][d]) continue;
 
 				var team_counts = this.defaultleagues[c][d].getDivisionCounts();
-				this.defaultleagues[c][d].addTeam(team_counts.getMinValueIndex() + 1);
+				this.defaultleagues[c][d].addTeam(team_counts.getMinValueIndex());
 			}
 		}
 	};

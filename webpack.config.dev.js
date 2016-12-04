@@ -18,7 +18,7 @@ module.exports = {
 		loaders: [{
 			test: /\.jsx$/,
 			exclude: PATHS.exclude,
-			loaders: ["react-hot", "babel"]
+			loaders: ["babel"]
 		},
 		{
 			test: /\.scss$/,
@@ -27,7 +27,7 @@ module.exports = {
 		},
 		{
 			test: /\.json$/,
-			exlude: PATHS.exclude,
+			exclude: PATHS.exclude,
 			loader: "json"
 		}]
 	},
@@ -39,7 +39,6 @@ module.exports = {
 		extensions: ["", ".js", ".jsx"]
 	},
 	devServer: {
-		hot: true,
 		contentBase: "./dist/"
 	}
 };

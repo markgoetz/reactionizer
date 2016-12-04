@@ -50,7 +50,7 @@ var LeagueManager = function(defaultleagues) {
 	this.addTeam = function() {
 		// Put the new team in the division with the lowest number of teams.
 		for (var c = 1; c <= 3; c++) {
-			for (var d = 1; d < this.defaultleagues[c].length; d++) {
+			for (var d = 1; d <= 6; d++) {
 				if (!this.defaultleagues[c][d]) continue;
 
 				var team_counts = this.defaultleagues[c][d].getDivisionCounts();

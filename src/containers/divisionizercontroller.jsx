@@ -22,6 +22,13 @@ var DivisionizerController = React.createClass({
 	parseQueryString: function() {
 		var data = this.serializer.deserialize(this.querystring.get());
 
+		if (data.expansions) {
+			data.expansions.forEach(function (t) {
+				this.teammanager.addTeam(t.name, jsonCities[t.city]);
+				this.leaguemanager.addTeam();
+			}, this);
+		}
+
 		if (data.conferences)
 			this.initConferences = data.conferences;
 
@@ -34,12 +41,6 @@ var DivisionizerController = React.createClass({
 		if (data.relocations) {
 			data.relocations.forEach(function (t) {
 				this.teammanager.relocateTeam(t.id, jsonCities[t.city]);
-			}, this);
-		}
-
-		if (data.expansions) {
-			data.expansions.forEach(function (t) {
-				this.teammanager.addTeam(t.name, jsonCities[t.city]);
 			}, this);
 		}
 	},
@@ -140,7 +141,7 @@ var DivisionizerController = React.createClass({
 				}
 			}
 		}
-		
+
 		return league_array;
 	},
 

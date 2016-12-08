@@ -47,6 +47,10 @@ var TeamManager = function(jsonTeams) {
 			function(t) { return t.expansion; }
 		);
 	};
+
+	this.getTeamCount = function() {
+		return this.teams.length;
+	};
 };
 
 module.exports = TeamManager;

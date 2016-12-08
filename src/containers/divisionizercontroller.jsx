@@ -4,8 +4,8 @@ var TeamManager = require("../containers/teammanager.model");
 
 var DragDropContext = require("react-dnd").DragDropContext;
 var DnDBackend = require("react-dnd-html5-touch-backend");
-var Serializer = require("./serializer");
-var QueryString = require("./querystring");
+var Serializer = require("../statemanagement/serializer");
+var QueryString = require("../statemanagement/querystring");
 
 var Divisionizer = require("./divisionizer");
 
@@ -35,8 +35,11 @@ var DivisionizerController = React.createClass({
 		if (data.divisions)
 			this.initDivisions = data.divisions;
 
-		if (data.league)
-			this.leaguemanager.setString(data.league, this.initDivisions);
+		if (data.league) {
+			var teams = this.teammanager.getTeamCount();
+			var league_string = data.league.slice(-teams);
+			this.leaguemanager.setString(league_string, this.initDivisions);
+		}
 
 		if (data.relocations) {
 			data.relocations.forEach(function (t) {

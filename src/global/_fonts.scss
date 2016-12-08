@@ -1,10 +1,12 @@
-@fontface {
+@font-face {
 	font-family: "Bebas Neue";
-	src: url('/dist/fonts/Bebas Neue.otf');
+	src: url('/fonts/BebasNeue.woff2') format('woff2'),
+	     url('/fonts/BebasNeue.woff')  format('woff');
 }
 
-@fontface {
+@font-face {
 	font-family: "Changa";
 	font-weight: normal;
-	src: url('/dist/fonts/Changa-Regular.ttf');
+	src: url('/fonts/Changa-Regular.woff2') format('woff2'),
+	     url('/fonts/Changa-Regular.woff')  format('woff');
 }

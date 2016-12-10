@@ -29,6 +29,10 @@ module.exports = {
 			test: /\.json$/,
 			exclude: PATHS.exclude,
 			loader: "json"
+		},
+		{
+			test: /\.svg$/,
+			loader: "svg-sprite?name=logo-[name]"
 		}]
 	},
 	devtool: "source-map",

@@ -33,6 +33,10 @@ module.exports = {
 			test: /\.json$/,
 			exlude: PATHS.exclude,
 			loader: "json"
+		},
+		{
+			test: /\.svg$/,
+			loader: "svg-sprite"
 		}]
 	},
 	plugins: [

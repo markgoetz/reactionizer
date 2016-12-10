@@ -2,6 +2,7 @@ var React = require("react");
 var DragSource = require("react-dnd").DragSource;
 var DragTypes = require("../global/dragtypes");
 var Team = require("./team.model");
+var TeamLogo = require("../global/teamlogo.jsx").component;
 
 require("./_teamcard.scss");
 
@@ -25,7 +26,7 @@ var TeamCard = React.createClass({
 		connectDragSource: React.PropTypes.func.isRequired
 	},
 	render: function() {
-		var source=this.props.team.getLogoURL();
+		var source=this.props.team.getLogoID();
 
 		var additionalClass = "";
 		if (this.props.team.relocated) {
@@ -37,7 +38,9 @@ var TeamCard = React.createClass({
 
 		return this.props.connectDragSource(
 			<div className={"team" + additionalClass}>
-				<img className="team-logo" src={source} /><span className="city">{this.props.team.city}</span><span className="name">&nbsp;{this.props.team.name}</span>
+				<TeamLogo className="team-logo" id={source} />
+				<span className="city">{this.props.team.city}</span>
+				<span className="name">&nbsp;{this.props.team.name}</span>
 			</div>
 		);
 	}

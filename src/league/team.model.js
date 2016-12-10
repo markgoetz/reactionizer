@@ -11,12 +11,14 @@ var Team = function(data, expansion) {
 
 	this.original_data = data;
 
-	this.getLogoURL = function() {
+	this.getLogoID = function() {
 		if (!this.expansion)
-			return "logos/" + this.name.toLowerCase().replace(" ", "") + ".svg";	
+			return "logo-" + this.name.toLowerCase().replace(" ", "");
 		else
-			return "logos/expansion.svg";
+			return "logo-expansion";
 	};
+
+	this.getLogoURL = function() { return ""; };
 
 	this.relocate = function(city) {
 		this.city = city.city;
@@ -29,7 +31,7 @@ var Team = function(data, expansion) {
 	this.reset = function() {
 		this.city = this.original_data.city;
 		this.lat = this.original_data.lat;
-		this.lon = this.original_data.lon;		
+		this.lon = this.original_data.lon;
 		this.relocated = false;
 	};
 };

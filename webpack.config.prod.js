@@ -10,6 +10,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var webpack = require("webpack");
 
 module.exports = {
+	devtools: "",
 	entry: PATHS.src + "entry.jsx",
 	output: {
 		path: PATHS.dist,
@@ -36,7 +37,10 @@ module.exports = {
 		},
 		{
 			test: /\.svg$/,
-			loader: "svg-sprite"
+			loaders: [
+				"svg-sprite?name=logo-[name]",
+				"svgo-loader?config=svgoConfig1"
+			]
 		}]
 	},
 	plugins: [
@@ -54,5 +58,10 @@ module.exports = {
 	],
 	resolve: {
 		extensions: ["", ".js", ".jsx"]
+	},
+	svgoConfig1: {
+		plugins:[
+			{removeTitle:true}
+		]
 	}
 };

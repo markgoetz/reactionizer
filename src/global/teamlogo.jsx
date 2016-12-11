@@ -5,8 +5,8 @@ logos.keys().forEach(logos);
 
 var TeamLogoComponent = function(props) {
 	return <svg className={props.className}>
-      <use xlinkHref={"#" + props.id} />
-    </svg>;
+		<use xlinkHref={"#" + props.id} />
+	</svg>;
 };
 
 TeamLogoComponent.propTypes = {
@@ -20,9 +20,8 @@ var TeamLogoGetInlineSVG = function(id) {
 
 	var svg = svg_element.innerHTML;
 	return "<svg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>" +
-        svg +
-      "</svg>";
-	// "<svg width=30 height=30 viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>" + encodeURIComponent(svg) + "</svg>";
+		svg +
+		"</svg>";
 };
 
 module.exports = {

@@ -3,7 +3,10 @@ var LeagueManager = require("../containers/leaguemanager.model");
 var TeamManager = require("../containers/teammanager.model");
 
 var DragDropContext = require("react-dnd").DragDropContext;
-var DnDBackend = require("react-dnd-html5-touch-backend");
+var TouchBackend = require("react-dnd-touch-backend");
+var HTML5Backend = require("react-dnd-html5-backend");
+var DnDBackend = ("ontouchstart" in document.documentElement) ? TouchBackend : HTML5Backend;
+
 var Serializer = require("../statemanagement/serializer");
 var QueryString = require("../statemanagement/querystring");
 

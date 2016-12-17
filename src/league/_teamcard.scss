@@ -19,25 +19,25 @@
 	&:hover {
 		@include team-gradient($light-yellow);
 	}
+}
 
-	&.moved {
-		@include team-gradient($light-blue);
-		&:hover {
-			@include team-gradient($light-yellow);
-		}
-	}
-
-	&.created {
-		@include team-gradient($medium-blue);
-		color: $lightest-blue;
-		&:hover {
-			@include team-gradient($light-yellow);
-			color: $black;
-		}
+.team-moved {
+	@include team-gradient($light-blue);
+	&:hover {
+		@include team-gradient($light-yellow);
 	}
 }
 
-.team-logo {
+.team-created {
+	@include team-gradient($medium-blue);
+	color: $lightest-blue;
+	&:hover {
+		@include team-gradient($light-yellow);
+		color: $black;
+	}
+}
+
+.team_logo {
 	display: inline-block;
 	max-width: 34px;
 	max-height: 34px;
@@ -48,16 +48,16 @@
 		text-align: left;
 	}
 
-	.team .city, .team .name {
+	.team_city, .team_name {
 		display: inline-block;
 		line-height: 18px;
 	}
 
-	.division.col-3 .team .name, .division.col-6 .team .name {
+	.division.col-3 .team_name, .division.col-6 .team_name {
 		display: none;
 	}
 
-	.team-logo {
+	.team_logo {
 		max-width: none;
 		margin-right: 5px;
 	}
@@ -70,11 +70,11 @@
 		max-height: 44px;
 	}
 
-	.team .city, .team .name {
+	.team_city, .team_name {
 		display: none;
 	}
 
-	.team-logo {
+	.team_logo {
 		display: inline-block;
 		min-height: 100%;
 	}
@@ -85,19 +85,19 @@
 		min-height: 0;
 	}
 
-	.team-logo {
+	.team_logo {
 		width: 18px;
 		height: 18px;
 	}
 }
 
 @media (min-width: 1281px) {
-	.team .city, .team .name {
+	.team_city, .team_name {
 		font-size: 24px;
 		line-height: 24px;
 	}
 
-	.team-logo, .team-logo img {
+	.team_logo, .team_logoimage {
 		height: 24px;
 		width: 24px;
 	}

@@ -38,9 +38,9 @@ var TeamCard = React.createClass({
 
 		return this.props.connectDragSource(
 			<div className={"team" + additionalClass}>
-				<TeamLogo className="team-logo" id={source} />
-				<span className="city">{this.props.team.city}</span>
-				<span className="name">&nbsp;{this.props.team.name}</span>
+				<TeamLogo className="team_logo" id={source} />
+				<span className="team_city">{this.props.team.city}</span>
+				<span className="team_name">&nbsp;{this.props.team.name}</span>
 			</div>
 		);
 	}

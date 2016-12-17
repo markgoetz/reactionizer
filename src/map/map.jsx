@@ -18,13 +18,13 @@ var Map = React.createClass({
 
 	render: function() {
 		return <GoogleMapLoader
-			containerElement={<div id="map" />}
-			googleMapElement={ this._getMap() } 
+			containerElement={<div className="map" />}
+			googleMapElement={ this._getMap() }
 		/>;
 	},
 
 	_getMarkers: function(league) {
-		var markers = [];	
+		var markers = [];
 
 		var single_conference = (league.length == 1);
 

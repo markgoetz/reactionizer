@@ -1,11 +1,11 @@
 @import "../global/_variables";
 
-#map {
+.map {
 	flex-grow: 1;
 }
 
 @media (min-width: 700px) {
-	#map {
+	.map {
 		flex-grow: 1;
 	}
 }

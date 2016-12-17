@@ -14,11 +14,11 @@ var LeagueDisplay = React.createClass({
 			return <ConferenceDisplay conference={conference} key={index} number={index} count={this.props.league.length} onDrag={this.onDrag} />;
 		}, this);
 
-		return <div id="league">{nodes}</div>;
+		return <div className="league">{nodes}</div>;
 	},
 	onDrag: function(team_id, div_id) {
 		this.props.onDrag(team_id, div_id);
 	}
-});	
+});
 
 module.exports = LeagueDisplay;

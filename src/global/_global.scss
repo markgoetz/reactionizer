@@ -5,44 +5,10 @@
 body {
 	overflow-x: hidden;
 	width: 100%;
+	font-family: $font-primary;
+	background: $lightest-blue;
 }
 
 div, span, input, select {
 	box-sizing: border-box;
-}
-
-button {
-	font-family: $font-primary;
-	background: $light-grey;
-	text-align: center;
-	border: 0;
-	margin: 0;
-	cursor: pointer;
-	min-height: 44px;
-	min-width: 44px;
-	color: $black;
-	font-size: 22px;
-	@include button-hover($light-grey);
-	@include button-shadow($light-grey);
-	border-radius: $radius;
-
-	@media (min-width: 1025px) {
-		min-height: 0;
-		min-width: 0;
-		padding: 5px;
-	}
-
-	&:disabled {
-		background: $disabled-bg-color;
-		color: $disabled-text-color;
-		@include button-shadow($disabled-bg-color);
-		cursor: default;
-		/* do not put the hover here, it's disabled. */
-	}
-}
-
-div.button_container {
-	display: inline-block;
-	flex-grow: 1;
-	text-align: right;
 }

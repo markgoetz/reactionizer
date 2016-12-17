@@ -25,7 +25,7 @@ var ConferenceDisplay = React.createClass({
 
 		}, this);
 
-		var className = "conference col-" + this.props.count;
+		var className = "conference conference-number" + this.props.count;
 		return <div className={className}>{division_nodes}</div>;
 	},
 	onDrag: function(team_id, div_id) {

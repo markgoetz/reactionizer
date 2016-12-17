@@ -26,12 +26,12 @@ var Divisionizer = React.createClass({
 	},
 	render: function() {
 		return (
-			<div id="divisionizer">
+			<div className="page">
 				<Header />
 
 				<div className="application">
 					<SettingsMenu
-						conferences={this.props.conferences} 
+						conferences={this.props.conferences}
 						divisions={this.props.divisions}
 						teams={this.props.teams}
 						cities={this.props.cities}
@@ -41,7 +41,7 @@ var Divisionizer = React.createClass({
 						onExpansion={this.props.onExpansion}
 						onConferenceChange={this.props.onConferenceChange}
 						onUndoRelocation={this.props.onUndoRelocation}
-						onUndoExpansion={this.props.onUndoExpansion}						
+						onUndoExpansion={this.props.onUndoExpansion}
 					/>
 
 					<div className="content">

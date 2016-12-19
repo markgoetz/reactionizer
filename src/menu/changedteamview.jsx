@@ -11,7 +11,7 @@ var ChangedTeamView = React.createClass({
 	render: function() {
 		return <div key={this.props.team.id} className="changedteam">
 			<span>{this._getMessage()}</span>
-			<button onClick={this.handleClick}>Undo</button>
+			<button className="changedteam_button" onClick={this.handleClick}>Undo</button>
 		</div>;
 	},
 	handleClick: function() {

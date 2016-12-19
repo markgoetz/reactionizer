@@ -26,19 +26,19 @@ var ChangeView = React.createClass({
 			return <ChangedTeamView key={team.id} team={team} onClick={this.props.onUndoExpansion} type={"expansion"} />;
 		}, this);
 
-		var class_name = this.state.open ? "open" : "closed";
+		var class_name = "changedteams_list changedteams_list-" + this.state.open ? "open" : "closed";
 		var button_label = this.state.open ? "close" : "open";
 
-		var change_count_indicator = (change_count > 0) ? <span className="change_count">{change_count}</span> : "";
+		var change_count_indicator = (change_count > 0) ? <span className="changedteams_count">{change_count}</span> : "";
 
-		return <div className="changed_teams">
-			<h3>
+		return <div className="changedteams">
+			<h3 className="changedteams_title">
 				<span>Changes</span>
 				{change_count_indicator}
 				<div className="button_container"><button onClick={this.toggle} disabled={change_count == 0}>{button_label}</button></div>
 			</h3>
 
-			<div id="changelist" className={class_name}>
+			<div className={class_name}>
 				{relocated_nodes}
 				{expansion_nodes}
 			</div>

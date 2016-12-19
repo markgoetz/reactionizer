@@ -31,27 +31,27 @@ var ConferenceSelector = React.createClass({
           key={"division"+division}
           value={division}
           selected={division==this.state.divisions}
-          disabled={division % this.state.conferences != 0} 
+          disabled={division % this.state.conferences != 0}
           onButtonClick={this.divisionUpdate} />
         );
 		},
       this
     );
 
-		return (<div className="fieldgroup">
-      <div className="field">
-        <h3>Conferences</h3>
-        <div className="subfield">
-          <div className="selector-container">
+		return (<div className="formgroup">
+      <div className="form">
+        <h3 className="form_heading">Conferences</h3>
+        <div className="form_field">
+          <div className="selectorcontainer">
             {conference_nodes}
           </div>
         </div>
       </div>
-      
-      <div className="field">
-        <h3>Divisions</h3>  
-        <div className="subfield">
-          <div className="selector-container">
+
+      <div className="form">
+        <h3 className="form_heading">Divisions</h3>
+        <div className="form_field">
+          <div className="selectorcontainer">
             {division_nodes}
           </div>
         </div>
@@ -73,6 +73,6 @@ var ConferenceSelector = React.createClass({
 		this.setState({divisions:d});
 		this.props.onConferenceChange(this.state.conferences, d);
 	}
-});	
+});
 
 module.exports = ConferenceSelector;

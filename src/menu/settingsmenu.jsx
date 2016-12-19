@@ -3,7 +3,9 @@ var MenuHeader = require("./menuheader");
 var ConferenceSelector = require("./conferenceselector");
 var Relocationizer = require("./relocationizer");
 var ChangeView = require("./changeview");
+require("../global/_pane.scss");
 require("./_settingsmenu.scss");
+
 
 var SettingsMenu = React.createClass({
 	propTypes: {
@@ -23,12 +25,12 @@ var SettingsMenu = React.createClass({
 		return {menu_open:false};
 	},
 	render: function() {
-		var menu_class = (this.state.menu_open) ? "open" : "closed";
+		var menu_modifier = "menu-" + ((this.state.menu_open) ? "open" : "closed");
 
-		return (<div id="settings_container">
+		return (<div className="menucontainer">
 			<MenuHeader click={this.toggleMenu} open={this.state.menu_open} />
-			<div id="settings_menu" className={menu_class}>
-				<div className="pane" id="main">
+			<div className={"menu " + menu_modifier}>
+				<div className="pane pane-main">
 					<ConferenceSelector
 						conferences={this.props.conferences}
 						divisions={this.props.divisions}
@@ -41,7 +43,7 @@ var SettingsMenu = React.createClass({
 						onExpansion={this.props.onExpansion}
 					/>
 				</div>
-				<div className="pane" id="secondary">
+				<div className="pane pane-secondary">
 					<ChangeView
 						relocatedTeams={this.props.relocatedTeams}
 						expansionTeams={this.props.expansionTeams}
@@ -50,7 +52,7 @@ var SettingsMenu = React.createClass({
 					/>
 				</div>
 			</div>
-		</div>);  
+		</div>);
 	},
 	onConferenceChange: function(c,d) {
 		this.props.onConferenceChange(c,d);

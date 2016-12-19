@@ -1,5 +1,6 @@
 var React = require("react");
 require("./_relocationizer.scss");
+require("./_actionbutton.scss");
 
 var Relocationizer = React.createClass({
 	propTypes: {
@@ -25,19 +26,54 @@ var Relocationizer = React.createClass({
 			return <option key={city.id} value={city.id}>{city.city}</option>;
 		});
 
-		return <div className="fieldgroup">
-			<div className="field">
-				<h3>Relocate team</h3>
-				<div className="subfield"><label>team</label><select value={this.state.relocate_team} onChange={this.handleRelocateTeamSelect}>{team_nodes}</select></div>
-				<div className="subfield"><label>to</label><select value={this.state.relocate_city} onChange={this.handleRelocateCitySelect}>{city_nodes}</select></div>
-				<div><button className="action" onClick={this.relocate}>Relocate Team</button></div>
+		return <div className="formgroup">
+			<div className="form">
+				<h3 className="form_heading">Relocate team</h3>
+				<div className="field">
+					<label className="field_label">team</label>
+					<select
+						className="field_item"
+						value={this.state.relocate_team}
+						onChange={this.handleRelocateTeamSelect}>
+						{team_nodes}
+					</select>
+				</div>
+				<div className="field">
+					<label className="field_label">to</label>
+					<select
+						className="field_item"
+						value={this.state.relocate_city}
+						onChange={this.handleRelocateCitySelect}>
+						{city_nodes}
+					</select>
+				</div>
+				<div>
+					<button className="actionbutton" onClick={this.relocate}>Relocate Team</button>
+				</div>
 			</div>
 
-			<div className="field">
-				<h3>Expansion team</h3>
-				<div className="subfield"><label>city</label><select value={this.state.expansion_city} onChange={this.handleExpansionCitySelect}>{city_nodes}</select></div>
-				<div className="subfield"><label>name</label><input type="text" value={this.state.expansion_name} onChange={this.handleExpansionCityName} /></div>
-				<div><button className="action" onClick={this.expand}>Create Team</button></div>
+			<div className="form">
+				<h3 className="form_heading">Expansion team</h3>
+				<div className="field">
+					<label className="field_label">city</label>
+					<select
+						className="field_item"
+						value={this.state.expansion_city}
+						onChange={this.handleExpansionCitySelect}>
+						{city_nodes}
+					</select>
+				</div>
+				<div className="field">
+					<label className="field_label">name</label>
+					<input
+						type="text"
+						className="field_item"
+						value={this.state.expansion_name}
+						onChange={this.handleExpansionCityName} />
+				</div>
+				<div>
+					<button className="actionbutton" onClick={this.expand}>Create Team</button>
+				</div>
 			</div>
 		</div>;
 	},

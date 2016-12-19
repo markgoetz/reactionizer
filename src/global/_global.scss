@@ -1,6 +1,5 @@
 @import "./_reset";
 @import "./_variables";
-@import "./_fonts";
 
 body {
 	overflow-x: hidden;
@@ -11,4 +10,63 @@ body {
 
 div, span, input, select {
 	box-sizing: border-box;
+}
+
+button {
+	font-family: $font-primary;
+	background: $light-grey;
+	text-align: center;
+	border: 0;
+	margin: 0;
+	cursor: pointer;
+	min-height: 44px;
+	min-width: 44px;
+	color: $black;
+	font-size: 22px;
+	@include button-hover($light-grey);
+	@include button-shadow($light-grey);
+	border-radius: $radius;
+
+	@media (min-width: 1025px) {
+		min-height: 0;
+		min-width: 0;
+		padding: 5px;
+	}
+
+	&:disabled {
+		background: $disabled-bg-color;
+		color: $disabled-text-color;
+		@include button-shadow($disabled-bg-color);
+		cursor: default;
+		/* do not put the hover here, it's disabled. */
+	}
+}
+
+select {
+	font-family: $font-ui;
+	background: $light-grey;
+	font-size: 18px;
+	border-radius: $radius;
+	color: $medium-blue;
+	min-height: 44px;
+
+	@include button-hover($light-grey);
+	@include button-shadow($light-grey);
+
+	@media (min-width: 1025px) {
+		min-height: none;
+	}
+}
+
+input[type=text] {
+	font-family: $font-ui;
+	background: $lightest-blue;
+	font-size: 18px;
+	border-radius: $radius;
+	border: solid 2px $medium-grey;
+	min-height: 44px;
+
+	@media (min-width: 1025px) {
+		min-height: none;
+	}
 }

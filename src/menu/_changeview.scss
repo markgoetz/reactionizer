@@ -1,50 +1,44 @@
 @import "../global/_variables";
 
-.changed_teams {
-	h3 {
-		background: $medium-blue;
-		text-align: left;
-		font-size: 22px;
-		padding: 15px;
-
-		display: flex;
-		align-items: center;
-
-		.change_count {
-			background: $primary-red;
-			border-radius: 50%;
-			font-size: 18px;
-			width: 23px;
-			margin: 5px;
-			padding: 5px;
-			text-align: center;
-		}
-	}
-
-	#changelist {
-		background: $light-blue;
-		color: $black;
-
-		&.open {
-			max-height: none;
-		}
-
-		&.closed {
-			max-height: 0;
-			overflow: hidden;
-		}
-	}
-}
-
-@media (min-width: $breakpoint-tablethd) {
-	.pane#secondary {
-		position: relative;
-	}
-
-	.changed_teams {
+.changedteams {
+	@media (min-width: $breakpoint-tablethd) {
 		position: absolute;
 		bottom: 0px;
 		left: 0px;
 		right: 0px;
 	}
+}
+
+.changedteams_title{
+	background: $medium-blue;
+	text-align: left;
+	font-size: 22px;
+	padding: 15px;
+
+	display: flex;
+	align-items: center;
+}
+
+.changedteams_count {
+	background: $primary-red;
+	border-radius: 50%;
+	font-size: 18px;
+	width: 23px;
+	margin: 5px;
+	padding: 5px;
+	text-align: center;
+}
+
+.changedteams_list {
+	background: $light-blue;
+	color: $black;
+}
+
+.changedteams_list-open {
+	max-height: none;
+}
+
+.changedteams_list-closed {
+	max-height: 0;
+	overflow: hidden;
 }

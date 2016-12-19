@@ -10,9 +10,9 @@ var MenuHeader = React.createClass({
 		var button_label = (this.props.open) ? "close" : "open";
 
 		return (
-			<h2 id="settings_header">
+			<h2 className="menuheader">
 				<span>Settings</span>
-				<div className="button_container"><button onClick={this.props.click}>{button_label}</button></div>
+				<div className="buttoncontainer"><button onClick={this.props.click}>{button_label}</button></div>
 			</h2>
 		);
 	}

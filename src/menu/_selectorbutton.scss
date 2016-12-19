@@ -1,17 +1,5 @@
 @import "../global/_variables";
 
-.actionbutton {
-	&.action {
-		font-size: 30px;
-		background: $primary-red;
-		color: $lightest-blue;
-		width: 100%;
-		border-radius: $radius;
-		@include button-shadow($primary-red);
-		@include button-hover($primary-red);
-	}
-}
-
 .selectorbutton {
 	border-radius: 0;
 

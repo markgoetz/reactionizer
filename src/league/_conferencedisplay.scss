@@ -1,4 +1,6 @@
-@media (min-width:700px) and (max-width:899px),(min-width:1025px) {
+@import "../global/_variables";
+
+@include media-league-teamlist {
 	.conference {
 		display: flex;
 		flex-direction: row;
@@ -6,7 +8,7 @@
 	}
 }
 
-@media (max-width: 699px),(min-width:900px) and (max-width:1024px) {
+@include media-league-teamgrid {
 	.conference {
 		display: flex;
 		flex-direction: column;

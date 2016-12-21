@@ -44,7 +44,7 @@ var Divisionizer = React.createClass({
 						onUndoExpansion={this.props.onUndoExpansion}
 					/>
 
-					<div className="content">
+				<div className="contentContainer">
 						<Map league={this.props.league} />
 						<LeagueDisplay league={this.props.league} onDrag={this.props.onDrag} />
 					</div>

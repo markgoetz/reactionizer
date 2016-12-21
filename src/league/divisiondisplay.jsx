@@ -35,11 +35,12 @@ var DivisionDisplay = React.createClass({
 			return <TeamCard team={team} key={team.name} />;
 		});
 
-		var className = "division col-" + this.props.count + " conf-" + this.props.conference + " div-" + this.props.number;
+		var divisionClass = "division division-conf" + this.props.conference;
+		var nameClass = "division_name division_name-conf" + this.props.conference + "div" + this.props.number;
 		return this.props.connectDropTarget(
-			<div className={className}>
-				<div className="name">{this.props.division.name}</div>
-				<div className="list">
+			<div className={divisionClass}>
+				<div className={nameClass}>{this.props.division.name}</div>
+				<div className="division_list">
 					{team_nodes}
 				</div>
 			</div>

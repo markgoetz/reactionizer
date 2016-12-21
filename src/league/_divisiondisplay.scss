@@ -2,7 +2,24 @@
 @import "../global/_conferencecolors";
 
 .division {
+	@include media-league-teamlist {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		flex-grow: 1;
+	}
+}
 
+.division-conf0 {
+	background: rgba($c0d0color, .1);
+}
+
+.division-conf1 {
+	background: rgba($c1d0color, .1);
+}
+
+.division-conf2 {
+	background: rgba($c2d0color, .1);
 }
 
 .division_name {
@@ -11,10 +28,10 @@
 	border-bottom: 3px inset;
 	padding: 3px 0px;
 	margin: 0px auto;
-}
 
-.division-conf0 {
-	background: rgba($c0d0color, .1);
+	@media (min-width: $breakpoint-desktophd) {
+		font-size: 30px;
+	}
 }
 
 .division_name-conf0div0 {
@@ -32,36 +49,46 @@
 	border-color: $c0d2color;
 }
 
-
-
-.division.conf-1 {
-	background: rgba($c1d0color, .1);
-	&.div-0 > .name {
-		color: $c1d0color;
-		border-color: $c1d0color;
-	}
-
-	&.div-1 > .name {
-		color: $c1d1color;
-		border-color: $c1d1color;
-	}
-
-	&.div-2 > .name {
-		color: $c1d2color;
-		border-color: $c1d2color;
-	}
+.division_name-conf1div0 {
+	color: $c1d0color;
+	border-color: $c1d0color;
 }
 
-.division.conf-2 {
-	background: rgba($c2d0color, .1);
-	&.div-0 > .name {
-		color: $c2d0color;
-		border-color: $c2d0color;
+.division_name-conf1div1 {
+	color: $c1d1color;
+	border-color: $c1d1color;
+}
+
+.division_name-conf1div2 {
+	color: $c1d2color;
+	border-color: $c1d2color;
+}
+
+.division_name-conf2div0 {
+	color: $c2d0color;
+	border-color: $c2d0color;
+}
+
+.division_name-conf2div1 {
+	color: $c2d1color;
+	border-color: $c2d1color;
+}
+
+.division_list {
+	@include media-league-teamlist {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
+		flex-grow: 1;
 	}
 
-	&.div-1 > .name {
-		color: $c2d1color;
-		border-color: $c2d1color;
+	@include media-league-teamgrid {
+		.division_list {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
 	}
 }
 
@@ -116,21 +143,6 @@
 }
 
 @media (min-width:700px) and (max-width:899px),(min-width:1025px) {
-	.division {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		flex-grow: 1;
-	}
-
-	.division_list {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		width: 100%;
-		flex-grow: 1;
-	}
-
 	.division_list-col3, .division_list-col2 {
 		flex-wrap: wrap;
 		flex-direction: row;
@@ -144,23 +156,9 @@
 }
 
 @media (max-width: 699px),(min-width:900px) and (max-width:1024px) {
-	.division .list {
+	.division_list {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-	}
-}
-
-@media (min-width: 1281px) {
-	.division > .name {
-		font-size: 30px;
-	}
-
-	.division.col-6 .team .city, .division.col-6 .team .name {
-		font-size: 18px;
-	}
-
-	.division.col-6 .team .name {
-		display: inline;
 	}
 }

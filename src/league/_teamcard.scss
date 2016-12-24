@@ -18,6 +18,7 @@
 
 	@include media-league-teamgrid {
 		text-align: center;
+		display: inline-block;
 	}
 
 	@media (max-width: $breakpoint-desktop) {
@@ -58,7 +59,6 @@
 	max-height: 34px;
 
 	@include media-league-teamlist {
-		max-width: none;
 		margin-right: 5px;
 	}
 

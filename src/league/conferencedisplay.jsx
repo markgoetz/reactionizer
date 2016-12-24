@@ -11,21 +11,17 @@ var ConferenceDisplay = React.createClass({
 	},
 	render: function() {
 		var division_nodes = this.props.conference.map(function (division, index) {
-
 			var id = this.props.number * this.props.conference.length + index;
 			return <Division
 				division={division}
 				key={index}
-				count={this.props.conference.length * this.props.count}
 				conference={this.props.number}
 				number={index}
 				id={id}
-				onDrag={this.onDrag}
-			/>;
-
+				onDrag={this.onDrag} />;
 		}, this);
 
-		var className = "conference conference-number" + this.props.count;
+		var className = "conference conference-number" + this.props.number;
 		return <div className={className}>{division_nodes}</div>;
 	},
 	onDrag: function(team_id, div_id) {

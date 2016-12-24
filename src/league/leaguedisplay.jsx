@@ -11,10 +11,24 @@ var LeagueDisplay = React.createClass({
 	},
 	render: function() {
 		var nodes = this.props.league.map(function (conference,index) {
-			return <ConferenceDisplay conference={conference} key={index} number={index} count={this.props.league.length} onDrag={this.onDrag} />;
+			return <ConferenceDisplay
+				conference={conference}
+				key={index}
+				number={index}
+				count={this.props.league.length}
+				onDrag={this.onDrag} />;
 		}, this);
 
-		return <div className="league">{nodes}</div>;
+		var division_count = this.props.league.reduce(
+			function(a, b) { return a + b.length; },
+			0
+		);
+
+		var className = "league " +
+			"league-" + division_count + "div " +
+			"league-" + this.props.league.length + "conf";
+
+		return <div className={className}>{nodes}</div>;
 	},
 	onDrag: function(team_id, div_id) {
 		this.props.onDrag(team_id, div_id);

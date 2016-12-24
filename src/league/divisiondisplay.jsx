@@ -22,7 +22,6 @@ var collect = function(connect, monitor) {
 var DivisionDisplay = React.createClass({
 	propTypes: {
 		division: React.PropTypes.array,
-		count: React.PropTypes.number,
 		conference: React.PropTypes.number,
 		number: React.PropTypes.number,
 		id: React.PropTypes.number,
@@ -35,7 +34,7 @@ var DivisionDisplay = React.createClass({
 			return <TeamCard team={team} key={team.name} />;
 		});
 
-		var divisionClass = "division division-conf" + this.props.conference;
+		var divisionClass = "division division-conf" + this.props.conference + " division-number" + this.props.number;
 		var nameClass = "division_name division_name-conf" + this.props.conference + "div" + this.props.number;
 		return this.props.connectDropTarget(
 			<div className={divisionClass}>

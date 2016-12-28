@@ -3,9 +3,10 @@
     "env": {
         "browser": true,
         "jquery": true,
-        "commonjs": true
+        "commonjs": true,
+		"es6": true
     },
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "extends": ["airbnb"],
     "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
@@ -15,29 +16,11 @@
     "plugins": [
         "react"
     ],
-    "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ]
-    },
-"settings": {
-    "react": {
-      "createClass": "createClass", // Regex for Component Factory to use, default to "createClass"
-      "pragma": "React",  // Pragma to use, default to "React"
-      "version": "15.0" // React version, default to the latest React stable release
-    }
-  }
+	"settings": {
+	    "react": {
+	      "createClass": "createClass",
+	      "pragma": "React",
+	      "version": "15.0"
+	    }
+	}
 }

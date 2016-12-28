@@ -1,5 +1,3 @@
-
-
 var Team = function(data, expansion) {
 	this.name = data.name;
 	this.cityid = data.cityid;
@@ -17,8 +15,6 @@ var Team = function(data, expansion) {
 		else
 			return "logo-expansion";
 	};
-
-	this.getLogoURL = function() { return ""; };
 
 	this.relocate = function(city) {
 		this.city = city.city;

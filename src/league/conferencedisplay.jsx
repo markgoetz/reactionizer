@@ -20,8 +20,7 @@ var ConferenceDisplay = React.createClass({
 				conference={this.props.number}
 				number={index}
 				id={id}
-				onDrag={this.onDrag}
-			/>;
+				onDrag={this.onDrag} />;
 
 		}, this);
 

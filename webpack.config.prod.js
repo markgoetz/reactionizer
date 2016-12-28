@@ -20,10 +20,7 @@ module.exports = {
 		loaders: [{
 			test: /\.jsx$/,
 			exclude: PATHS.exclude,
-			loader: "babel",
-			query: {
-				presets: ["react"]
-			}
+			loader: "babel"
 		},
 		{
 			test: /\.scss$/,

@@ -1,6 +1,6 @@
 import League from '../league/league.model';
 
-import '../global/getminvalueindex-polyfill';
+import getMinValueIndex from '../global/getminvalueindex-polyfill';
 
 export default class LeagueManager {
   constructor(defaultleagues) {
@@ -54,7 +54,7 @@ export default class LeagueManager {
       for (let d = 1; d <= 6; d++) {
         if (!this.defaultleagues[c][d]) {
           const teamCounts = this.defaultleagues[c][d].getDivisionCounts();
-          this.defaultleagues[c][d].addTeam(teamCounts.getMinValueIndex());
+          this.defaultleagues[c][d].addTeam(getMinValueIndex(teamCounts));
         }
       }
     }

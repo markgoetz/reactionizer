@@ -1,4 +1,4 @@
-require('../global/setcharat-polyfill');
+import stringSetCharAt from '../global/setcharat-polyfill';
 
 export default class LeagueModel {
   constructor(league, conferenceCount, divisionCount) {
@@ -21,14 +21,14 @@ export default class LeagueModel {
   }
 
   removeTeam(index) {
-    this.div_string = this.div_string.setCharAt(index, '');
+    this.div_string = stringSetCharAt(this.div_string, index, '');
   }
 
   setTeamDivision(teamId, divNumber) {
     if (teamId < 0 || teamId > this.div_string.length) return;
     if (divNumber < 0 || divNumber > this.div_count) return;
 
-    this.div_string = this.div_string.setCharAt(teamId, divNumber);
+    this.div_string = stringSetCharAt(this.div_string, teamId, divNumber);
   }
 
   getDivisionCounts() {

@@ -1,80 +1,80 @@
-var League = require("../league/league.model");
+import League from '../league/league.model';
 
-require("../global/getminvalueindex-polyfill");
+import '../global/getminvalueindex-polyfill';
 
-var LeagueManager = function(defaultleagues) {
-	var _getInitLeagues = function(init_leagues) {
-		var leagues = [null, [], [], []];
+export default class LeagueManager {
+  constructor(defaultleagues) {
+    this.defaultleagues = this._getInitLeagues(defaultleagues);
+  }
 
-		for (var c = 1; c < leagues.length; c++) {
-			for (var div_count in init_leagues) {
-				if (div_count % c != 0) continue;
+  static _getInitLeagues(initLeagues) {
+    const leagues = [null, [], [], []];
 
-				var init_league = init_leagues[div_count];
-				leagues[c][div_count] = new League(init_league, c, div_count);
-			}
-		}
+    for (let c = 1; c < leagues.length; c++) {
+      Object.keys(initLeagues).forEach((divCount) => {
+        if (divCount % c !== 0) return;
 
-		return leagues;
-	};
+        const initLeague = initLeagues[divCount];
+        leagues[c][divCount] = new League(initLeague, c, divCount);
+      });
+    }
 
-	this.defaultleagues = _getInitLeagues(defaultleagues);
+    return leagues;
+  }
 
+  getLeague(conferences, divisions) {
+    return this.defaultleagues[conferences][divisions];
+  }
 
-	this.getLeague = function(conferences, divisions) {
-		return this.defaultleagues[conferences][divisions];
-	};
+  getStrings() {
+    const leagues = [];
 
-	this.getStrings = function() {
-		var leagues = [];
+    for (let c = 1; c < this.defaultleagues.length; c++) {
+      for (let d = 1; d < this.defaultleagues[c].length; d++) {
+        if (this.defaultleagues[c][d]) {
+          leagues[d] = this.defaultleagues[c][d].getString();
+        }
+      }
+    }
 
-		for (var c = 1; c < this.defaultleagues.length; c++) {
-			for (var d = 1; d < this.defaultleagues[c].length; d++) {
-				if (!this.defaultleagues[c][d]) continue;
+    return leagues;
+  }
 
-				leagues[d] = this.defaultleagues[c][d].getString();
-			}
-		}
+  setString(string, divCount) {
+    for (let c = 1; c <= 3; c++) {
+      if (this.defaultleagues[c][divCount]) {
+        this.defaultleagues[c][divCount].setString(string);
+      }
+    }
+  }
 
-		return leagues;
-	};
+  addTeam() {
+    // Put the new team in the division with the lowest number of teams.
+    for (let c = 1; c <= 3; c++) {
+      for (let d = 1; d <= 6; d++) {
+        if (!this.defaultleagues[c][d]) {
+          const teamCounts = this.defaultleagues[c][d].getDivisionCounts();
+          this.defaultleagues[c][d].addTeam(teamCounts.getMinValueIndex());
+        }
+      }
+    }
+  }
 
-	this.setString = function(string, div_count) {
-		for (var c = 1; c <= 3; c++) {
-			if (!this.defaultleagues[c][div_count]) continue;
+  removeTeam(id) {
+    for (let c = 1; c <= 3; c++) {
+      for (let d = 1; d < this.defaultleagues[c].length; d++) {
+        if (this.defaultleagues[c][d]) {
+          this.defaultleagues[c][d].removeTeam(id);
+        }
+      }
+    }
+  }
 
-			this.defaultleagues[c][div_count].setString(string);
-		}
-	};
-
-	this.addTeam = function() {
-		// Put the new team in the division with the lowest number of teams.
-		for (var c = 1; c <= 3; c++) {
-			for (var d = 1; d <= 6; d++) {
-				if (!this.defaultleagues[c][d]) continue;
-
-				var team_counts = this.defaultleagues[c][d].getDivisionCounts();
-				this.defaultleagues[c][d].addTeam(team_counts.getMinValueIndex());
-			}
-		}
-	};
-
-	this.removeTeam = function(id) {
-		for (var c = 1; c <= 3; c++) {
-			for (var d = 1; d < this.defaultleagues[c].length; d++) {
-				if (!this.defaultleagues[c][d]) continue;
-				this.defaultleagues[c][d].removeTeam(id);
-			}
-		}
-	};
-
-	this.changeTeamDivision = function(team, division, division_count) {
-		for (var c = 1; c <= 3; c++) {
-			if (!this.defaultleagues[c][division_count]) continue;
-
-			this.defaultleagues[c][division_count].setTeamDivision(team, division);
-		}
-	};
-};
-
-module.exports = LeagueManager;
+  changeTeamDivision(team, division, divisionCount) {
+    for (let c = 1; c <= 3; c++) {
+      if (!this.defaultleagues[c][divisionCount]) {
+        this.defaultleagues[c][divisionCount].setTeamDivision(team, division);
+      }
+    }
+  }
+}

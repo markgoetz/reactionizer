@@ -1,63 +1,65 @@
-function StringCompressor() {
-	var DIGITS = "0123456789abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
-	var BASE = DIGITS.length;
+export default class StringCompressor {
+  constructor() {
+    this.DIGITS = '0123456789abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
+    this.BASE = this.DIGITS.length;
+  }
 
-	var _getMaxValue = function(string) {
-		var value = 0;
+  static _getMaxValue(string) {
+    let value = 0;
 
-		for (var i = 0; i < string.length; i++) {
-			if (string.charAt(i) > value)
-				value = string.charAt(i);
-		}
+    for (let i = 0; i < string.length; i++) {
+      if (string.charAt(i) > value) {
+        value = string.charAt(i);
+      }
+    }
 
-		return value;
-	};
+    return value;
+  }
 
-	var _getBlockSize = function(bit_count) {
-		return Math.floor(Math.log(BASE) / Math.log(bit_count));
-	};
+  _getBlockSize(bitCount) {
+    return Math.floor(Math.log(this.BASE) / Math.log(bitCount));
+  }
 
-	var _compressBlock = function(block) {
-		return DIGITS.charAt(block);
-	};
+  _compressBlock(block) {
+    return this.DIGITS.charAt(block);
+  }
 
-	var _decompressBlock = function(block) {
-		return DIGITS.indexOf(block);
-	};
+  _decompressBlock(block) {
+    return this.DIGITS.indexOf(block);
+  }
 
-	this.compress = function(string) {
-		var bits = Number(_getMaxValue(string)) + 1;
-		var block_size = _getBlockSize(bits);
-		var compressed_string = "";
+  compress(string) {
+    let remainingString = string;
+    const bits = Number(this._getMaxValue(string)) + 1;
+    const blockSize = this._getBlockSize(bits);
+    let compressedString = '';
 
-		while (string.length > 0) {
-			var block = string.slice(-block_size);
-			var numeric_block = Number.parseInt(block, bits);
-			compressed_string = _compressBlock(numeric_block) + compressed_string;
+    while (string.length > 0) {
+      const block = string.slice(-blockSize);
+      const numericBlock = Number.parseInt(block, bits);
+      compressedString = this._compressBlock(numericBlock) + compressedString;
 
-			string = string.slice(0,-block_size);
-		}
+      remainingString = remainingString.slice(0, -blockSize);
+    }
 
-		return compressed_string;
-	};
+    return compressedString;
+  }
 
-	this.decompress = function(string, bits) {
-		var block_size = _getBlockSize(bits);
+  decompress(string, bits) {
+    const blockSize = this._getBlockSize(bits);
 
-		var decompressed_string = "";
-		for (var i = 0; i < string.length; i++) {
-			var numeric_block = _decompressBlock(string[i]);
-			var block = numeric_block.toString(bits);
+    let decompressedString = '';
+    for (let i = 0; i < string.length; i++) {
+      var numericBlock = this._decompressBlock(string[i]);
+      let block = numericBlock.toString(bits);
 
-			while (block.length < block_size) {
-				block = "0" + block;
-			}
+      while (block.length < blockSize) {
+        block = `0${block}`;
+      }
 
-			decompressed_string = decompressed_string + block;
-		}
+      decompressedString += block;
+    }
 
-		return decompressed_string;
-	};
+    return decompressedString;
+  }
 }
-
-module.exports = StringCompressor;

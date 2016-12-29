@@ -1,69 +1,74 @@
-require("../global/setcharat-polyfill");
+require('../global/setcharat-polyfill');
 
-function LeagueModel(league, conference_count, division_count) {
-	this.div_count = division_count;
-	this.conf_count = conference_count;
-	this.div_string = league.string;
-	this.div_names = league.names;
+export default class LeagueModel {
+  constructor(league, conferenceCount, divisionCount) {
+    this.div_count = divisionCount;
+    this.conf_count = conferenceCount;
+    this.div_string = league.string;
+    this.div_names = league.names;
+  }
 
-	this.getString = function() { return this.div_string; };
-	this.setString = function(string) { this.div_string = string; };
+  getString() {
+    return this.div_string;
+  }
 
-	this.addTeam = function(div_number) {
-		this.div_string = this.div_string + div_number + "";
-	};
+  setString(string) {
+    this.div_string = string;
+  }
 
-	this.removeTeam = function(index) {
-		this.div_string = this.div_string.setCharAt(index, "");
-	};
+  addTeam(divNumber) {
+    this.div_string = `${this.div_string}${divNumber}`;
+  }
 
-	this.setTeamDivision = function(team_id, div_number) {
-		if (team_id < 0 || team_id > this.div_string.length) return;
-		if (div_number < 0 || div_number > division_count) return;
+  removeTeam(index) {
+    this.div_string = this.div_string.setCharAt(index, '');
+  }
 
-		this.div_string = this.div_string.setCharAt(team_id, div_number);
-	};
+  setTeamDivision(teamId, divNumber) {
+    if (teamId < 0 || teamId > this.div_string.length) return;
+    if (divNumber < 0 || divNumber > this.div_count) return;
 
-	this.getDivisionCounts = function() {
-		var div_counts = [];
+    this.div_string = this.div_string.setCharAt(teamId, divNumber);
+  }
 
-		for (var d = 0; d < this.div_count; d++) {
-			div_counts.push(0);
-		}
+  getDivisionCounts() {
+    const divCounts = [];
 
-		for (var i = 0; i < this.div_string.length; i++) {
-			div_counts[this.div_string[i]]++;
-		}
-		return div_counts;
-	};
+    for (let d = 0; d < this.div_count; d++) {
+      divCounts.push(0);
+    }
 
-	this.toArray = function() {
-		var league_array = [];
-		var div_init_number = 0;
+    for (let i = 0; i < this.div_string.length; i++) {
+      divCounts[this.div_string[i]] += 1;
+    }
+    return divCounts;
+  }
 
-		for (var c = 0; c < this.conf_count; c++) {
-			league_array.push([]);
+  toArray() {
+    const leagueArray = [];
+    let divInitNumber = 0;
 
-			for (var d = 0; d < this.div_count / this.conf_count; d++) {
-				var a = [];
-				a.name = this.div_names[div_init_number];
-				league_array[c].push(a);
-				div_init_number++;
-			}
-		}
+    for (let c = 0; c < this.conf_count; c++) {
+      leagueArray.push([]);
 
-		for (var team_id = 0; team_id < this.div_string.length; team_id++) {
-			var total_div_number = this.div_string[team_id];
+      for (let d = 0; d < this.div_count / this.conf_count; d++) {
+        const a = [];
+        a.name = this.div_names[divInitNumber];
+        leagueArray[c].push(a);
+        divInitNumber += 1;
+      }
+    }
 
-			var divs_per_conference = this.div_count / this.conf_count;
+    for (let teamId = 0; teamId < this.div_string.length; teamId++) {
+      const totalDivNumber = this.div_string[teamId];
 
-			var c2 = Math.floor(total_div_number / divs_per_conference);
+      const divsPerConference = this.div_count / this.conf_count;
 
-			league_array[c2][total_div_number % divs_per_conference].push(team_id);
-		}
+      const c2 = Math.floor(totalDivNumber / divsPerConference);
 
-		return league_array;
-	};
+      leagueArray[c2][totalDivNumber % divsPerConference].push(teamId);
+    }
+
+    return leagueArray;
+  }
 }
-
-module.exports = LeagueModel;

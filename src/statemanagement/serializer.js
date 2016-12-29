@@ -1,45 +1,37 @@
-var jsURL = require("jsurl");
-var StringCompressor = require("./stringcompressor");
+import jsURL from 'jsurl';
+import StringCompressor from './stringcompressor';
 
-var Serializer = function() {
-	var compressor = new StringCompressor();
+export default class Serializer {
+  constructor() {
+    this.compressor = new StringCompressor();
+  }
 
-	this.serialize = function(conferences, divisions, league, relocations, expansions) {
-		var data = [];
+  serialize(conferences, divisions, league, relocations, expansions) {
+    const data = [];
 
-		data.push(conferences, divisions);
+    data.push(conferences, divisions);
 
-		data.push(compressor.compress(league));
+    data.push(this.compressor.compress(league));
 
-		data.push(relocations.map(function(t) {
-			return [ t.id, t.cityid ];
-		}));
-		data.push(expansions.map(function(t) {
-			return [ t.name, t.cityid ];
-		}));
+    data.push(relocations.map(t => [t.id, t.cityid]));
+    data.push(expansions.map(t => [t.name, t.cityid]));
 
-		return jsURL.stringify(data);
-	};
+    return jsURL.stringify(data);
+  }
 
-	this.deserialize = function(string) {
-		var data = jsURL.parse(string);
-		if (!data) return {};
+  deserialize(string) {
+    const data = jsURL.parse(string);
+    if (!data) return {};
 
-		var response = {};
+    const response = {};
 
-		response.conferences = data[0];
-		response.divisions = data[1];
-		response.league = compressor.decompress(data[2], response.divisions);
+    response.conferences = data[0];
+    response.divisions = data[1];
+    response.league = this.compressor.decompress(data[2], response.divisions);
 
-		response.relocations = data[3].map(function(d) {
-			return { id: d[0], city: d[1] };
-		});
-		response.expansions = data[4].map(function(d) {
-			return { name: d[0], city: d[1] };
-		});
+    response.relocations = data[3].map(d => ({ id: d[0], city: d[1] }));
+    response.expansions = data[4].map(d => ({ name: d[0], city: d[1] }));
 
-		return response;
-	};
-};
-
-module.exports = Serializer;
+    return response;
+  }
+}

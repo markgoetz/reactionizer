@@ -1,78 +1,74 @@
-var React = require("react");
-var SelectorButton = require("./selectorbutton");
+import React from 'react';
+import SelectorButton from './selectorbutton';
 
-var ConferenceSelector = React.createClass({
-	propTypes: {
-		conferences: React.PropTypes.number,
-		divisions: React.PropTypes.number,
-		onConferenceChange: React.PropTypes.func
-	},
-	getInitialState: function() {
-		return {conferences:this.props.conferences,divisions:this.props.divisions};
-	},
-	render: function() {
-		var conference_nodes = [3,2,1].map(function(conference) {
-			return (
-        <SelectorButton
-          type="conference"
-          key={"conference"+conference}
-          value={conference}
-          selected={conference==this.state.conferences}
-          disabled={false}
-          onButtonClick={this.conferenceUpdate} />
-        );
-		},
-      this
+export default class ConferenceSelector extends React.Component {
+  static propTypes = {
+    conferences: React.PropTypes.number,
+    divisions: React.PropTypes.number,
+    onConferenceChange: React.PropTypes.func,
+  }
+  getInitialState() {
+    return {
+      conferences: this.props.conferences,
+      divisions: this.props.divisions,
+    };
+  }
+
+  conferenceUpdate(c) {
+    this.setState({ conferences: c });
+    let d = this.state.divisions;
+
+    if (this.state.divisions % c !== 0) {
+      d = 6;
+      this.setState({ divisions: d });
+    }
+
+    this.props.onConferenceChange(c, d);
+  }
+  divisionUpdate(d) {
+    this.setState({ divisions: d });
+    this.props.onConferenceChange(this.state.conferences, d);
+  }
+  render() {
+    const conferenceNodes = [3, 2, 1].map(
+      conference => (<SelectorButton
+        type="conference"
+        key={`conference${conference}`}
+        value={conference}
+        selected={conference === this.state.conferences}
+        disabled={false}
+        onButtonClick={this.conferenceUpdate}
+      />),
     );
-		var division_nodes = [6,4,3,2].map(function(division) {
-			return (
-        <SelectorButton
-          type="division"
-          key={"division"+division}
-          value={division}
-          selected={division==this.state.divisions}
-          disabled={division % this.state.conferences != 0} 
-          onButtonClick={this.divisionUpdate} />
-        );
-		},
-      this
+    const divisionNodes = [6, 4, 3, 2].map(
+      division => (<SelectorButton
+        type="division"
+        key={`division${division}`}
+        value={division}
+        selected={division === this.state.divisions}
+        disabled={division % this.state.conferences !== 0}
+        onButtonClick={this.divisionUpdate}
+      />),
     );
 
-		return (<div className="fieldgroup">
+    return (<div className="fieldgroup">
       <div className="field">
         <h3>Conferences</h3>
         <div className="subfield">
           <div className="selector-container">
-            {conference_nodes}
+            {conferenceNodes}
           </div>
         </div>
       </div>
-      
+
       <div className="field">
-        <h3>Divisions</h3>  
+        <h3>Divisions</h3>
         <div className="subfield">
           <div className="selector-container">
-            {division_nodes}
+            {divisionNodes}
           </div>
         </div>
       </div>
     </div>);
-	},
-	conferenceUpdate: function(c) {
-		this.setState({conferences:c});
-		var d = this.state.divisions;
-
-		if (this.state.divisions % c != 0) {
-			d = 6;
-			this.setState({divisions:d});
-		}
-
-		this.props.onConferenceChange(c, d);
-	},
-	divisionUpdate: function(d) {
-		this.setState({divisions:d});
-		this.props.onConferenceChange(this.state.conferences, d);
-	}
-});	
-
-module.exports = ConferenceSelector;
+  }
+}

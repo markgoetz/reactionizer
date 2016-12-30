@@ -1,23 +1,24 @@
-var React = require("react");
-var Team = require("../league/team.model");
-var Marker = require("react-google-maps").Marker;
-var Inline = require("../global/teamlogo").inline;
+import React from 'react';
+import { Marker } from 'react-google-maps';
+import Team from '../league/team.model';
+import { Inline } from '../global/teamlogo';
 
-var MarkerIcon = React.createClass({
-	propTypes: {
-		team: React.PropTypes.instanceOf(Team).isRequired,
-		mapHolderRef: React.PropTypes.object
-	},
-	render: function() {
-		var team_id = this.props.team.getLogoID();
-		return <Marker
-			position={ { lat: this.props.team.lat, lng: this.props.team.lon } }
-			icon={ {url: "data:image/svg+xml;utf-8," + Inline(team_id), anchor: {x:15, y:15}, size: { height: 30, width: 30 }} }
-			title={this.props.team.name}
-			zIndex={2}
-			mapHolderRef={this.props.mapHolderRef}
-		/>;
-	}
-});
+export default function MarkerIcon(props) {
+  const teamId = props.team.getLogoID();
+  return (<Marker
+    position={{ lat: props.team.lat, lng: props.team.lon }}
+    icon={{
+      url: `data:image/svg+xml;utf-8,${Inline(teamId)}`,
+      anchor: { x: 15, y: 15 },
+      size: { height: 30, width: 30 },
+    }}
+    title={props.team.name}
+    zIndex={2}
+    mapHolderRef={props.mapHolderRef}
+  />);
+}
 
-module.exports = MarkerIcon;
+MarkerIcon.propTypes = {
+  team: React.PropTypes.instanceOf(Team).isRequired,
+  mapHolderRef: React.PropTypes.object,
+};

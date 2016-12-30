@@ -1,41 +1,38 @@
-var React = require("react");
-var Team = require("../league/team.model");
-var Marker = require("react-google-maps").Marker;
-var GoogleMapTeamIconModel = require("./googlemapteamiconmodel");
-var conference_colors = require("!!sass-variables!../global/_conferencecolors.scss");
+import React from 'react';
+import { Marker } from 'react-google-maps';
+import Team from '../league/team.model';
+import GoogleMapTeamIconModel from './googlemapteamiconmodel';
 
-var MarkerBackground = React.createClass({
-	propTypes: {
-		team: React.PropTypes.instanceOf(Team).isRequired,
-		division: React.PropTypes.number.isRequired,
-		conference: React.PropTypes.number.isRequired,
-		singleConference: React.PropTypes.bool.isRequired,
-		mapHolderRef: React.PropTypes.object
-	},
-	render: function() {
-		var color;
-
-		if (!this.props.singleConference) {
-			color = getColor(this.props.conference, this.props.division);
-		}
-		else {
-			color = getColor(this.props.division, 0);
-		}
-
-		var icon_background = new GoogleMapTeamIconModel(color);
-
-		return <Marker
-			position={ { lat: this.props.team.lat, lng: this.props.team.lon } }
-			icon={ icon_background }
-			title={this.props.team.name}
-			zIndex={-99}
-			mapHolderRef={this.props.mapHolderRef}
-		/>;
-	}
-});
+const conferenceColors = require('!!sass-variables!../global/_conferencecolors.scss');
 
 function getColor(conference, division) {
-	return conference_colors["c" + conference + "d" + division + "color"];
+  return conferenceColors[`c${conference}d${division}color`];
 }
 
-module.exports = MarkerBackground;
+export default function MarkerBackground(props) {
+  let color;
+
+  if (!props.singleConference) {
+    color = getColor(props.conference, props.division);
+  } else {
+    color = getColor(props.division, 0);
+  }
+
+  const iconBackground = new GoogleMapTeamIconModel(color);
+
+  return (<Marker
+    position={{ lat: props.team.lat, lng: props.team.lon }}
+    icon={iconBackground}
+    title={props.team.name}
+    zIndex={-99}
+    mapHolderRef={props.mapHolderRef}
+  />);
+}
+
+MarkerBackground.propTypes = {
+  team: React.PropTypes.instanceOf(Team).isRequired,
+  division: React.PropTypes.number.isRequired,
+  conference: React.PropTypes.number.isRequired,
+  singleConference: React.PropTypes.bool.isRequired,
+  mapHolderRef: React.PropTypes.object,
+};

@@ -1,72 +1,56 @@
-var React = require("react");
-var ReactGoogleMaps = require("react-google-maps");
+import React from 'react';
+import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
+import MarkerIcon from './markericon';
+import MarkerBackground from './markerbackground';
 
-require("./_map.scss");
+const mapStyle = require('./mapstyle.json');
+require('./_map.scss');
 
-var GoogleMapLoader = ReactGoogleMaps.GoogleMapLoader;
-var GoogleMap = ReactGoogleMaps.GoogleMap;
+export default class Map extends React.Component {
+  static propTypes = {
+    league: React.PropTypes.array,
+    mapHolderRef: React.PropTypes.object,
+  }
 
-var MarkerIcon = require("./markericon");
-var MarkerBackground = require("./markerbackground");
-var map_style = require("./mapstyle.json");
+  _getMarkers(league) {
+    const markers = [];
 
-var Map = React.createClass({
-	propTypes: {
-		league: React.PropTypes.array,
-		mapHolderRef: React.PropTypes.object
-	},
+    const isSingleConference = (league.length === 1);
 
-	render: function() {
-		return <GoogleMapLoader
-			containerElement={<div id="map" />}
-			googleMapElement={ this._getMap() } 
-		/>;
-	},
+    for (let c = 0; c < league.length; c++) {
+      const conference = league[c];
+      for (let d = 0; d < conference.length; d++) {
+        const division = conference[d];
 
-	_getMarkers: function(league) {
-		var markers = [];	
+        for (let t = 0; t < division.length; t++) {
+          const team = division[t];
 
-		var single_conference = (league.length == 1);
+          markers.push(
+            <MarkerBackground team={team} conference={c} division={d} singleConference={isSingleConference} key={`bg${team.id}`} mapHolderRef={this.props.mapHolderRef} />,
+          );
 
-		for (var c = 0; c < league.length; c++) {
-			var conference = league[c];
-			for (var d = 0; d < conference.length; d++) {
-				var division = conference[d];
+          markers.push(<MarkerIcon team={team} key={`icon${team.id}`} mapHolderRef={this.props.mapHolderRef} />);
+        }
+      }
+    }
 
-				for (var t = 0; t < division.length; t++) {
-					var team = division[t];
+    return markers;
+  }
 
-					markers.push(<MarkerBackground
-						team={team}
-						conference={c}
-						division={d}
-						singleConference={single_conference}
-						key={"bg" + team.id}
-						mapHolderRef={this.props.mapHolderRef}
-					/>);
+  _getMap() {
+    return (
+      <GoogleMap
+        defaultZoom={4}
+        maxZoom={6}
+        minZoom={3}
+        defaultCenter={{ lat: 41, lng: -96 }}
+        options={{ mapTypeControl: false, streetViewControl: false, styles: mapStyle }}
+      >
+        {this._getMarkers(this.props.league)}
+      </GoogleMap>);
+  }
 
-					markers.push(<MarkerIcon
-						team={team}
-						key={"icon" + team.id}
-						mapHolderRef={this.props.mapHolderRef}
-					/>);
-				}
-			}
-		}
-
-		return markers;
-	},
-
-	_getMap: function() {
-		return <GoogleMap
-			defaultZoom={4}
-			maxZoom={6}
-			minZoom={3}
-			defaultCenter={ {lat: 41, lng: -96} }
-			options={ { mapTypeControl: false, streetViewControl: false, styles: map_style } }>
-				{this._getMarkers(this.props.league)}
-		</GoogleMap>;
-	}
-});
-
-module.exports = Map;
+  render() {
+    return <GoogleMapLoader containerElement={<div id="map" />} googleMapElement={this._getMap()} />;
+  }
+}

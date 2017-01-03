@@ -50,7 +50,7 @@ export default class StringCompressor {
 
     let decompressedString = '';
     for (let i = 0; i < string.length; i++) {
-      var numericBlock = this._decompressBlock(string[i]);
+      const numericBlock = this._decompressBlock(string[i]);
       let block = numericBlock.toString(bits);
 
       while (block.length < blockSize) {

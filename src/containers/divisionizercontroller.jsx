@@ -1,173 +1,175 @@
-var React = require("react");
-var LeagueManager = require("../containers/leaguemanager.model");
-var TeamManager = require("../containers/teammanager.model");
+import React from 'react';
+import { DragDropContext } from 'react-dnd';
+import TouchBackend from 'react-dnd-touch-backend';
+import HTML5Backend from 'react-dnd-html5-backend';
 
-var DragDropContext = require("react-dnd").DragDropContext;
-var TouchBackend = require("react-dnd-touch-backend");
-var HTML5Backend = require("react-dnd-html5-backend");
-var DnDBackend = ("ontouchstart" in document.documentElement) ? TouchBackend : HTML5Backend;
+import LeagueManager from '../containers/leaguemanager.model';
+import TeamManager from '../containers/teammanager.model';
+import Serializer from '../statemanagement/serializer';
+import QueryString from '../statemanagement/querystring';
+import Divisionizer from './divisionizer';
 
-var Serializer = require("../statemanagement/serializer");
-var QueryString = require("../statemanagement/querystring");
+import jsonTeams from '../data/teams.json';
+import jsonCities from '../data/cities.json';
+import jsonDefaultLeagues from '../data/defaultleagues.json';
 
-var Divisionizer = require("./divisionizer");
+const DnDBackend = ('ontouchstart' in document.documentElement) ? TouchBackend : HTML5Backend;
 
-var jsonTeams = require("../data/teams.json");
-var jsonCities = require("../data/cities.json");
-var jsonDefaultLeagues = require("../data/defaultleagues.json");
+class DivisionizerController extends React.Component {
+  static propTypes = {
+    initConferences: React.PropTypes.number,
+    initDivisions: React.PropTypes.number,
+  }
 
-var DivisionizerController = React.createClass({
-	propTypes: {
-		initConferences: React.PropTypes.number,
-		initDivisions: React.PropTypes.number
-	},
+  getInitialState() {
+    this.teammanager = new TeamManager(jsonTeams);
+    this.leaguemanager = new LeagueManager(jsonDefaultLeagues);
+    this.querystring = new QueryString();
+    this.serializer = new Serializer();
 
-	parseQueryString: function() {
-		var data = this.serializer.deserialize(this.querystring.get());
+    this.initConferences = this.props.initConferences;
+    this.initDivisions = this.props.initDivisions;
 
-		if (data.expansions) {
-			data.expansions.forEach(function (t) {
-				this.teammanager.addTeam(t.name, jsonCities[t.city]);
-				this.leaguemanager.addTeam();
-			}, this);
-		}
+    this.parseQueryString();
 
-		if (data.conferences)
-			this.initConferences = data.conferences;
+    return {
+      conference_count: this.initConferences,
+      division_count: this.initDivisions,
+      league: this._getLeague(this.initConferences, this.initDivisions),
+      cities: jsonCities,
+    };
+  }
 
-		if (data.divisions)
-			this.initDivisions = data.divisions;
+  onDrag(team, division) {
+    this.leaguemanager.changeTeamDivision(team, division, this.state.division_count);
+    this._updateLeague();
+  }
 
-		if (data.league) {
-			var teams = this.teammanager.getTeamCount();
-			var league_string = data.league.slice(-teams);
-			this.leaguemanager.setString(league_string, this.initDivisions);
-		}
+  onRelocateTeam(teamid, cityid) {
+    this.teammanager.relocateTeam(teamid, jsonCities[cityid]);
+    this._updateLeague();
+  }
 
-		if (data.relocations) {
-			data.relocations.forEach(function (t) {
-				this.teammanager.relocateTeam(t.id, jsonCities[t.city]);
-			}, this);
-		}
-	},
+  onUndoRelocate(teamid) {
+    this.teammanager.resetTeam(teamid);
+    this._updateLeague();
+  }
 
-	getInitialState: function() {
-		this.teammanager = new TeamManager(jsonTeams);
-		this.leaguemanager = new LeagueManager(jsonDefaultLeagues);
-		this.querystring = new QueryString();
-		this.serializer = new Serializer();
+  onAddTeam(name, cityid) {
+    this.teammanager.addTeam(name, jsonCities[cityid]);
+    this.leaguemanager.addTeam();
+    this._updateLeague();
+  }
 
-		this.initConferences = this.props.initConferences;
-		this.initDivisions = this.props.initDivisions;
+  onUndoExpansion(teamid) {
+    this.leaguemanager.removeTeam(teamid);
+    this.teammanager.removeTeam(teamid);
+    this._updateLeague();
+  }
 
-		this.parseQueryString();
+  onConferenceChange(c, d) {
+    this._updateLeague(c, d);
+  }
 
-		return {
-			conference_count: this.initConferences,
-			division_count: this.initDivisions,
-			league: this._getLeague(this.initConferences, this.initDivisions),
-			cities: jsonCities
-		};
-	},
+  // The optional parameters are a hack to fix scenarios where you have to call React.setState()
+  // on both the league and the division/conference count.
+  _getLeague(
+    confCount = this.state.conference_count,
+    divisionCount = this.state.division_count,
+    teams,
+  ) {
+    return this._leagueToArray(this.leaguemanager.getLeague(confCount, divisionCount), teams);
+  }
 
-	onRelocateTeam: function(teamid, cityid) {
-		this.teammanager.relocateTeam(teamid, jsonCities[cityid]);
-		this._updateLeague();
-	},
+  _updateLeague(
+    confCount = this.state.conference_count,
+    divisionCount = this.state.division_count,
+  ) {
+    const teams = this.teammanager.teams;
 
-	onUndoRelocate: function(teamid) {
-		this.teammanager.resetTeam(teamid);
-		this._updateLeague();
-	},
+    const queryString = this.serializer.serialize(
+      confCount,
+      divisionCount,
+      this.leaguemanager.getLeague(confCount, divisionCount).getString(),
+      this.teammanager.getRelocatedTeams(),
+      this.teammanager.getExpansionTeams(),
+    );
 
-	onAddTeam: function(name, cityid) {
-		this.teammanager.addTeam(name, jsonCities[cityid]);
-		this.leaguemanager.addTeam();
-		this._updateLeague();
-	},
+    this.querystring.set(queryString);
 
-	onUndoExpansion: function(teamid) {
-		this.leaguemanager.removeTeam(teamid);
-		this.teammanager.removeTeam(teamid);
-		this._updateLeague();
-	},
+    this.setState({
+      conference_count: confCount,
+      division_count: divisionCount,
+      league: this._getLeague(confCount, divisionCount, teams),
+      teams,
+      query_string: queryString,
+    });
+  }
 
-	onConferenceChange: function(c, d) {
-		this._updateLeague(c, d);
-	},
+  _leagueToArray(league, teams = this.teammanager.teams) {
+    const leagueArray = league.toArray();
 
-	onDrag: function(team, division) {
-		this.leaguemanager.changeTeamDivision(team, division, this.state.division_count);
-		this._updateLeague();
-	},
+    for (let c = 0; c < leagueArray.length; c++) {
+      for (let d = 0; d < leagueArray[c].length; d++) {
+        for (let t = 0; t < leagueArray[c][d].length; t++) {
+          const teamId = leagueArray[c][d][t];
+          leagueArray[c][d][t] = teams[teamId];
+        }
+      }
+    }
 
-	// The optional parameters are a hack to fix scenarios where you have to call React.setState() on both the league and the division/conference count.
-	_getLeague: function(conf_count, division_count, teams) {
-		if (!conf_count) conf_count = this.state.conference_count;
-		if (!division_count) division_count = this.state.division_count;
+    return leagueArray;
+  }
 
-		return this._leagueToArray(this.leaguemanager.getLeague(conf_count, division_count), teams);
-	},
+  parseQueryString() {
+    const data = this.serializer.deserialize(this.querystring.get());
 
-	_updateLeague: function(conf_count, division_count) {
-		if (!conf_count) conf_count = this.state.conference_count;
-		if (!division_count) division_count = this.state.division_count;
+    if (data.expansions) {
+      data.expansions.forEach((t) => {
+        this.teammanager.addTeam(t.name, jsonCities[t.city]);
+        this.leaguemanager.addTeam();
+      });
+    }
 
-		var teams = this.teammanager.teams;
+    if (data.conferences) {
+      this.initConferences = data.conferences;
+    }
 
-		var query_string = this.serializer.serialize(
-			conf_count,
-			division_count,
-			this.leaguemanager.getLeague(conf_count, division_count).getString(),
-			this.teammanager.getRelocatedTeams(),
-			this.teammanager.getExpansionTeams()
-		);
+    if (data.divisions) {
+      this.initDivisions = data.divisions;
+    }
 
-		this.querystring.set(query_string);
+    if (data.league) {
+      const teams = this.teammanager.getTeamCount();
+      const leagueString = data.league.slice(-teams);
+      this.leaguemanager.setString(leagueString, this.initDivisions);
+    }
 
-		this.setState({
-			conference_count: conf_count,
-			division_count: division_count,
-			league: this._getLeague(conf_count, division_count, teams),
-			teams: teams,
-			query_string: query_string
-		});
-	},
+    if (data.relocations) {
+      data.relocations.forEach((t) => {
+        this.teammanager.relocateTeam(t.id, jsonCities[t.city]);
+      });
+    }
+  }
 
-	_leagueToArray: function(league, teams) {
-		if (!teams) teams = this.teammanager.teams;
+  render() {
+    return (<Divisionizer
+      conferences={this.state.conference_count}
+      divisions={this.state.division_count}
+      teams={this.teammanager.teams}
+      cities={this.state.cities}
+      league={this.state.league}
+      relocatedTeams={this.teammanager.getRelocatedTeams()}
+      expansionTeams={this.teammanager.getExpansionTeams()}
+      onRelocate={this.onRelocateTeam}
+      onExpansion={this.onAddTeam}
+      onUndoRelocation={this.onUndoRelocate}
+      onUndoExpansion={this.onUndoExpansion}
+      onConferenceChange={this.onConferenceChange}
+      onDrag={this.onDrag}
+      queryString={this.state.querystring}
+    />);
+  }
+}
 
-		var league_array = league.toArray();
-
-		for (var c = 0; c < league_array.length; c++) {
-			for (var d = 0; d < league_array[c].length; d++) {
-				for (var t = 0; t < league_array[c][d].length; t++) {
-					var team_id = league_array[c][d][t];
-					league_array[c][d][t] = teams[team_id];
-				}
-			}
-		}
-
-		return league_array;
-	},
-
-	render: function() {
-		return <Divisionizer
-			conferences={this.state.conference_count}
-			divisions={this.state.division_count}
-			teams={this.teammanager.teams}
-			cities={this.state.cities}
-			league={this.state.league}
-			relocatedTeams={this.teammanager.getRelocatedTeams()}
-			expansionTeams={this.teammanager.getExpansionTeams()}
-			onRelocate={this.onRelocateTeam}
-			onExpansion={this.onAddTeam}
-			onUndoRelocation={this.onUndoRelocate}
-			onUndoExpansion={this.onUndoExpansion}
-			onConferenceChange={this.onConferenceChange}
-			onDrag={this.onDrag}
-			queryString={this.state.querystring} />;
-	}
-});
-
-module.exports = DragDropContext(DnDBackend)(DivisionizerController);
+export default DragDropContext(DnDBackend)(DivisionizerController);

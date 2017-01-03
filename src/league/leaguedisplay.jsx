@@ -1,29 +1,29 @@
-var React = require("react");
+import React from 'react';
 
-var ConferenceDisplay = require("./conferencedisplay.jsx");
+import ConferenceDisplay from './conferencedisplay';
 
-require("./_leaguedisplay.scss");
+require('./_leaguedisplay.scss');
 
-var LeagueDisplay = React.createClass({
-	propTypes: {
-		league: React.PropTypes.array,
-		onDrag: React.PropTypes.func
-	},
-	render: function() {
-		var nodes = this.props.league.map(function (conference,index) {
-			return <ConferenceDisplay
-				conference={conference}
-				key={index}
-				number={index}
-				count={this.props.league.length}
-				onDrag={this.onDrag} />;
-		}, this);
+export default class LeagueDisplay extends React.Component {
+  static propTypes = {
+    league: React.PropTypes.array,
+    onDrag: React.PropTypes.func,
+  }
 
-		return <div id="league">{nodes}</div>;
-	},
-	onDrag: function(team_id, div_id) {
-		this.props.onDrag(team_id, div_id);
-	}
-});
+  onDrag(teamId, divId) {
+    this.props.onDrag(teamId, divId);
+  }
 
-module.exports = LeagueDisplay;
+  render() {
+    const nodes = this.props.league.map((conference, index) =>
+      (<ConferenceDisplay
+        conference={conference}
+        key={index}
+        number={index}
+        count={this.props.league.length}
+        onDrag={this.onDrag}
+      />));
+
+    return <div id="league">{nodes}</div>;
+  }
+}

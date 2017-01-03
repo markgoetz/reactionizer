@@ -3,18 +3,18 @@ import React from 'react';
 const logos = require.context('../logos/');
 logos.keys().forEach(logos);
 
-export function component(props) {
+export function TeamLogoComponent(props) {
   return (<svg className={props.className}>
     <use xlinkHref={`#${props.id}`} />
   </svg>);
 }
-component.propTypes = {
+TeamLogoComponent.propTypes = {
   className: React.PropTypes.string,
   id: React.PropTypes.string.isRequired,
 };
 
 
-export function inline(id) {
+export function TeamLogoInline(id) {
   const svgElement = document.getElementById(id);
   if (svgElement == null) throw new ReferenceError();
 

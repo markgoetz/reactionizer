@@ -13,34 +13,34 @@ export default class Relocationizer extends React.Component {
 
   getInitialState() {
     return {
-      relocate_team: 0,
-      relocate_city: 0,
-      expansion_name: '',
-      expansion_city: 0,
+      relocateTeam: 0,
+      relocateCity: 0,
+      expansionName: '',
+      expansionCity: 0,
     };
   }
 
   relocate() {
-    this.props.onRelocate(this.state.relocate_team, this.state.relocate_city);
+    this.props.onRelocate(this.state.relocateTeam, this.state.relocateCity);
   }
 
   expand() {
-    this.props.onExpansion(this.state.expansion_name, this.state.expansion_city);
-    this.setState({ expansion_name: '' });
+    this.props.onExpansion(this.state.expansionName, this.state.expansionCity);
+    this.setState({ expansionName: '' });
   }
 
   handleExpansionCityName(event) {
-    this.setState({ expansion_name: event.target.value });
+    this.setState({ expansionName: event.target.value });
   }
 
   handleExpansionCitySelect(event) {
-    this.setState({ expansion_city: event.target.value });
+    this.setState({ expansionCity: event.target.value });
   }
   handleRelocateCitySelect(event) {
-    this.setState({ relocate_city: event.target.value });
+    this.setState({ relocateCity: event.target.value });
   }
   handleRelocateTeamSelect(event) {
-    this.setState({ relocate_team: event.target.value });
+    this.setState({ relocateTeam: event.target.value });
   }
 
   render() {
@@ -57,13 +57,13 @@ export default class Relocationizer extends React.Component {
         <h3>Relocate team</h3>
         <div className="subfield">
           <label htmlFor="relocate_team">team</label>
-          <select id="relocate_team" value={this.state.relocate_team} onChange={this.handleRelocateTeamSelect}>
+          <select id="relocate_team" value={this.state.relocateTeam} onChange={this.handleRelocateTeamSelect}>
             {teamNodes}
           </select>
         </div>
         <div className="subfield">
           <label htmlFor="relocate_city">to</label>
-          <select id="relocate_city" value={this.state.relocate_city} onChange={this.handleRelocateCitySelect}>
+          <select id="relocate_city" value={this.state.relocateCity} onChange={this.handleRelocateCitySelect}>
             {cityNodes}
           </select>
         </div>
@@ -74,13 +74,13 @@ export default class Relocationizer extends React.Component {
         <h3>Expansion team</h3>
         <div className="subfield">
           <label htmlFor="expand_city">city</label>
-          <select id="expand_city" value={this.state.expansion_city} onChange={this.handleExpansionCitySelect}>
+          <select id="expand_city" value={this.state.expansionCity} onChange={this.handleExpansionCitySelect}>
             {cityNodes}
           </select>
         </div>
         <div className="subfield">
           <label htmlFor="expand_name">name</label>
-          <input id="expand_name" type="text" value={this.state.expansion_name} onChange={this.handleExpansionCityName} />
+          <input id="expand_name" type="text" value={this.state.expansionName} onChange={this.handleExpansionCityName} />
         </div>
         <div><button className="action" onClick={this.expand}>Create Team</button></div>
       </div>

@@ -22,6 +22,7 @@ function collect(connect, monitor) {
 class TeamCard extends React.Component {
   static propTypes = {
     team: React.PropTypes.instanceOf(Team),
+    // eslint-disable-next-line react/no-unused-prop-types
     isDragging: React.PropTypes.bool.isRequired,
     connectDragSource: React.PropTypes.func.isRequired,
   }

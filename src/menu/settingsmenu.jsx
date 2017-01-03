@@ -22,7 +22,7 @@ export default class SettingsMenu extends React.Component {
   }
 
   getInitialState() {
-    return { menu_open: false };
+    return { menuOpen: false };
   }
 
   onConferenceChange(c, d) {
@@ -30,14 +30,14 @@ export default class SettingsMenu extends React.Component {
   }
 
   toggleMenu() {
-    this.setState({ menu_open: !this.state.menu_open });
+    this.setState({ menuOpen: !this.state.menuOpen });
   }
 
   render() {
-    const menuClass = (this.state.menu_open) ? 'open' : 'closed';
+    const menuClass = (this.state.menuOpen) ? 'open' : 'closed';
 
     return (<div id="settings_container">
-      <MenuHeader click={this.toggleMenu} open={this.state.menu_open} />
+      <MenuHeader click={this.toggleMenu} open={this.state.menuOpen} />
       <div id="settings_menu" className={menuClass}>
         <div className="pane" id="main">
           <ConferenceSelector

@@ -3,6 +3,7 @@ import React from 'react';
 const logos = require.context('../logos/');
 logos.keys().forEach(logos);
 
+
 export function TeamLogoComponent(props) {
   return (<svg className={props.className}>
     <use xlinkHref={`#${props.id}`} />

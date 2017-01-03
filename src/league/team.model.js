@@ -8,7 +8,7 @@ export default class Team {
     this.id = data.id;
     this.expansion = expansion;
 
-    this.original_data = data;
+    this.originalData = data;
   }
 
   getLogoID() {
@@ -29,9 +29,9 @@ export default class Team {
   }
 
   reset() {
-    this.city = this.original_data.city;
-    this.lat = this.original_data.lat;
-    this.lon = this.original_data.lon;
+    this.city = this.originalData.city;
+    this.lat = this.originalData.lat;
+    this.lon = this.originalData.lon;
     this.relocated = false;
   }
 }

@@ -2,44 +2,44 @@ import stringSetCharAt from '../global/setcharat-polyfill';
 
 export default class LeagueModel {
   constructor(league, conferenceCount, divisionCount) {
-    this.div_count = divisionCount;
-    this.conf_count = conferenceCount;
-    this.div_string = league.string;
-    this.div_names = league.names;
+    this.divisionCount = divisionCount;
+    this.conferenceCount = conferenceCount;
+    this.divString = league.string;
+    this.divNames = league.names;
   }
 
   getString() {
-    return this.div_string;
+    return this.divString;
   }
 
   setString(string) {
-    this.div_string = string;
+    this.divString = string;
   }
 
   addTeam(divNumber) {
-    this.div_string = `${this.div_string}${divNumber}`;
+    this.divString = `${this.divString}${divNumber}`;
   }
 
   removeTeam(index) {
-    this.div_string = stringSetCharAt(this.div_string, index, '');
+    this.divString = stringSetCharAt(this.divString, index, '');
   }
 
   setTeamDivision(teamId, divNumber) {
-    if (teamId < 0 || teamId > this.div_string.length) return;
-    if (divNumber < 0 || divNumber > this.div_count) return;
+    if (teamId < 0 || teamId > this.divString.length) return;
+    if (divNumber < 0 || divNumber > this.divisionCount) return;
 
-    this.div_string = stringSetCharAt(this.div_string, teamId, divNumber);
+    this.divString = stringSetCharAt(this.divString, teamId, divNumber);
   }
 
   getDivisionCounts() {
     const divCounts = [];
 
-    for (let d = 0; d < this.div_count; d++) {
+    for (let d = 0; d < this.divisionCount; d++) {
       divCounts.push(0);
     }
 
-    for (let i = 0; i < this.div_string.length; i++) {
-      divCounts[this.div_string[i]] += 1;
+    for (let i = 0; i < this.divString.length; i++) {
+      divCounts[this.divString[i]] += 1;
     }
     return divCounts;
   }
@@ -48,21 +48,21 @@ export default class LeagueModel {
     const leagueArray = [];
     let divInitNumber = 0;
 
-    for (let c = 0; c < this.conf_count; c++) {
+    for (let c = 0; c < this.conferenceCount; c++) {
       leagueArray.push([]);
 
-      for (let d = 0; d < this.div_count / this.conf_count; d++) {
+      for (let d = 0; d < this.divisionCount / this.conferenceCount; d++) {
         const a = [];
-        a.name = this.div_names[divInitNumber];
+        a.name = this.divNames[divInitNumber];
         leagueArray[c].push(a);
         divInitNumber += 1;
       }
     }
 
-    for (let teamId = 0; teamId < this.div_string.length; teamId++) {
-      const totalDivNumber = this.div_string[teamId];
+    for (let teamId = 0; teamId < this.divString.length; teamId++) {
+      const totalDivNumber = this.divString[teamId];
 
-      const divsPerConference = this.div_count / this.conf_count;
+      const divsPerConference = this.divisionCount / this.conferenceCount;
 
       const c2 = Math.floor(totalDivNumber / divsPerConference);
 

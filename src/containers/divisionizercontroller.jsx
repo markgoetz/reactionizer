@@ -33,8 +33,8 @@ class DivisionizerController extends React.Component {
     this.parseQueryString();
 
     return {
-      conference_count: this.initConferences,
-      division_count: this.initDivisions,
+      conferenceCount: this.initConferences,
+      divisionCount: this.initDivisions,
       league: this._getLeague(this.initConferences, this.initDivisions),
       cities: jsonCities,
     };
@@ -74,23 +74,25 @@ class DivisionizerController extends React.Component {
   // The optional parameters are a hack to fix scenarios where you have to call React.setState()
   // on both the league and the division/conference count.
   _getLeague(
-    confCount = this.state.conference_count,
-    divisionCount = this.state.division_count,
+    conferenceCount = this.state.conferenceCount,
+    divisionCount = this.state.divisionCount,
     teams,
   ) {
-    return this._leagueToArray(this.leaguemanager.getLeague(confCount, divisionCount), teams);
+    return this._leagueToArray(
+      this.leaguemanager.getLeague(conferenceCount, divisionCount),
+      teams);
   }
 
   _updateLeague(
-    confCount = this.state.conference_count,
-    divisionCount = this.state.division_count,
+    conferenceCount = this.state.conferenceCount,
+    divisionCount = this.state.divisionCount,
   ) {
     const teams = this.teammanager.teams;
 
     const queryString = this.serializer.serialize(
-      confCount,
+      conferenceCount,
       divisionCount,
-      this.leaguemanager.getLeague(confCount, divisionCount).getString(),
+      this.leaguemanager.getLeague(conferenceCount, divisionCount).getString(),
       this.teammanager.getRelocatedTeams(),
       this.teammanager.getExpansionTeams(),
     );
@@ -98,11 +100,11 @@ class DivisionizerController extends React.Component {
     this.querystring.set(queryString);
 
     this.setState({
-      conference_count: confCount,
-      division_count: divisionCount,
-      league: this._getLeague(confCount, divisionCount, teams),
+      conferenceCount,
+      divisionCount,
+      league: this._getLeague(conferenceCount, divisionCount, teams),
       teams,
-      query_string: queryString,
+      queryString,
     });
   }
 

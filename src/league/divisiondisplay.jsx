@@ -27,6 +27,7 @@ class DivisionDisplay extends React.Component {
     number: PropTypes.number,
     onDrag: PropTypes.func,
     connectDropTarget: PropTypes.func,
+    // eslint-disable-next-line react/no-unused-prop-types
     canDrop: PropTypes.func,
   }
   render() {

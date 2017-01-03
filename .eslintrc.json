@@ -1,26 +1,31 @@
 {
-    "parser": "babel-eslint",
-    "env": {
-        "browser": true,
-        "jquery": true,
-        "commonjs": true,
-		"es6": true
-    },
-    "extends": ["airbnb"],
-    "parserOptions": {
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
-        }
-    },
-    "plugins": [
-        "react"
-    ],
-	"settings": {
-	    "react": {
-	      "createClass": "createClass",
-	      "pragma": "React",
-	      "version": "15.0"
-	    }
-	}
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "jquery": true,
+    "commonjs": true,
+    "es6": true
+  },
+  "extends": ["airbnb"],
+  "rules": {
+    "no-underscore-dangle": [ "error", { "allowAfterThis": true } ],
+    "no-plusplus": [ "error", { "allowForLoopAfterthoughts": true } ],
+    "camelcase": ["error", { "properties": "always" }]
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "createClass": "createClass",
+      "pragma": "React",
+      "version": "15.0"
+    }
+  }
 }

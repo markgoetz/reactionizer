@@ -1,4 +1,4 @@
-@import "../global/_variables";
+@import "../global/_global";
 @import "../global/_conferencecolors";
 
 .division > .name {
@@ -19,13 +19,13 @@
 
 	&.div-1 > .name {
 		color: $c0d1color;
-		border-color: $c0d1color;	
+		border-color: $c0d1color;
 	}
 
 	&.div-2 > .name {
 		color: $c0d2color;
-		border-color: $c0d2color;	
-	}	
+		border-color: $c0d2color;
+	}
 }
 
 .division.conf-1 {
@@ -37,13 +37,13 @@
 
 	&.div-1 > .name {
 		color: $c1d1color;
-		border-color: $c1d1color;	
+		border-color: $c1d1color;
 	}
 
 	&.div-2 > .name {
 		color: $c1d2color;
-		border-color: $c1d2color;	
-	}	
+		border-color: $c1d2color;
+	}
 }
 
 .division.conf-2 {
@@ -55,7 +55,7 @@
 
 	&.div-1 > .name {
 		color: $c2d1color;
-		border-color: $c2d1color;	
+		border-color: $c2d1color;
 	}
 }
 
@@ -83,7 +83,7 @@
 			border-color: $c2d0color;
 		}
 	}
-	
+
 	&.div-3 {
 		background: rgba($c3d0color, .1);
 		& > .name {

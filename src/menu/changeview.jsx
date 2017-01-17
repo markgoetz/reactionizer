@@ -1,19 +1,15 @@
 import React, { PropTypes } from 'react';
 import ChangedTeamView from './changedteamview';
+import Team from '../league/team.model';
 
 require('./_changeview.scss');
 
 export default class ChangeView extends React.Component {
-  static propTypes = {
-    relocatedTeams: PropTypes.array,
-    expansionTeams: PropTypes.array,
-    onUndoRelocation: PropTypes.func.isRequired,
-    onUndoExpansion: PropTypes.func.isRequired,
+  constructor(props) {
+    super(props);
+    this.state = { open: false };
   }
-  getInitialState() {
-    return { open: false };
-  }
-  toggle() {
+  toggle = () => {
     this.setState({ open: !this.state.open });
   }
   render() {
@@ -56,3 +52,10 @@ export default class ChangeView extends React.Component {
     </div>);
   }
 }
+
+ChangeView.propTypes = {
+  relocatedTeams: PropTypes.arrayOf(Team),
+  expansionTeams: PropTypes.arrayOf(Team),
+  onUndoRelocation: PropTypes.func.isRequired,
+  onUndoExpansion: PropTypes.func.isRequired,
+};

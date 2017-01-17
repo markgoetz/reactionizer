@@ -3,15 +3,7 @@ import React, { PropTypes } from 'react';
 require('./_selectorbutton.scss');
 
 export default class SelectorButton extends React.Component {
-  static propTypes = {
-    selected: PropTypes.bool,
-    disabled: PropTypes.bool,
-    type: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    onButtonClick: PropTypes.func,
-  };
-
-  handleClick() {
+  handleClick = () => {
     this.props.onButtonClick(this.props.value);
   }
 
@@ -28,3 +20,11 @@ export default class SelectorButton extends React.Component {
     </button>);
   }
 }
+
+SelectorButton.propTypes = {
+  selected: PropTypes.bool,
+  disabled: PropTypes.bool,
+  type: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onButtonClick: PropTypes.func,
+};

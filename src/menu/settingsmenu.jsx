@@ -3,33 +3,17 @@ import MenuHeader from './menuheader';
 import ConferenceSelector from './conferenceselector';
 import Relocationizer from './relocationizer';
 import ChangeView from './changeview';
+import Team from '../league/team.model';
 
 require('./_settingsmenu.scss');
 
 export default class SettingsMenu extends React.Component {
-  static propTypes = {
-    conferences: React.PropTypes.number.isRequired,
-    divisions: React.PropTypes.number.isRequired,
-    teams: PropTypes.array.isRequired,
-    cities: PropTypes.array.isRequired,
-    relocatedTeams: PropTypes.array,
-    expansionTeams: PropTypes.array,
-    onConferenceChange: PropTypes.func.isRequired,
-    onRelocate: PropTypes.func.isRequired,
-    onExpansion: PropTypes.func.isRequired,
-    onUndoRelocation: PropTypes.func.isRequired,
-    onUndoExpansion: PropTypes.func.isRequired,
+  constructor(props) {
+    super(props);
+    this.state = { menuOpen: false };
   }
 
-  getInitialState() {
-    return { menuOpen: false };
-  }
-
-  onConferenceChange(c, d) {
-    this.props.onConferenceChange(c, d);
-  }
-
-  toggleMenu() {
+  toggleMenu = () => {
     this.setState({ menuOpen: !this.state.menuOpen });
   }
 
@@ -43,7 +27,7 @@ export default class SettingsMenu extends React.Component {
           <ConferenceSelector
             conferences={this.props.conferences}
             divisions={this.props.divisions}
-            onConferenceChange={this.onConferenceChange}
+            onConferenceChange={this.props.onConferenceChange}
           />
           <Relocationizer
             teams={this.props.teams}
@@ -64,3 +48,17 @@ export default class SettingsMenu extends React.Component {
     </div>);
   }
 }
+
+SettingsMenu.propTypes = {
+  conferences: PropTypes.number.isRequired,
+  divisions: PropTypes.number.isRequired,
+  teams: PropTypes.arrayOf(Team).isRequired,
+  cities: PropTypes.array.isRequired,
+  relocatedTeams: PropTypes.array,
+  expansionTeams: PropTypes.array,
+  onConferenceChange: PropTypes.func.isRequired,
+  onRelocate: PropTypes.func.isRequired,
+  onExpansion: PropTypes.func.isRequired,
+  onUndoRelocation: PropTypes.func.isRequired,
+  onUndoExpansion: PropTypes.func.isRequired,
+};

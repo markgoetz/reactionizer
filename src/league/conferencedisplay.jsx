@@ -4,12 +4,6 @@ import Division from './divisiondisplay';
 require('./_conferencedisplay.scss');
 
 export default class ConferenceDisplay extends React.Component {
-  static propTypes = {
-    conference: PropTypes.array,
-    count: PropTypes.number,
-    number: PropTypes.number,
-    onDrag: PropTypes.func,
-  }
   onDrag(teamId, divId) {
     this.props.onDrag(teamId, divId);
   }
@@ -29,3 +23,10 @@ export default class ConferenceDisplay extends React.Component {
     return <div className={className}>{divisionNodes}</div>;
   }
 }
+
+ConferenceDisplay.propTypes = {
+  conference: PropTypes.array,
+  count: PropTypes.number,
+  number: PropTypes.number,
+  onDrag: PropTypes.func,
+};

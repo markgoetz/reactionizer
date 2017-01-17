@@ -1,8 +1,6 @@
 export default class StringCompressor {
-  constructor() {
-    this.DIGITS = '0123456789abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
-    this.BASE = this.DIGITS.length;
-  }
+  static DIGITS = '0123456789abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
+  static BASE = StringCompressor.DIGITS.length;
 
   static _getMaxValue(string) {
     let value = 0;
@@ -17,25 +15,25 @@ export default class StringCompressor {
   }
 
   _getBlockSize(bitCount) {
-    return Math.floor(Math.log(this.BASE) / Math.log(bitCount));
+    return Math.floor(Math.log(StringCompressor.BASE) / Math.log(bitCount));
   }
 
   _compressBlock(block) {
-    return this.DIGITS.charAt(block);
+    return StringCompressor.DIGITS.charAt(block);
   }
 
   _decompressBlock(block) {
-    return this.DIGITS.indexOf(block);
+    return StringCompressor.DIGITS.indexOf(block);
   }
 
   compress(string) {
     let remainingString = string;
-    const bits = Number(this._getMaxValue(string)) + 1;
+    const bits = Number(StringCompressor._getMaxValue(string)) + 1;
     const blockSize = this._getBlockSize(bits);
     let compressedString = '';
 
-    while (string.length > 0) {
-      const block = string.slice(-blockSize);
+    while (remainingString.length > 0) {
+      const block = remainingString.slice(-blockSize);
       const numericBlock = Number.parseInt(block, bits);
       compressedString = this._compressBlock(numericBlock) + compressedString;
 

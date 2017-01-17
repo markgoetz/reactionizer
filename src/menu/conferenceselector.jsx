@@ -2,19 +2,15 @@ import React from 'react';
 import SelectorButton from './selectorbutton';
 
 export default class ConferenceSelector extends React.Component {
-  static propTypes = {
-    conferences: React.PropTypes.number,
-    divisions: React.PropTypes.number,
-    onConferenceChange: React.PropTypes.func,
-  }
-  getInitialState() {
-    return {
-      conferences: this.props.conferences,
-      divisions: this.props.divisions,
+  constructor(props) {
+    super(props);
+    this.state = {
+      conferences: props.conferences,
+      divisions: props.divisions,
     };
   }
 
-  conferenceUpdate(c) {
+  conferenceUpdate = (c) => {
     this.setState({ conferences: c });
     let d = this.state.divisions;
 
@@ -25,7 +21,7 @@ export default class ConferenceSelector extends React.Component {
 
     this.props.onConferenceChange(c, d);
   }
-  divisionUpdate(d) {
+  divisionUpdate = (d) => {
     this.setState({ divisions: d });
     this.props.onConferenceChange(this.state.conferences, d);
   }
@@ -72,3 +68,9 @@ export default class ConferenceSelector extends React.Component {
     </div>);
   }
 }
+
+ConferenceSelector.propTypes = {
+  conferences: React.PropTypes.number,
+  divisions: React.PropTypes.number,
+  onConferenceChange: React.PropTypes.func,
+};

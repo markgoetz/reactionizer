@@ -4,24 +4,9 @@ import Footer from './footer';
 import SettingsMenu from '../menu/settingsmenu';
 import Map from '../map/map';
 import LeagueDisplay from '../league/leaguedisplay';
+import Team from '../league/team.model';
 
 require('./_divisionizer.scss');
-
-const propTypes = {
-  conferences: PropTypes.number.isRequired,
-  divisions: PropTypes.number.isRequired,
-  teams: PropTypes.array.isRequired,
-  cities: PropTypes.array.isRequired,
-  league: PropTypes.array.isRequired,
-  relocatedTeams: PropTypes.array,
-  expansionTeams: PropTypes.array,
-  onRelocate: PropTypes.func.isRequired,
-  onExpansion: PropTypes.func.isRequired,
-  onConferenceChange: PropTypes.func.isRequired,
-  onDrag: PropTypes.func.isRequired,
-  onUndoRelocation: PropTypes.func.isRequired,
-  onUndoExpansion: PropTypes.func.isRequired,
-};
 
 function Divisionizer(props) {
   return (
@@ -52,6 +37,20 @@ function Divisionizer(props) {
   );
 }
 
-Divisionizer.propTypes = propTypes;
+Divisionizer.propTypes = {
+  conferences: PropTypes.number.isRequired,
+  divisions: PropTypes.number.isRequired,
+  teams: PropTypes.arrayOf(Team).isRequired,
+  cities: PropTypes.array.isRequired,
+  league: PropTypes.arrayOf(Array).isRequired,
+  relocatedTeams: PropTypes.array,
+  expansionTeams: PropTypes.array,
+  onRelocate: PropTypes.func.isRequired,
+  onExpansion: PropTypes.func.isRequired,
+  onConferenceChange: PropTypes.func.isRequired,
+  onDrag: PropTypes.func.isRequired,
+  onUndoRelocation: PropTypes.func.isRequired,
+  onUndoExpansion: PropTypes.func.isRequired,
+};
 
 export default Divisionizer;

@@ -4,15 +4,9 @@ import Team from '../league/team.model';
 require('./_relocationizer.scss');
 
 export default class Relocationizer extends React.Component {
-  static propTypes = {
-    teams: PropTypes.arrayOf(Team).isRequired,
-    cities: PropTypes.array.isRequired,
-    onRelocate: PropTypes.func.isRequired,
-    onExpansion: PropTypes.func.isRequired,
-  }
-
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       relocateTeam: 0,
       relocateCity: 0,
       expansionName: '',
@@ -20,26 +14,28 @@ export default class Relocationizer extends React.Component {
     };
   }
 
-  relocate() {
+  onRelocate = () => {
     this.props.onRelocate(this.state.relocateTeam, this.state.relocateCity);
   }
 
-  expand() {
+  onExpand = () => {
     this.props.onExpansion(this.state.expansionName, this.state.expansionCity);
     this.setState({ expansionName: '' });
   }
 
-  handleExpansionCityName(event) {
+  onExpansionNameChange = (event) => {
     this.setState({ expansionName: event.target.value });
   }
 
-  handleExpansionCitySelect(event) {
+  onExpansionCitySelect = (event) => {
     this.setState({ expansionCity: event.target.value });
   }
-  handleRelocateCitySelect(event) {
+
+  onRelocateCitySelect = (event) => {
     this.setState({ relocateCity: event.target.value });
   }
-  handleRelocateTeamSelect(event) {
+
+  onRelocateTeamSelect = (event) => {
     this.setState({ relocateTeam: event.target.value });
   }
 
@@ -57,33 +53,40 @@ export default class Relocationizer extends React.Component {
         <h3>Relocate team</h3>
         <div className="subfield">
           <label htmlFor="relocate_team">team</label>
-          <select id="relocate_team" value={this.state.relocateTeam} onChange={this.handleRelocateTeamSelect}>
+          <select id="relocate_team" value={this.state.relocateTeam} onChange={this.onRelocateTeamSelect}>
             {teamNodes}
           </select>
         </div>
         <div className="subfield">
           <label htmlFor="relocate_city">to</label>
-          <select id="relocate_city" value={this.state.relocateCity} onChange={this.handleRelocateCitySelect}>
+          <select id="relocate_city" value={this.state.relocateCity} onChange={this.onRelocateCitySelect}>
             {cityNodes}
           </select>
         </div>
-        <div><button className="action" onClick={this.relocate}>Relocate Team</button></div>
+        <div><button className="action" onClick={this.onRelocate}>Relocate Team</button></div>
       </div>
 
       <div className="field">
         <h3>Expansion team</h3>
         <div className="subfield">
           <label htmlFor="expand_city">city</label>
-          <select id="expand_city" value={this.state.expansionCity} onChange={this.handleExpansionCitySelect}>
+          <select id="expand_city" value={this.state.expansionCity} onChange={this.onExpansionCitySelect}>
             {cityNodes}
           </select>
         </div>
         <div className="subfield">
           <label htmlFor="expand_name">name</label>
-          <input id="expand_name" type="text" value={this.state.expansionName} onChange={this.handleExpansionCityName} />
+          <input id="expand_name" type="text" value={this.state.expansionName} onChange={this.onExpansionNameChange} />
         </div>
-        <div><button className="action" onClick={this.expand}>Create Team</button></div>
+        <div><button className="action" onClick={this.onExpand}>Create Team</button></div>
       </div>
     </div>);
   }
 }
+
+Relocationizer.propTypes = {
+  teams: PropTypes.arrayOf(Team).isRequired,
+  cities: PropTypes.array.isRequired,
+  onRelocate: PropTypes.func.isRequired,
+  onExpansion: PropTypes.func.isRequired,
+};

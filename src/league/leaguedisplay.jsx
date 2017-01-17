@@ -5,11 +5,6 @@ import ConferenceDisplay from './conferencedisplay';
 require('./_leaguedisplay.scss');
 
 export default class LeagueDisplay extends React.Component {
-  static propTypes = {
-    league: React.PropTypes.array,
-    onDrag: React.PropTypes.func,
-  }
-
   onDrag(teamId, divId) {
     this.props.onDrag(teamId, divId);
   }
@@ -27,3 +22,8 @@ export default class LeagueDisplay extends React.Component {
     return <div id="league">{nodes}</div>;
   }
 }
+
+LeagueDisplay.propTypes = {
+  league: React.PropTypes.arrayOf(Array),
+  onDrag: React.PropTypes.func,
+};

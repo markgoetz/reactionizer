@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { DropTarget } from 'react-dnd';
 import TeamCard from './teamcard';
 import DragTypes from '../global/dragtypes';
+import Team from './team.model';
 
 require('./_divisiondisplay.scss');
 
@@ -20,16 +21,6 @@ function collect(connect, monitor) {
 }
 
 class DivisionDisplay extends React.Component {
-  static propTypes = {
-    division: PropTypes.array,
-    count: PropTypes.number,
-    conference: PropTypes.number,
-    number: PropTypes.number,
-    onDrag: PropTypes.func,
-    connectDropTarget: PropTypes.func,
-    // eslint-disable-next-line react/no-unused-prop-types
-    canDrop: PropTypes.func,
-  }
   render() {
     const teamNodes = this.props.division.map(team => <TeamCard team={team} key={team.name} />);
 
@@ -42,5 +33,17 @@ class DivisionDisplay extends React.Component {
     </div>);
   }
 }
+
+DivisionDisplay.propTypes = {
+  division: PropTypes.arrayOf(Team),
+  count: PropTypes.number,
+  conference: PropTypes.number,
+  number: PropTypes.number,
+  // eslint-disable-next-line react/no-unused-prop-types
+  onDrag: PropTypes.func,
+  connectDropTarget: PropTypes.func,
+  // eslint-disable-next-line react/no-unused-prop-types
+  canDrop: PropTypes.func,
+};
 
 module.exports = DropTarget(DragTypes.TEAM, spec, collect)(DivisionDisplay);

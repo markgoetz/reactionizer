@@ -1,4 +1,4 @@
-@import "../global/_variables";
+@import "../global/_global";
 
 #divisionizer {
 	display: flex;
@@ -29,6 +29,6 @@ body {
 
 @media (min-width: 900px) {
 	.application {
-		flex-direction: row;	
+		flex-direction: row;
 	}
 }

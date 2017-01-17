@@ -7,11 +7,6 @@ const mapStyle = require('./mapstyle.json');
 require('./_map.scss');
 
 export default class Map extends React.Component {
-  static propTypes = {
-    league: React.PropTypes.array,
-    mapHolderRef: React.PropTypes.object,
-  }
-
   _getMarkers(league) {
     const markers = [];
 
@@ -26,7 +21,14 @@ export default class Map extends React.Component {
           const team = division[t];
 
           markers.push(
-            <MarkerBackground team={team} conference={c} division={d} singleConference={isSingleConference} key={`bg${team.id}`} mapHolderRef={this.props.mapHolderRef} />,
+            <MarkerBackground
+              team={team}
+              conference={c}
+              division={d}
+              singleConference={isSingleConference}
+              key={`bg${team.id}`}
+              mapHolderRef={this.props.mapHolderRef}
+            />,
           );
 
           markers.push(<MarkerIcon team={team} key={`icon${team.id}`} mapHolderRef={this.props.mapHolderRef} />);
@@ -54,3 +56,8 @@ export default class Map extends React.Component {
     return <GoogleMapLoader containerElement={<div id="map" />} googleMapElement={this._getMap()} />;
   }
 }
+
+Map.propTypes = {
+  league: React.PropTypes.arrayOf(Array),
+  mapHolderRef: React.PropTypes.object,
+};

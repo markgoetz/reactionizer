@@ -4,13 +4,7 @@ import Team from '../league/team.model';
 require('./_changedteamview.scss');
 
 export default class ChangedTeamView extends React.Component {
-  static propTypes = {
-    type: PropTypes.string.isRequired,
-    team: PropTypes.instanceOf(Team),
-    onClick: PropTypes.func.isRequired,
-  }
-
-  handleClick() {
+  handleClick = () => {
     this.props.onClick(this.props.team.id);
   }
   _getMessage() {
@@ -31,3 +25,9 @@ export default class ChangedTeamView extends React.Component {
     </div>);
   }
 }
+
+ChangedTeamView.propTypes = {
+  type: PropTypes.string.isRequired,
+  team: PropTypes.instanceOf(Team).isRequired,
+  onClick: PropTypes.func.isRequired,
+};

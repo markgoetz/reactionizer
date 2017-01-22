@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { DragSource } from 'react-dnd';
 import DragTypes from '../global/dragtypes';
 import Team from './team.model';
@@ -42,8 +42,8 @@ class TeamCard extends React.Component {
 export default (DragSource(DragTypes.TEAM, dragSpec, collect)(TeamCard));
 
 TeamCard.propTypes = {
-  team: React.PropTypes.instanceOf(Team),
+  team: PropTypes.instanceOf(PropTypes.instanceOf(Team)),
   // eslint-disable-next-line react/no-unused-prop-types
-  isDragging: React.PropTypes.bool.isRequired,
-  connectDragSource: React.PropTypes.func.isRequired,
+  isDragging: PropTypes.bool.isRequired,
+  connectDragSource: PropTypes.func.isRequired,
 };

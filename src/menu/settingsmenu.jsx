@@ -52,7 +52,7 @@ export default class SettingsMenu extends React.Component {
 SettingsMenu.propTypes = {
   conferences: PropTypes.number.isRequired,
   divisions: PropTypes.number.isRequired,
-  teams: PropTypes.arrayOf(Team).isRequired,
+  teams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
   cities: PropTypes.array.isRequired,
   relocatedTeams: PropTypes.array,
   expansionTeams: PropTypes.array,

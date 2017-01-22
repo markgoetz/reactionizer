@@ -28,6 +28,6 @@ export default class ChangedTeamView extends React.Component {
 
 ChangedTeamView.propTypes = {
   type: PropTypes.string.isRequired,
-  team: PropTypes.instanceOf(Team).isRequired,
+  team: PropTypes.instanceOf(PropTypes.instanceOf(Team)).isRequired,
   onClick: PropTypes.func.isRequired,
 };

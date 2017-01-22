@@ -54,8 +54,8 @@ export default class ChangeView extends React.Component {
 }
 
 ChangeView.propTypes = {
-  relocatedTeams: PropTypes.arrayOf(Team),
-  expansionTeams: PropTypes.arrayOf(Team),
+  relocatedTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
+  expansionTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
   onUndoRelocation: PropTypes.func.isRequired,
   onUndoExpansion: PropTypes.func.isRequired,
 };

@@ -70,7 +70,7 @@ export default class ConferenceSelector extends React.Component {
 }
 
 ConferenceSelector.propTypes = {
-  conferences: React.PropTypes.number,
-  divisions: React.PropTypes.number,
+  conferences: React.PropTypes.number.isRequired,
+  divisions: React.PropTypes.number.isRequired,
   onConferenceChange: React.PropTypes.func,
 };

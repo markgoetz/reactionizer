@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import ConferenceDisplay from './conferencedisplay';
 
@@ -24,6 +24,6 @@ export default class LeagueDisplay extends React.Component {
 }
 
 LeagueDisplay.propTypes = {
-  league: React.PropTypes.arrayOf(Array),
-  onDrag: React.PropTypes.func,
+  league: PropTypes.arrayOf(PropTypes.array),
+  onDrag: PropTypes.func,
 };

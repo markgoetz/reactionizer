@@ -40,9 +40,9 @@ function Divisionizer(props) {
 Divisionizer.propTypes = {
   conferences: PropTypes.number.isRequired,
   divisions: PropTypes.number.isRequired,
-  teams: PropTypes.arrayOf(Team).isRequired,
+  teams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
   cities: PropTypes.array.isRequired,
-  league: PropTypes.arrayOf(Array).isRequired,
+  league: PropTypes.arrayOf(PropTypes.array).isRequired,
   relocatedTeams: PropTypes.array,
   expansionTeams: PropTypes.array,
   onRelocate: PropTypes.func.isRequired,

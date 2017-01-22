@@ -35,7 +35,7 @@ class DivisionDisplay extends React.Component {
 }
 
 DivisionDisplay.propTypes = {
-  division: PropTypes.arrayOf(Team),
+  division: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
   count: PropTypes.number,
   conference: PropTypes.number,
   number: PropTypes.number,

@@ -63,7 +63,7 @@ export default class LeagueManager {
   removeTeam(id) {
     for (let c = 1; c <= 3; c++) {
       for (let d = 1; d < this.defaultleagues[c].length; d++) {
-        if (this.defaultleagues[c][d]) {
+        if (this.defaultleagues[c][d] != null) {
           this.defaultleagues[c][d].removeTeam(id);
         }
       }
@@ -72,7 +72,7 @@ export default class LeagueManager {
 
   changeTeamDivision(team, division, divisionCount) {
     for (let c = 1; c <= 3; c++) {
-      if (!this.defaultleagues[c][divisionCount]) {
+      if (this.defaultleagues[c][divisionCount] != null) {
         this.defaultleagues[c][divisionCount].setTeamDivision(team, division);
       }
     }

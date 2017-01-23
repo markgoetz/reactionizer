@@ -5,7 +5,7 @@ import ConferenceDisplay from './conferencedisplay';
 require('./_leaguedisplay.scss');
 
 export default class LeagueDisplay extends React.Component {
-  onDrag(teamId, divId) {
+  onDrag = (teamId, divId) => {
     this.props.onDrag(teamId, divId);
   }
 

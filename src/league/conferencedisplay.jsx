@@ -4,13 +4,15 @@ import Division from './divisiondisplay';
 require('./_conferencedisplay.scss');
 
 export default class ConferenceDisplay extends React.Component {
-  onDrag(teamId, divId) {
+  onDrag = (teamId, divId) => {
     this.props.onDrag(teamId, divId);
   }
   render() {
+    const previousDivisions = this.props.number * this.props.conference.length;
     const divisionNodes = this.props.conference.map((division, index) =>
       (<Division
         division={division}
+        id={index + previousDivisions}
         key={index}
         count={this.props.conference.length * this.props.count}
         conference={this.props.number}

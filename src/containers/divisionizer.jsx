@@ -8,7 +8,7 @@ import Team from '../league/team.model';
 
 require('./_divisionizer.scss');
 
-function Divisionizer(props) {
+export default function Divisionizer(props) {
   return (
     <div id="divisionizer">
       <Header />
@@ -52,5 +52,3 @@ Divisionizer.propTypes = {
   onUndoRelocation: PropTypes.func.isRequired,
   onUndoExpansion: PropTypes.func.isRequired,
 };
-
-export default Divisionizer;

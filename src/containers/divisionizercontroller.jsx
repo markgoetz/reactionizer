@@ -36,7 +36,7 @@ class DivisionizerController extends React.Component {
   }
 
   onDrag = (team, division) => {
-    this.leaguemanager.changeTeamDivision(team, division, this.state.division_count);
+    this.leaguemanager.changeTeamDivision(team, division, this.state.divisionCount);
     this._updateLeague();
   }
 

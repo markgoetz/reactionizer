@@ -3,6 +3,6 @@ export default function stringSetCharAt(string, index, newChar) {
     .substring(0, index)
     .concat(
       newChar,
-      this.substring(index + 1, string.length),
+      string.substring(index + 1, string.length),
     );
 }

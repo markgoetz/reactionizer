@@ -35,6 +35,9 @@ class DivisionDisplay extends React.Component {
 }
 
 DivisionDisplay.propTypes = {
+  // The ID prop is used in the drag/drop code.
+  // eslint-disable-next-line react/no-unused-prop-types
+  id: PropTypes.number.isRequired,
   division: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
   count: PropTypes.number,
   conference: PropTypes.number,

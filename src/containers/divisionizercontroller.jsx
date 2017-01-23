@@ -5,7 +5,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import LeagueManager from '../containers/leaguemanager.model';
 import TeamManager from '../containers/teammanager.model';
-import Serializer from '../statemanagement/serializer';
+import { serialize, deserialize } from '../statemanagement/serializer';
 import QueryString from '../statemanagement/querystring';
 import Divisionizer from './divisionizer';
 
@@ -20,7 +20,6 @@ class DivisionizerController extends React.Component {
     super(props);
     this.teammanager = new TeamManager(jsonTeams);
     this.leaguemanager = new LeagueManager(jsonDefaultLeagues);
-    this.serializer = new Serializer();
 
     this.initConferences = this.props.initConferences;
     this.initDivisions = this.props.initDivisions;
@@ -84,7 +83,7 @@ class DivisionizerController extends React.Component {
   ) {
     const teams = this.teammanager.teams;
 
-    const queryString = this.serializer.serialize(
+    const queryString = serialize(
       conferenceCount,
       divisionCount,
       this.leaguemanager.getLeague(conferenceCount, divisionCount).getString(),
@@ -119,7 +118,7 @@ class DivisionizerController extends React.Component {
   }
 
   parseQueryString() {
-    const data = this.serializer.deserialize(QueryString.get());
+    const data = deserialize(QueryString.get());
 
     if (data.expansions) {
       data.expansions.forEach((t) => {

@@ -42,7 +42,7 @@ class TeamCard extends React.Component {
 export default (DragSource(DragTypes.TEAM, dragSpec, collect)(TeamCard));
 
 TeamCard.propTypes = {
-  team: PropTypes.instanceOf(PropTypes.instanceOf(Team)),
+  team: PropTypes.instanceOf(Team),
   // eslint-disable-next-line react/no-unused-prop-types
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
+import { GoogleMapLoader, GoogleMapHolder, GoogleMap } from 'react-google-maps';
 import MarkerIcon from './markericon';
 import MarkerBackground from './markerbackground';
 
@@ -59,5 +59,5 @@ export default class Map extends React.Component {
 
 Map.propTypes = {
   league: React.PropTypes.arrayOf(Array),
-  mapHolderRef: React.PropTypes.object,
+  mapHolderRef: React.PropTypes.instanceOf(GoogleMapHolder),
 };

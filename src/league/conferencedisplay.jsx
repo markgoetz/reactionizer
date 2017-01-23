@@ -27,7 +27,7 @@ export default class ConferenceDisplay extends React.Component {
 }
 
 ConferenceDisplay.propTypes = {
-  conference: PropTypes.array,
+  conference: PropTypes.arrayOf(PropTypes.array),
   count: PropTypes.number,
   number: PropTypes.number,
   onDrag: PropTypes.func,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker } from 'react-google-maps';
+import { Marker, GoogleMapHolder } from 'react-google-maps';
 import Team from '../league/team.model';
 import GoogleMapTeamIconModel from './googlemapteamiconmodel';
 
@@ -35,5 +35,5 @@ MarkerBackground.propTypes = {
   division: React.PropTypes.number.isRequired,
   conference: React.PropTypes.number.isRequired,
   singleConference: React.PropTypes.bool.isRequired,
-  mapHolderRef: React.PropTypes.object,
+  mapHolderRef: React.PropTypes.instanceOf(GoogleMapHolder),
 };

@@ -23,7 +23,7 @@ export default class TeamManager {
         name,
         id: this.teams.length,
         cityid: city.id,
-        city: city.city,
+        city: city.name,
         lat: city.lat,
         lon: city.lon,
       },

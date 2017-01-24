@@ -1,11 +1,16 @@
 @import "../global/_global";
 
-#map {
+#mapcontainer {
 	flex-grow: 1;
+  display: flex;
+}
+
+#map {
+  flex-grow: 1;
 }
 
 @media (min-width: 700px) {
-	#map {
+	#mapcontainer {
 		flex-grow: 1;
 	}
 }

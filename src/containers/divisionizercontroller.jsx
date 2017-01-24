@@ -5,6 +5,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import LeagueManager from '../containers/leaguemanager.model';
 import TeamManager from '../containers/teammanager.model';
+import CityManager from '../containers/citymanager.model';
 import { serialize, deserialize } from '../statemanagement/serializer';
 import QueryString from '../statemanagement/querystring';
 import Divisionizer from './divisionizer';
@@ -19,6 +20,7 @@ class DivisionizerController extends React.Component {
   constructor(props) {
     super(props);
     this.teammanager = new TeamManager(jsonTeams);
+    this.citymanager = new CityManager(jsonCities);
     this.leaguemanager = new LeagueManager(jsonDefaultLeagues);
 
     this.initConferences = this.props.initConferences;
@@ -30,7 +32,6 @@ class DivisionizerController extends React.Component {
       conferenceCount: this.initConferences,
       divisionCount: this.initDivisions,
       league: this._getLeague(this.initConferences, this.initDivisions),
-      cities: jsonCities,
     };
   }
 
@@ -40,7 +41,7 @@ class DivisionizerController extends React.Component {
   }
 
   onRelocateTeam = (teamid, cityid) => {
-    this.teammanager.relocateTeam(teamid, jsonCities[cityid]);
+    this.teammanager.relocateTeam(teamid, this.citymanager.getCity(cityid));
     this._updateLeague();
   }
 
@@ -50,7 +51,7 @@ class DivisionizerController extends React.Component {
   }
 
   onAddTeam = (name, cityid) => {
-    this.teammanager.addTeam(name, jsonCities[cityid]);
+    this.teammanager.addTeam(name, this.citymanager.getCity(Number(cityid)));
     this.leaguemanager.addTeam();
     this._updateLeague();
   }
@@ -122,7 +123,7 @@ class DivisionizerController extends React.Component {
 
     if (data.expansions) {
       data.expansions.forEach((t) => {
-        this.teammanager.addTeam(t.name, jsonCities[t.city]);
+        this.teammanager.addTeam(t.name, this.citymanager.getCity(t.city));
         this.leaguemanager.addTeam();
       });
     }
@@ -143,7 +144,7 @@ class DivisionizerController extends React.Component {
 
     if (data.relocations) {
       data.relocations.forEach((t) => {
-        this.teammanager.relocateTeam(t.id, jsonCities[t.city]);
+        this.teammanager.relocateTeam(t.id, this.citymanager.getCity(t.city));
       });
     }
   }
@@ -153,7 +154,7 @@ class DivisionizerController extends React.Component {
       conferences={this.state.conferenceCount}
       divisions={this.state.divisionCount}
       teams={this.teammanager.teams}
-      cities={this.state.cities}
+      cities={this.citymanager.getCities()}
       league={this.state.league}
       relocatedTeams={this.teammanager.getRelocatedTeams()}
       expansionTeams={this.teammanager.getExpansionTeams()}

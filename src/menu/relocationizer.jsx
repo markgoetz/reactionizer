@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Team from '../league/team.model';
+import City from '../containers/city.model';
 
 require('./_relocationizer.scss');
 
@@ -45,7 +46,7 @@ export default class Relocationizer extends React.Component {
     );
 
     const cityNodes = this.props.cities.map(
-      city => <option key={city.id} value={city.id}>{city.city}</option>,
+      city => <option key={city.id} value={city.id}>{city.name}</option>,
     );
 
     return (<div className="fieldgroup">
@@ -86,7 +87,7 @@ export default class Relocationizer extends React.Component {
 
 Relocationizer.propTypes = {
   teams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
-  cities: PropTypes.array.isRequired,
+  cities: PropTypes.arrayOf(PropTypes.instanceOf(City)).isRequired,
   onRelocate: PropTypes.func.isRequired,
   onExpansion: PropTypes.func.isRequired,
 };

@@ -4,6 +4,7 @@ import ConferenceSelector from './conferenceselector';
 import Relocationizer from './relocationizer';
 import ChangeView from './changeview';
 import Team from '../league/team.model';
+import City from '../containers/city.model';
 
 require('./_settingsmenu.scss');
 
@@ -53,7 +54,7 @@ SettingsMenu.propTypes = {
   conferences: PropTypes.number.isRequired,
   divisions: PropTypes.number.isRequired,
   teams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
-  cities: PropTypes.array.isRequired,
+  cities: PropTypes.arrayOf(PropTypes.instanceOf(City)).isRequired,
   relocatedTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
   expansionTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
   onConferenceChange: PropTypes.func.isRequired,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker, GoogleMapHolder } from 'react-google-maps';
+import { Marker } from 'react-google-maps';
 import Team from '../league/team.model';
 import GoogleMapTeamIconModel from './googlemapteamiconmodel';
 
@@ -26,7 +26,6 @@ export default function MarkerBackground(props) {
     icon={iconBackground}
     title={props.team.name}
     zIndex={-99}
-    mapHolderRef={props.mapHolderRef}
   />);
 }
 
@@ -35,5 +34,4 @@ MarkerBackground.propTypes = {
   division: React.PropTypes.number.isRequired,
   conference: React.PropTypes.number.isRequired,
   singleConference: React.PropTypes.bool.isRequired,
-  mapHolderRef: React.PropTypes.instanceOf(GoogleMapHolder),
 };

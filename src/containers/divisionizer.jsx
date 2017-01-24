@@ -5,6 +5,7 @@ import SettingsMenu from '../menu/settingsmenu';
 import Map from '../map/map';
 import LeagueDisplay from '../league/leaguedisplay';
 import Team from '../league/team.model';
+import City from './city.model';
 
 require('./_divisionizer.scss');
 
@@ -28,7 +29,15 @@ export default function Divisionizer(props) {
         />
 
         <div className="content">
-          <Map league={props.league} />
+          <Map
+            league={props.league}
+            containerElement={
+              <div id="mapcontainer" />
+            }
+            mapElement={
+              <div id="map" />
+            }
+          />
           <LeagueDisplay league={props.league} onDrag={props.onDrag} />
         </div>
       </div>
@@ -41,7 +50,7 @@ Divisionizer.propTypes = {
   conferences: PropTypes.number.isRequired,
   divisions: PropTypes.number.isRequired,
   teams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
-  cities: PropTypes.array.isRequired,
+  cities: PropTypes.arrayOf(PropTypes.instanceOf(City)).isRequired,
   league: PropTypes.arrayOf(PropTypes.array).isRequired,
   relocatedTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
   expansionTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),

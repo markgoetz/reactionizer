@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker, GoogleMapHolder } from 'react-google-maps';
+import { Marker } from 'react-google-maps';
 import Team from '../league/team.model';
 import { TeamLogoInline } from '../global/teamlogo';
 
@@ -14,11 +14,9 @@ export default function MarkerIcon(props) {
     }}
     title={props.team.name}
     zIndex={2}
-    mapHolderRef={props.mapHolderRef}
   />);
 }
 
 MarkerIcon.propTypes = {
   team: React.PropTypes.instanceOf(Team).isRequired,
-  mapHolderRef: React.PropTypes.instanceOf(GoogleMapHolder),
 };

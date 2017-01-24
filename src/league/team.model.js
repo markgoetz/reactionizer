@@ -21,7 +21,7 @@ export default class Team {
   }
 
   relocate(city) {
-    this.city = city.city;
+    this.city = city.name;
     this.cityid = city.id;
     this.lat = city.lat;
     this.lon = city.lon;

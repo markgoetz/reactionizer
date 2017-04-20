@@ -1,6 +1,6 @@
 import React from 'react';
 
-require('./_header.scss');
+import styles from './_header.scss';
 
 export default function Header() {
   return (<header>

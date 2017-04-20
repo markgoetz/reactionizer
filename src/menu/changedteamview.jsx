@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Team from '../league/team.model';
 
-require('./_changedteamview.scss');
+import styles from './_changedteamview.scss';
 
 export default class ChangedTeamView extends React.Component {
   handleClick = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-require('./_menuheader.scss');
+import styles from './_menuheader.scss';
 
 export default function MenuHeader(props) {
   const buttonLabel = (props.open) ? 'close' : 'open';

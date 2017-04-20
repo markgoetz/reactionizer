@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 import ConferenceDisplay from './conferencedisplay';
 
-require('./_leaguedisplay.scss');
+import styles from './_leaguedisplay.scss';
 
 export default class LeagueDisplay extends React.Component {
   onDrag = (teamId, divId) => {

@@ -3,8 +3,8 @@ import { withGoogleMap, GoogleMap } from 'react-google-maps';
 import MarkerIcon from './markericon';
 import MarkerBackground from './markerbackground';
 
-const mapStyle = require('./mapstyle.json');
-require('./_map.scss');
+import mapStyle from './mapstyle.json';
+import style from './_map.scss';
 
 function getMarkers(league) {
   const markers = [];

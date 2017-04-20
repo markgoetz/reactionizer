@@ -4,7 +4,7 @@ import DragTypes from '../global/dragtypes';
 import Team from './team.model';
 import { TeamLogoComponent } from '../global/teamlogo';
 
-require('./_teamcard.scss');
+import styles from './_teamcard.scss';
 
 const dragSpec = {
   beginDrag(props) {

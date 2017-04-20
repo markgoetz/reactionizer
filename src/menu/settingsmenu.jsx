@@ -6,7 +6,7 @@ import ChangeView from './changeview';
 import Team from '../league/team.model';
 import City from '../containers/city.model';
 
-require('./_settingsmenu.scss');
+import styles from './_settingsmenu.scss';
 
 export default class SettingsMenu extends React.Component {
   constructor(props) {

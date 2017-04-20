@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DivisionizerController from './containers/divisionizercontroller';
 
-require('./global/_global.scss');
+import styles from './global/_global.scss';
+
+import DivisionizerController from './containers/divisionizercontroller';
 
 function initialize(containerId, conferences, divisions) {
   ReactDOM.render(

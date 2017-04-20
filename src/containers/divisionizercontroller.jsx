@@ -16,6 +16,8 @@ import jsonDefaultLeagues from '../data/defaultleagues.json';
 
 const DnDBackend = ('ontouchstart' in document.documentElement) ? TouchBackend : HTML5Backend;
 
+import styles from './_divisionizer.scss';
+
 class DivisionizerController extends React.Component {
   constructor(props) {
     super(props);

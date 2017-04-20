@@ -7,8 +7,6 @@ import LeagueDisplay from '../league/leaguedisplay';
 import Team from '../league/team.model';
 import City from './city.model';
 
-require('./_divisionizer.scss');
-
 export default function Divisionizer(props) {
   return (
     <div id="divisionizer">

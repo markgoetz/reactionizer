@@ -1,9 +1,11 @@
-var React = require("react");
-require("./_footer.scss");
+import React from 'react';
 
-var Footer = function() {
-	var year = new Date().getYear() + 1900;
-	return <footer>Divisionizer is copyright &copy; {year} <a href="http://www.markandrewgoetz.com/" target="_blank">Mark Goetz</a></footer>;
-};
+import styles from './_footer.scss';
 
-module.exports = Footer;
+export default function Footer() {
+  const year = new Date().getYear() + 1900;
+  return (<footer>
+    Divisionizer is copyright &copy; {year}&nbsp;
+    <a href="http://www.markandrewgoetz.com/" target="_blank" rel="noopener noreferrer">Mark Goetz</a>
+  </footer>);
+}

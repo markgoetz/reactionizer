@@ -1,49 +1,49 @@
-var React = require("react");
-var DragSource = require("react-dnd").DragSource;
-var DragTypes = require("../global/dragtypes");
-var Team = require("./team.model");
-var TeamLogo = require("../global/teamlogo.jsx").component;
+import React, { PropTypes } from 'react';
+import { DragSource } from 'react-dnd';
+import DragTypes from '../global/dragtypes';
+import Team from './team.model';
+import { TeamLogoComponent } from '../global/teamlogo';
 
-require("./_teamcard.scss");
+import styles from './_teamcard.scss';
 
-var dragSpec = {
-	beginDrag: function(props) {
-		return { team: props.team };
-	}
+const dragSpec = {
+  beginDrag(props) {
+    return { team: props.team };
+  },
 };
 
 function collect(connect, monitor) {
-	return {
-		connectDragSource: connect.dragSource(),
-		isDragging: monitor.isDragging()
-	};
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging(),
+  };
 }
 
-var TeamCard = React.createClass({
-	propTypes: {
-		team: React.PropTypes.instanceOf(Team),
-		isDragging: React.PropTypes.bool.isRequired,
-		connectDragSource: React.PropTypes.func.isRequired
-	},
-	render: function() {
-		var source=this.props.team.getLogoID();
+class TeamCard extends React.Component {
+  render() {
+    const source = this.props.team.getLogoID();
 
-		var additionalClass = "";
-		if (this.props.team.relocated) {
-			additionalClass = " moved";
-		}
-		if (this.props.team.expansion) {
-			additionalClass = " created";
-		}
+    let additionalClass = '';
+    if (this.props.team.relocated) {
+      additionalClass = ' moved';
+    }
+    if (this.props.team.expansion) {
+      additionalClass = ' created';
+    }
 
-		return this.props.connectDragSource(
-			<div className={"team" + additionalClass}>
-				<TeamLogo className="team-logo" id={source} />
-				<span className="city">{this.props.team.city}</span>
-				<span className="name">&nbsp;{this.props.team.name}</span>
-			</div>
-		);
-	}
-});
+    return this.props.connectDragSource(<div className={`team${additionalClass}`}>
+      <TeamLogoComponent className="team-logo" id={source} />
+      <span className="city">{this.props.team.city}</span>
+      <span className="name">&nbsp;{this.props.team.name}</span>
+    </div>);
+  }
+}
 
-module.exports = DragSource(DragTypes.TEAM, dragSpec, collect)(TeamCard);
+export default (DragSource(DragTypes.TEAM, dragSpec, collect)(TeamCard));
+
+TeamCard.propTypes = {
+  team: PropTypes.instanceOf(Team),
+  // eslint-disable-next-line react/no-unused-prop-types
+  isDragging: PropTypes.bool.isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+};

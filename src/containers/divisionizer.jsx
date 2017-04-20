@@ -1,58 +1,61 @@
-var React = require("react");
+import React, { PropTypes } from 'react';
+import Header from './header';
+import Footer from './footer';
+import SettingsMenu from '../menu/settingsmenu';
+import Map from '../map/map';
+import LeagueDisplay from '../league/leaguedisplay';
+import Team from '../league/team.model';
+import City from './city.model';
 
-require("./_divisionizer.scss");
+export default function Divisionizer(props) {
+  return (
+    <div id="divisionizer">
+      <Header />
+      <div className="application">
+        <SettingsMenu
+          conferences={props.conferences}
+          divisions={props.divisions}
+          teams={props.teams}
+          cities={props.cities}
+          relocatedTeams={props.relocatedTeams}
+          expansionTeams={props.expansionTeams}
+          onRelocate={props.onRelocate}
+          onExpansion={props.onExpansion}
+          onConferenceChange={props.onConferenceChange}
+          onUndoRelocation={props.onUndoRelocation}
+          onUndoExpansion={props.onUndoExpansion}
+        />
 
-var Header = require("./header");
-var Footer = require("./footer");
-var SettingsMenu = require("../menu/settingsmenu");
-var Map = require("../map/map");
-var LeagueDisplay = require("../league/leaguedisplay");
+        <div className="content">
+          <Map
+            league={props.league}
+            containerElement={
+              <div id="mapcontainer" />
+            }
+            mapElement={
+              <div id="map" />
+            }
+          />
+          <LeagueDisplay league={props.league} onDrag={props.onDrag} />
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+}
 
-var Divisionizer = React.createClass({
-	propTypes: {
-		conferences: React.PropTypes.number.isRequired,
-		divisions: React.PropTypes.number.isRequired,
-		teams: React.PropTypes.array.isRequired,
-		cities: React.PropTypes.array.isRequired,
-		league: React.PropTypes.array.isRequired,
-		relocatedTeams: React.PropTypes.array,
-		expansionTeams: React.PropTypes.array,
-		onRelocate: React.PropTypes.func.isRequired,
-		onExpansion: React.PropTypes.func.isRequired,
-		onConferenceChange: React.PropTypes.func.isRequired,
-		onDrag: React.PropTypes.func.isRequired,
-		onUndoRelocation: React.PropTypes.func.isRequired,
-		onUndoExpansion: React.PropTypes.func.isRequired
-	},
-	render: function() {
-		return (
-			<div id="divisionizer">
-				<Header />
-
-				<div className="application">
-					<SettingsMenu
-						conferences={this.props.conferences} 
-						divisions={this.props.divisions}
-						teams={this.props.teams}
-						cities={this.props.cities}
-						relocatedTeams={this.props.relocatedTeams}
-						expansionTeams={this.props.expansionTeams}
-						onRelocate={this.props.onRelocate}
-						onExpansion={this.props.onExpansion}
-						onConferenceChange={this.props.onConferenceChange}
-						onUndoRelocation={this.props.onUndoRelocation}
-						onUndoExpansion={this.props.onUndoExpansion}						
-					/>
-
-					<div className="content">
-						<Map league={this.props.league} />
-						<LeagueDisplay league={this.props.league} onDrag={this.props.onDrag} />
-					</div>
-				</div>
-				<Footer />
-			</div>
-		);
-	}
-});
-
-module.exports = Divisionizer;
+Divisionizer.propTypes = {
+  conferences: PropTypes.number.isRequired,
+  divisions: PropTypes.number.isRequired,
+  teams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
+  cities: PropTypes.arrayOf(PropTypes.instanceOf(City)).isRequired,
+  league: PropTypes.arrayOf(PropTypes.array).isRequired,
+  relocatedTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
+  expansionTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
+  onRelocate: PropTypes.func.isRequired,
+  onExpansion: PropTypes.func.isRequired,
+  onConferenceChange: PropTypes.func.isRequired,
+  onDrag: PropTypes.func.isRequired,
+  onUndoRelocation: PropTypes.func.isRequired,
+  onUndoExpansion: PropTypes.func.isRequired,
+};

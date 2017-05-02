@@ -1,21 +1,21 @@
-var React = require("react");
-require("./_menuheader.scss");
+import React from 'react';
 
-var MenuHeader = React.createClass({
-	propTypes: {
-		open: React.PropTypes.bool,
-		click: React.PropTypes.func
-	},
-	render: function() {
-		var button_label = (this.props.open) ? "close" : "open";
+import styles from './_menuheader.scss';
 
-		return (
-			<h2 className="menuheader">
-				<span>Settings</span>
-				<div className="buttoncontainer"><button onClick={this.props.click}>{button_label}</button></div>
-			</h2>
-		);
-	}
-});
+export default function MenuHeader(props) {
+  const buttonLabel = (props.open) ? 'close' : 'open';
 
-module.exports = MenuHeader;
+  return (
+    <h2 id="menuheader">
+      <span>Settings</span>
+      <div className="buttoncontainer">
+        <button onClick={props.click}>{buttonLabel}</button>
+      </div>
+    </h2>
+  );
+}
+
+MenuHeader.propTypes = {
+  open: React.PropTypes.bool,
+  click: React.PropTypes.func,
+};

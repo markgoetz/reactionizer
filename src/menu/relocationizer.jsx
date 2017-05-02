@@ -1,101 +1,86 @@
-var React = require("react");
-require("./_relocationizer.scss");
-require("./_actionbutton.scss");
+import React, { PropTypes } from 'react';
+import Team from '../league/team.model';
+import City from '../containers/city.model';
 
-var Relocationizer = React.createClass({
-	propTypes: {
-		teams: React.PropTypes.array.isRequired,
-		cities: React.PropTypes.array.isRequired,
-		onRelocate: React.PropTypes.func.isRequired,
-		onExpansion: React.PropTypes.func.isRequired
-	},
-	getInitialState: function() {
-		return {
-			relocate_team: 0,
-			relocate_city: 0,
-			expansion_name: "",
-			expansion_city: 0
-		};
-	},
-	render: function() {
-		var team_nodes = this.props.teams.map(function(team) {
-			return <option key={team.id} value={team.id}>{team.name}</option>;
-		});
+require('./_relocationizer.scss');
 
-		var city_nodes = this.props.cities.map(function(city) {
-			return <option key={city.id} value={city.id}>{city.city}</option>;
-		});
+export default class Relocationizer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      relocateTeam: 0,
+      relocateCity: 0,
+      expansionName: '',
+      expansionCity: 0,
+    };
+  }
 
-		return <div className="formgroup">
-			<div className="form">
-				<h3 className="form_heading">Relocate team</h3>
-				<div className="field">
-					<label className="field_label">team</label>
-					<select
-						className="field_item"
-						value={this.state.relocate_team}
-						onChange={this.handleRelocateTeamSelect}>
-						{team_nodes}
-					</select>
-				</div>
-				<div className="field">
-					<label className="field_label">to</label>
-					<select
-						className="field_item"
-						value={this.state.relocate_city}
-						onChange={this.handleRelocateCitySelect}>
-						{city_nodes}
-					</select>
-				</div>
-				<div>
-					<button className="actionbutton" onClick={this.relocate}>Relocate Team</button>
-				</div>
-			</div>
+  onRelocate = () => {
+    this.props.onRelocate(this.state.relocateTeam, this.state.relocateCity);
+  }
 
-			<div className="form">
-				<h3 className="form_heading">Expansion team</h3>
-				<div className="field">
-					<label className="field_label">city</label>
-					<select
-						className="field_item"
-						value={this.state.expansion_city}
-						onChange={this.handleExpansionCitySelect}>
-						{city_nodes}
-					</select>
-				</div>
-				<div className="field">
-					<label className="field_label">name</label>
-					<input
-						type="text"
-						className="field_item"
-						value={this.state.expansion_name}
-						onChange={this.handleExpansionCityName} />
-				</div>
-				<div>
-					<button className="actionbutton" onClick={this.expand}>Create Team</button>
-				</div>
-			</div>
-		</div>;
-	},
-	relocate: function() {
-		this.props.onRelocate(this.state.relocate_team, this.state.relocate_city);
-	},
-	expand: function() {
-		this.props.onExpansion(this.state.expansion_name, this.state.expansion_city);
-		this.setState({expansion_name: ""});
-	},
-	handleExpansionCityName: function(event) {
-		this.setState({expansion_name: event.target.value});
-	},
-	handleExpansionCitySelect: function(event) {
-		this.setState({expansion_city: event.target.value});
-	},
-	handleRelocateCitySelect: function(event) {
-		this.setState({relocate_city: event.target.value});
-	},
-	handleRelocateTeamSelect: function(event) {
-		this.setState({relocate_team: event.target.value});
-	}
-});
+  onExpand = () => {
+    this.props.onExpansion(this.state.expansionName, this.state.expansionCity);
+    this.setState({ expansionName: '' });
+  }
 
-module.exports = Relocationizer;
+  onExpansionNameChange = (event) => {
+    this.setState({ expansionName: event.target.value });
+  }
+
+  onExpansionCitySelect = (event) => {
+    this.setState({ expansionCity: event.target.value });
+  }
+
+  onRelocateCitySelect = (event) => {
+    this.setState({ relocateCity: event.target.value });
+  }
+
+  onRelocateTeamSelect = (event) => {
+    this.setState({ relocateTeam: event.target.value });
+  }
+
+  render() {
+    const teamNodes = this.props.teams.map(
+      team => <option key={team.id} value={team.id}>{team.name}</option>,
+    );
+
+    const cityNodes = this.props.cities.map(
+      city => <option key={city.id} value={city.id}>{city.name}</option>,
+    );
+
+    return (<div className="formgroup">
+      <div className="form">
+        <h3 className="form_heading">Relocate team</h3>
+        <div className="field">
+          <label htmlFor="relocate_team" className="field_label">team</label>
+          <select id="relocate_team" value={this.state.relocateTeam} onChange={this.onRelocateTeamSelect} className="field_item">
+            {teamNodes}
+          </select>
+        </div>
+        <div className="field">
+          <label htmlFor="relocate_city" className="field_label">to</label>
+          <select id="relocate_city" value={this.state.relocateCity} onChange={this.onRelocateCitySelect} className="field_item">
+            {cityNodes}
+          </select>
+        </div>
+        <div><button className="actionbutton" onClick={this.onRelocate}>Relocate Team</button></div>
+      </div>
+
+      <div className="form">
+        <h3 className="form_heading">Expansion team</h3>
+        <div className="field">
+          <label htmlFor="expand_city" className="field_label">city</label>
+          <select id="expand_city" value={this.state.expansionCity} onChange={this.onExpansionCitySelect} className="field_item">
+            {cityNodes}
+          </select>
+        </div>
+        <div className="form">
+          <label htmlFor="expand_name" className="field_label">name</label>
+          <input id="expand_name" type="text" value={this.state.expansionName} onChange={this.onExpansionNameChange} className="field_item" />
+        </div>
+        <div><button className="actionbutton" onClick={this.onExpand}>Create Team</button></div>
+      </div>
+    </div>);
+  }
+}

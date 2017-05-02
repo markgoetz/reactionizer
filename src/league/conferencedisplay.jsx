@@ -1,32 +1,33 @@
-var React = require("react");
-var Division = require("./divisiondisplay");
-require("./_conferencedisplay.scss");
+import React, { PropTypes } from 'react';
+import Division from './divisiondisplay';
+import styles from './_conferencedisplay.scss';
 
-var ConferenceDisplay = React.createClass({
-	propTypes: {
-		conference: React.PropTypes.array,
-		count: React.PropTypes.number,
-		number: React.PropTypes.number,
-		onDrag: React.PropTypes.func
-	},
-	render: function() {
-		var division_nodes = this.props.conference.map(function (division, index) {
-			var id = this.props.number * this.props.conference.length + index;
-			return <Division
-				division={division}
-				key={index}
-				conference={this.props.number}
-				number={index}
-				id={id}
-				onDrag={this.onDrag} />;
-		}, this);
+export default class ConferenceDisplay extends React.Component {
+  onDrag = (teamId, divId) => {
+    this.props.onDrag(teamId, divId);
+  }
+  render() {
+    const previousDivisions = this.props.number * this.props.conference.length;
+    const divisionNodes = this.props.conference.map((division, index) =>
+      (<Division
+        division={division}
+        id={index + previousDivisions}
+        key={index}
+        count={this.props.conference.length * this.props.count}
+        conference={this.props.number}
+        number={index}
+        onDrag={this.onDrag}
+      />),
+    );
 
-		var className = "conference conference-number" + this.props.number;
-		return <div className={className}>{division_nodes}</div>;
-	},
-	onDrag: function(team_id, div_id) {
-		this.props.onDrag(team_id, div_id);
-	}
-});
+    const className = "conference conference-number" + this.props.number;
+    return <div className={className}>{divisionNodes}</div>;
+  }
+}
 
-module.exports = ConferenceDisplay;
+ConferenceDisplay.propTypes = {
+  conference: PropTypes.arrayOf(PropTypes.array),
+  count: PropTypes.number,
+  number: PropTypes.number,
+  onDrag: PropTypes.func,
+};

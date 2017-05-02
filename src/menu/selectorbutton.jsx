@@ -1,28 +1,30 @@
-var React = require("react");
-require("./_selectorbutton.scss");
+import React, { PropTypes } from 'react';
 
-var SelectorButton = React.createClass({
-	propTypes: {
-		selected: React.PropTypes.bool,
-		disabled: React.PropTypes.bool,
-		type: React.PropTypes.string,
-		value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
-		onButtonClick: React.PropTypes.func
-	},
-	render: function() {
-		var className = "selectorbutton" + (this.props.selected ? " selected" : "");
-		var id = this.props.type + "_count_selector_" + this.props.value;
-		return (<button
+require('./_selectorbutton.scss');
+
+export default class SelectorButton extends React.Component {
+  handleClick = () => {
+    this.props.onButtonClick(this.props.value);
+  }
+
+  render() {
+		const className = "selectorbutton" + (this.props.selected ? " selected" : "");
+		var id = `${this.props.type}_count_selector_${this.props.value}`;
+    return (<button
       className={className}
       id={id}
       disabled={this.props.disabled}
-      onClick={this.handleClick}>
-        {this.props.value}
-      </button>);
-	},
-	handleClick: function() {
-		this.props.onButtonClick(this.props.value);
-	}
-});
+      onClick={this.handleClick}
+    >
+      {this.props.value}
+    </button>);
+  }
+}
 
-module.exports = SelectorButton;
+SelectorButton.propTypes = {
+  selected: PropTypes.bool,
+  disabled: PropTypes.bool,
+  type: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onButtonClick: PropTypes.func,
+};

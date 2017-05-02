@@ -1,15 +1,13 @@
-if (!Array.prototype.getMinValueIndex) {
-	Array.prototype.getMinValueIndex = function() {
-		var min_index = 0;
-		var min_value = 999999;
+export default function getMinValueIndex(a) {
+  let minIndex = 0;
+  let minValue = 999999;
 
-		for (var m = 0; m < this.length; m++) {
-			if (this[m] < min_value) {
-				min_index = m;
-				min_value = this[m];
-			}
-		}
+  for (let m = 0; m < a.length; m++) {
+    if (a[m] < minValue) {
+      minIndex = m;
+      minValue = a[m];
+    }
+  }
 
-		return min_index;
-	};
+  return minIndex;
 }

@@ -1,3 +1,3 @@
-module.exports = {
-	TEAM: "team"
+export default {
+  TEAM: 'team',
 };

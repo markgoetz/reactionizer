@@ -1,63 +1,61 @@
-function StringCompressor() {
-	var DIGITS = "0123456789abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
-	var BASE = DIGITS.length;
+const DIGITS = '0123456789abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
+const BASE = DIGITS.length;
 
-	var _getMaxValue = function(string) {
-		var value = 0;
+function getMaxValue(string) {
+  let value = 0;
 
-		for (var i = 0; i < string.length; i++) {
-			if (string.charAt(i) > value)
-				value = string.charAt(i);
-		}
+  for (let i = 0; i < string.length; i++) {
+    if (string.charAt(i) > value) {
+      value = string.charAt(i);
+    }
+  }
 
-		return value;
-	};
-
-	var _getBlockSize = function(bit_count) {
-		return Math.floor(Math.log(BASE) / Math.log(bit_count));
-	};
-
-	var _compressBlock = function(block) {
-		return DIGITS.charAt(block);
-	};
-
-	var _decompressBlock = function(block) {
-		return DIGITS.indexOf(block);
-	};
-
-	this.compress = function(string) {
-		var bits = Number(_getMaxValue(string)) + 1;
-		var block_size = _getBlockSize(bits);
-		var compressed_string = "";
-
-		while (string.length > 0) {
-			var block = string.slice(-block_size);
-			var numeric_block = Number.parseInt(block, bits);
-			compressed_string = _compressBlock(numeric_block) + compressed_string;
-
-			string = string.slice(0,-block_size);
-		}
-
-		return compressed_string;
-	};
-
-	this.decompress = function(string, bits) {
-		var block_size = _getBlockSize(bits);
-
-		var decompressed_string = "";
-		for (var i = 0; i < string.length; i++) {
-			var numeric_block = _decompressBlock(string[i]);
-			var block = numeric_block.toString(bits);
-
-			while (block.length < block_size) {
-				block = "0" + block;
-			}
-
-			decompressed_string = decompressed_string + block;
-		}
-
-		return decompressed_string;
-	};
+  return value;
 }
 
-module.exports = StringCompressor;
+function getBlockSize(bitCount) {
+  return Math.floor(Math.log(BASE) / Math.log(bitCount));
+}
+
+function compressBlock(block) {
+  return DIGITS.charAt(block);
+}
+
+function decompressBlock(block) {
+  return DIGITS.indexOf(block);
+}
+
+export function compress(string) {
+  let remainingString = string;
+  const bits = Number(getMaxValue(string)) + 1;
+  const blockSize = getBlockSize(bits);
+  let compressedString = '';
+
+  while (remainingString.length > 0) {
+    const block = remainingString.slice(-blockSize);
+    const numericBlock = Number.parseInt(block, bits);
+    compressedString = compressBlock(numericBlock) + compressedString;
+
+    remainingString = remainingString.slice(0, -blockSize);
+  }
+
+  return compressedString;
+}
+
+export function decompress(string, bits) {
+  const blockSize = getBlockSize(bits);
+
+  let decompressedString = '';
+  for (let i = 0; i < string.length; i++) {
+    const numericBlock = decompressBlock(string[i]);
+    let block = numericBlock.toString(bits);
+
+    while (block.length < blockSize) {
+      block = `0${block}`;
+    }
+
+    decompressedString += block;
+  }
+
+  return decompressedString;
+}

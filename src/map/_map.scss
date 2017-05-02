@@ -1,4 +1,7 @@
-@import "../global/_variables";
+#mapcontainer {
+	flex-grow: 1;
+  display: flex;
+}
 
 .map {
 	flex-grow: 1;

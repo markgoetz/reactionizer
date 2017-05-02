@@ -1,10 +1,10 @@
-var React = require("react");
-require("./_header.scss");
+import React from 'react';
+import styles from './_header.scss';
 
-var Header = function() {
-	return <header className="header">
-		<img src="/images/logo.png" width="176" height="40" />
-	</header>;
-};
+export default function Header() {
+  return (<header className="header">
+    <img src="/images/logo.png" width="176" height="40" alt="logo" />
+  </header>);
+}
 
 module.exports = Header;

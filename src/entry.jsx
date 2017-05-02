@@ -1,15 +1,15 @@
-var React = require("react");
-var ReactDOM = require("react-dom");
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-require("./global/_global.scss");
+import styles from './global/_global.scss';
 
-var DivisionizerController = require("./containers/divisionizercontroller");
+import DivisionizerController from './containers/divisionizercontroller';
 
-function initialize(container_id, conferences, divisions) {
-	ReactDOM.render(
-		<DivisionizerController initConferences={conferences} initDivisions={divisions} />,
-		document.getElementById(container_id)
-    ); 
+function initialize(containerId, conferences, divisions) {
+  ReactDOM.render(
+    <DivisionizerController initConferences={conferences} initDivisions={divisions} />,
+    document.getElementById(containerId),
+  );
 }
 
-initialize("container", 2, 4);
+initialize('container', 2, 4);

@@ -1,6 +1,6 @@
 @import '../global/_variables';
 
-header {
+.header {
 	text-align: center;
 	font-size: 40px;
 	@include team-gradient($medium-blue);

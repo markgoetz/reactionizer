@@ -36,6 +36,7 @@ export default class ConferenceSelector extends React.Component {
         onButtonClick={this.conferenceUpdate}
       />),
     );
+
     const divisionNodes = [6, 4, 3, 2].map(
       division => (<SelectorButton
         type="division"
@@ -47,20 +48,20 @@ export default class ConferenceSelector extends React.Component {
       />),
     );
 
-    return (<div className="fieldgroup">
-      <div className="field">
-        <h3>Conferences</h3>
-        <div className="subfield">
-          <div className="selector-container">
+    return (<div className="formgroup">
+      <div className="form">
+        <h3 className="form_heading">Conferences</h3>
+        <div className="form_field">
+          <div className="selectorcontainer">
             {conferenceNodes}
           </div>
         </div>
       </div>
 
-      <div className="field">
-        <h3>Divisions</h3>
-        <div className="subfield">
-          <div className="selector-container">
+      <div className="form">
+        <h3 className="form_heading">Divisions</h3>
+        <div className="form_field">
+          <div className="selectorcontainer">
             {divisionNodes}
           </div>
         </div>

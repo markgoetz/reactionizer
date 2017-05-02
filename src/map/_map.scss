@@ -3,12 +3,12 @@
   display: flex;
 }
 
-#map {
-  flex-grow: 1;
+.map {
+	flex-grow: 1;
 }
 
 @media (min-width: 700px) {
-	#mapcontainer {
+	.map {
 		flex-grow: 1;
 	}
 }

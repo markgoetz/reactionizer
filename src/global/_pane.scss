@@ -1,0 +1,12 @@
+@import "./_variables";
+
+.pane-main {
+	flex-grow: 1;
+	overflow: hidden;
+}
+
+@media (min-width: $breakpoint-tablethd) {
+	.pane-secondary {
+		position: relative;
+	}	
+}

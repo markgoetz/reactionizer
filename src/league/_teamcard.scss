@@ -1,14 +1,10 @@
 @import "../global/_variables";
 
 .team {
-	min-height: 44px;
-	min-width: 44px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	@include team-gradient($light-grey);
-	font-size: 18px;
-	line-height: 18px;
 	padding: 5px;
 	border-radius: $radius;
 	margin: 2px;
@@ -20,85 +16,97 @@
 		@include team-gradient($light-yellow);
 	}
 
-	&.moved {
-		@include team-gradient($light-blue);
-		&:hover {
-			@include team-gradient($light-yellow);
-		}
+	@include media-league-teamgrid {
+		text-align: center;
+		display: inline-block;
 	}
 
-	&.created {
-		@include team-gradient($medium-blue);
-		color: $lightest-blue;
-		&:hover {
-			@include team-gradient($light-yellow);
-			color: $black;
-		}
+	@media (max-width: $breakpoint-desktop) {
+		min-width: 44px;
+		min-height: 44px;
+	}
+
+	@media (min-width: $breakpoint-desktop) {
+		min-height: 0px;
 	}
 }
 
-.team-logo {
+.league-2div .team, .league-3div .team {
+	@include media-league-teamlist {
+		width: calc(50% - 4px);
+	}
+}
+
+.team-moved {
+	@include team-gradient($light-blue);
+	&:hover {
+		@include team-gradient($light-yellow);
+	}
+}
+
+.team-created {
+	@include team-gradient($medium-blue);
+	color: $lightest-blue;
+	&:hover {
+		@include team-gradient($light-yellow);
+		color: $black;
+	}
+}
+
+.team_logo, .team_logoimage {
 	display: inline-block;
 	max-width: 34px;
 	max-height: 34px;
-}
 
-@media (min-width:700px) and (max-width:899px),(min-width:1025px) {
-	.team {
-		text-align: left;
+	@include media-league-teamlist {
+		margin-right: 5px;
 	}
 
-	.team .city, .team .name {
+	@include media-league-teamgrid {
+		display: inline-block;
+		min-height: 100%;
+	}
+
+	@media (min-width: $breakpoint-desktop) {
+		width: 18px;
+		height: 18px;
+	}
+
+	@media (min-width: $breakpoint-desktophd) {
+		height: 24px;
+		width: 24px;
+	}
+}
+
+.team_city, .team_name {
+	font-size: 18px;
+	color: $black;
+
+	@include media-league-teamgrid {
+		display: none;
+	}
+
+	@include media-league-teamlist {
 		display: inline-block;
 		line-height: 18px;
 	}
 
-	.division.col-3 .team .name, .division.col-6 .team .name {
-		display: none;
-	}
-
-	.team-logo {
-		max-width: none;
-		margin-right: 5px;
-	}
-}
-
-@media (max-width: 699px),(min-width:900px) and (max-width:1024px) {
-	.team {
-		text-align: center;
-		width: 44px;
-		max-height: 44px;
-	}
-
-	.team .city, .team .name {
-		display: none;
-	}
-
-	.team-logo {
-		display: inline-block;
-		min-height: 100%;
-	}
-}
-
-@media (min-width: 1025px) {
-	.team {
-		min-height: 0;
-	}
-
-	.team-logo {
-		width: 18px;
-		height: 18px;
-	}
-}
-
-@media (min-width: 1281px) {
-	.team .city, .team .name {
+	@media (min-width: $breakpoint-desktophd) {
 		font-size: 24px;
 		line-height: 24px;
 	}
+}
 
-	.team-logo, .team-logo img {
-		height: 24px;
-		width: 24px;
+.league-3div .team_name, .league-6div .team_name,
+.league-3div .team_city, .league-6div .team_city, {
+	@media (min-width: $breakpoint-desktophd) {
+		font-size: 18px;
+		line-height: 18px;
+	}
+}
+
+.league-3div .team_name, .league-6div .team_name {
+	@media (max-width: $breakpoint-desktophd) {
+		display: none;
 	}
 }

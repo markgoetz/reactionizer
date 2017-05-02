@@ -23,11 +23,12 @@ function collect(connect, monitor) {
 class DivisionDisplay extends React.Component {
   render() {
     const teamNodes = this.props.division.map(team => <TeamCard team={team} key={team.name} />);
+    const divisionClass = `division division-conf${this.props.conference} division-number${this.props.number}`;
+		const nameClass = `division_name division_name-conf${this.props.conference} div${this.props.number}`;
 
-    const className = `division col-${this.props.count} conf-${this.props.conference} div-${this.props.number}`;
-    return this.props.connectDropTarget(<div className={className}>
-      <div className="name">{this.props.division.name}</div>
-      <div className="list">
+    return this.props.connectDropTarget(<div className={divisionClass}>
+      <div className={nameClass}>{this.props.division.name}</div>
+      <div className="division_list">
         {teamNodes}
       </div>
     </div>);

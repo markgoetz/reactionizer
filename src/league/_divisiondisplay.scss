@@ -1,160 +1,147 @@
 @import "../global/_variables";
 @import "../global/_conferencecolors";
 
-.division > .name {
+.division {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	flex-grow: 1;
+}
+
+.division-conf0 {
+	background: rgba($c0d0color, .1);
+}
+
+.division-conf1 {
+	background: rgba($c1d0color, .1);
+}
+
+.division-conf2 {
+	background: rgba($c2d0color, .1);
+}
+
+.division_list {
+	@include media-league-teamlist {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
+		flex-wrap: wrap;
+	}
+
+	@include media-league-teamgrid {
+		flex-direction: row;
+	}
+}
+
+.league-2div .division_list, .league-3div .division_list {
+	@include media-league-teamlist {
+		flex-direction: row;
+	}
+}
+
+.division_name {
 	text-align: center;
 	font-size: 24px;
 	border-bottom: 3px inset;
 	padding: 3px 0px;
 	margin: 0px auto;
-}
 
-.division.conf-0 {
-	background: rgba($c0d0color, .1);
-
-	&.div-0 > .name {
-		color: $c0d0color;
-		border-color: $c0d0color;
-	}
-
-	&.div-1 > .name {
-		color: $c0d1color;
-		border-color: $c0d1color;
-	}
-
-	&.div-2 > .name {
-		color: $c0d2color;
-		border-color: $c0d2color;
-	}
-}
-
-.division.conf-1 {
-	background: rgba($c1d0color, .1);
-	&.div-0 > .name {
-		color: $c1d0color;
-		border-color: $c1d0color;
-	}
-
-	&.div-1 > .name {
-		color: $c1d1color;
-		border-color: $c1d1color;
-	}
-
-	&.div-2 > .name {
-		color: $c1d2color;
-		border-color: $c1d2color;
-	}
-}
-
-.division.conf-2 {
-	background: rgba($c2d0color, .1);
-	&.div-0 > .name {
-		color: $c2d0color;
-		border-color: $c2d0color;
-	}
-
-	&.div-1 > .name {
-		color: $c2d1color;
-		border-color: $c2d1color;
-	}
-}
-
-.col-1 .division {
-	&.div-0 {
-		background: rgba($c0d0color, .1);
-		& > .name {
-			color: $c0d0color;
-			border-color: $c0d0color;
-		}
-	}
-
-	&.div-1 {
-		background: rgba($c1d0color, .1);
-		& > .name {
-			color: $c1d0color;
-			border-color: $c1d0color;
-		}
-	}
-
-	&.div-2 {
-		background: rgba($c2d0color, .1);
-		& > .name {
-			color: $c2d0color;
-			border-color: $c2d0color;
-		}
-	}
-
-	&.div-3 {
-		background: rgba($c3d0color, .1);
-		& > .name {
-			color: $c3d0color;
-			border-color: $c3d0color;
-		}
-	}
-
-	&.div-4 {
-		background: rgba($c4d0color, .1);
-		& > .name {
-			color: $c4d0color;
-			border-color: $c4d0color;
-		}
-	}
-
-	&.div-5 {
-		background: rgba($c5d0color, .1);
-		& > .name {
-			color: $c5d0color;
-			border-color: $c5d0color;
-		}
-	}
-}
-
-@media (min-width:700px) and (max-width:899px),(min-width:1025px) {
-	.division {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		flex-grow: 1;
-	}
-
-	.division .list {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		width: 100%;
-		flex-grow: 1;
-	}
-
-	.division.col-3 .list, .division.col-2 .list {
-		flex-wrap: wrap;
-		flex-direction: row;
-		align-items: flex-start;
-		align-content: flex-start;
-
-		& .team {
-			width: calc(50% - 4px);
-		}
-	}
-}
-
-@media (max-width: 699px),(min-width:900px) and (max-width:1024px) {
-	.division .list {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-	}
-}
-
-@media (min-width: 1281px) {
-	.division > .name {
+	@media (min-width: $breakpoint-desktophd) {
 		font-size: 30px;
 	}
+}
 
-	.division.col-6 .team .city, .division.col-6 .team .name {
-		font-size: 18px;
-	}
+.division_name-conf0div0 {
+	color: $c0d0color;
+	border-color: $c0d0color;
+}
 
-	.division.col-6 .team .name {
-		display: inline;
-	}
+.division_name-conf0div1 {
+	color: $c0d1color;
+	border-color: $c0d1color;
+}
+
+.division_name-conf0div2 {
+	color: $c0d2color;
+	border-color: $c0d2color;
+}
+
+.division_name-conf1div0 {
+	color: $c1d0color;
+	border-color: $c1d0color;
+}
+
+.division_name-conf1div1 {
+	color: $c1d1color;
+	border-color: $c1d1color;
+}
+
+.division_name-conf1div2 {
+	color: $c1d2color;
+	border-color: $c1d2color;
+}
+
+.division_name-conf2div0 {
+	color: $c2d0color;
+	border-color: $c2d0color;
+}
+
+.division_name-conf2div1 {
+	color: $c2d1color;
+	border-color: $c2d1color;
+}
+
+.league-1conf .division-number0 {
+	background: rgba($c0d0color, .1);
+}
+
+.league-1conf .division-number1 {
+	background: rgba($c1d0color, .1);
+}
+
+.league-1conf .division-number2 {
+	background: rgba($c2d0color, .1);
+}
+
+.league-1conf .division-number3 {
+	background: rgba($c3d0color, .1);
+}
+
+.league-1conf .division-number4 {
+	background: rgba($c4d0color, .1);
+}
+
+.league-1conf .division-number5 {
+	background: rgba($c5d0color, .1);
+}
+
+.league-1conf .division_name-conf0div0 {
+	color: $c0d0color;
+	border-color: $c0d0color;
+}
+
+.league-1conf .division_name-conf0div1 {
+	color: $c1d0color;
+	border-color: $c1d0color;
+}
+
+.league-1conf .division_name-conf0div2 {
+	color: $c2d0color;
+	border-color: $c2d0color;
+}
+
+.league-1conf .division_name-conf0div3 {
+	color: $c3d0color;
+	border-color: $c3d0color;
+}
+
+.league-1conf .division_name-conf0div4 {
+	color: $c4d0color;
+	border-color: $c4d0color;
+}
+
+.league-1conf .division_name-conf0div5 {
+	color: $c5d0color;
+	border-color: $c5d0color;
 }

@@ -1,6 +1,6 @@
 @import "../global/_variables";
 
-#divisionizer {
+.page {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
@@ -15,16 +15,11 @@
 	flex-direction: column;
 }
 
-.content {
+.contentContainer {
 	flex-grow: 1;
 	align-items:stretch;
 	display: flex;
 	flex-direction: column;
-}
-
-body {
-	font-family: $font-primary;
-	background: $lightest-blue;
 }
 
 @media (min-width: 900px) {

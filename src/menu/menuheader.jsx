@@ -6,9 +6,9 @@ export default function MenuHeader(props) {
   const buttonLabel = (props.open) ? 'close' : 'open';
 
   return (
-    <h2 id="settings_header">
+    <h2 id="menuheader">
       <span>Settings</span>
-      <div className="button_container">
+      <div className="buttoncontainer">
         <button onClick={props.click}>{buttonLabel}</button>
       </div>
     </h2>

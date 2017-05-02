@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Team from '../league/team.model';
-
 import styles from './_changedteamview.scss';
 
 export default class ChangedTeamView extends React.Component {
@@ -21,7 +20,7 @@ export default class ChangedTeamView extends React.Component {
   render() {
     return (<div key={this.props.team.id} className="changedteam">
       <span>{this._getMessage()}</span>
-      <button onClick={this.handleClick}>Undo</button>
+      <button className="changedteam_button" onClick={this.handleClick}>Undo</button>
     </div>);
   }
 }

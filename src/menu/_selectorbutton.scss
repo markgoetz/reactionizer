@@ -1,33 +1,21 @@
 @import "../global/_variables";
 
-button {
-	&.action {
-		font-size: 30px;
+.selectorbutton {
+	border-radius: 0;
+
+	&.selected {
 		background: $primary-red;
 		color: $lightest-blue;
-		width: 100%;
-		border-radius: $radius;
+
 		@include button-shadow($primary-red);
 		@include button-hover($primary-red);
 	}
 
-	&.selector {
-		border-radius: 0;
+	&:first-child {
+		border-radius: $radius 0 0 $radius;
+	}
 
-		&.selected {
-			background: $primary-red;
-			color: $lightest-blue;
-
-			@include button-shadow($primary-red);
-			@include button-hover($primary-red);
-		}
-
-		&:first-child {
-			border-radius: $radius 0 0 $radius;
-		}
-
-		&:last-child {
-			border-radius: 0 $radius $radius 0;
-		}
+	&:last-child {
+		border-radius: 0 $radius $radius 0;
 	}
 }

@@ -19,12 +19,12 @@ export default class SettingsMenu extends React.Component {
   }
 
   render() {
-    const menuClass = (this.state.menuOpen) ? 'open' : 'closed';
+    const menuClass = "menu menu-" + ((this.state.menu_open) ? "open" : "closed");
 
-    return (<div id="settings_container">
+    return (<div className="menucontainer">
       <MenuHeader click={this.toggleMenu} open={this.state.menuOpen} />
-      <div id="settings_menu" className={menuClass}>
-        <div className="pane" id="main">
+      <div className={menuClass}>
+        <div className="pane pane_main">
           <ConferenceSelector
             conferences={this.props.conferences}
             divisions={this.props.divisions}
@@ -37,7 +37,7 @@ export default class SettingsMenu extends React.Component {
             onExpansion={this.props.onExpansion}
           />
         </div>
-        <div className="pane" id="secondary">
+        <div className="pane pane_secondary">
           <ChangeView
             relocatedTeams={this.props.relocatedTeams}
             expansionTeams={this.props.expansionTeams}

@@ -8,8 +8,8 @@ export default class SelectorButton extends React.Component {
   }
 
   render() {
-    const className = `div_button selector${(this.props.selected ? ' selected' : '')}`;
-    const id = `${this.props.type}_count_selector_${this.props.value}`;
+		const className = "selectorbutton" + (this.props.selected ? " selected" : "");
+		var id = `${this.props.type}_count_selector_${this.props.value}`;
     return (<button
       className={className}
       id={id}

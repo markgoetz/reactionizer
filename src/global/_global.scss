@@ -1,10 +1,11 @@
 @import './_reset';
 @import "./_variables";
-@import "./_fonts";
 
 body {
 	overflow-x: hidden;
 	width: 100%;
+	font-family: $font-primary;
+	background: $lightest-blue;
 }
 
 div, span, input, select {
@@ -41,8 +42,31 @@ button {
 	}
 }
 
-div.button_container {
-	display: inline-block;
-	flex-grow: 1;
-	text-align: right;
+select {
+	font-family: $font-ui;
+	background: $light-grey;
+	font-size: 18px;
+	border-radius: $radius;
+	color: $medium-blue;
+	min-height: 44px;
+
+	@include button-hover($light-grey);
+	@include button-shadow($light-grey);
+
+	@media (min-width: 1025px) {
+		min-height: none;
+	}
+}
+
+input[type=text] {
+	font-family: $font-ui;
+	background: $lightest-blue;
+	font-size: 18px;
+	border-radius: $radius;
+	border: solid 2px $medium-grey;
+	min-height: 44px;
+
+	@media (min-width: 1025px) {
+		min-height: none;
+	}
 }

@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Division from './divisiondisplay';
-
 import styles from './_conferencedisplay.scss';
 
 export default class ConferenceDisplay extends React.Component {
@@ -21,7 +20,7 @@ export default class ConferenceDisplay extends React.Component {
       />),
     );
 
-    const className = `conference col-${this.props.count}`;
+    const className = "conference conference-number" + this.props.number;
     return <div className={className}>{divisionNodes}</div>;
   }
 }

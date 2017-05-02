@@ -9,7 +9,7 @@ import City from './city.model';
 
 export default function Divisionizer(props) {
   return (
-    <div id="divisionizer">
+    <div className="page">
       <Header />
       <div className="application">
         <SettingsMenu
@@ -26,7 +26,7 @@ export default function Divisionizer(props) {
           onUndoExpansion={props.onUndoExpansion}
         />
 
-        <div className="content">
+        <div className="contentContainer">
           <Map
             league={props.league}
             containerElement={

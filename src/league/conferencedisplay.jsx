@@ -20,7 +20,7 @@ export default class ConferenceDisplay extends React.Component {
       />),
     );
 
-    const className = "conference conference-number" + this.props.number;
+    const className = `conference conference-number${this.props.number}`;
     return <div className={className}>{divisionNodes}</div>;
   }
 }

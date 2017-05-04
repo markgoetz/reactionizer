@@ -20,11 +20,11 @@ export default class LeagueDisplay extends React.Component {
       />));
 
     const divisionCount = this.props.league.reduce(
-			function(a, b) { return a + b.length; },
-			0
-		);
+      (a, b) => a + b.length,
+      0,
+    );
     const className = `league league-${divisionCount}div league-${this.props.league.length}conf`;
-    return <div id="league">{nodes}</div>;
+    return <div id="league" className={className}>{nodes}</div>;
   }
 }
 

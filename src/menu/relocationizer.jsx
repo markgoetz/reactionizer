@@ -84,3 +84,10 @@ export default class Relocationizer extends React.Component {
     </div>);
   }
 }
+
+Relocationizer.propTypes = {
+  teams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
+  cities: PropTypes.arrayOf(PropTypes.instanceOf(City)).isRequired,
+  onRelocate: PropTypes.func.isRequired,
+  onExpansion: PropTypes.func.isRequired,
+};

@@ -24,7 +24,7 @@ class DivisionDisplay extends React.Component {
   render() {
     const teamNodes = this.props.division.map(team => <TeamCard team={team} key={team.name} />);
     const divisionClass = `division division-conf${this.props.conference} division-number${this.props.number}`;
-    const nameClass = `division_name division_name-conf${this.props.conference} div${this.props.number}`;
+    const nameClass = `division_name division_name-conf${this.props.conference}div${this.props.number}`;
 
     return this.props.connectDropTarget(<div className={divisionClass}>
       <div className={nameClass}>{this.props.division.name}</div>

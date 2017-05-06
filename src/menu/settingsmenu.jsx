@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import MenuHeader from './menuheader';
+import HeaderWithButton from '../global/HeaderWithButton';
 import ConferenceSelector from './conferenceselector';
 import Relocationizer from './relocationizer';
 import ChangeView from './changeview';
@@ -19,13 +19,16 @@ export default class SettingsMenu extends React.Component {
   }
 
   render() {
-    const modifier = (this.state.menu_open) ? 'open' : 'closed';
+    const modifier = (this.state.menuOpen) ? 'open' : 'closed';
+    const buttonLabel = (this.state.menuOpen) ? 'Close' : 'Open';
     const menuClass = `menu menu-${modifier}`;
 
     return (<div className="menucontainer">
-      <MenuHeader click={this.toggleMenu} open={this.state.menuOpen} />
+      <div className="menuheader">
+        <HeaderWithButton title="Settings" buttonLabel={buttonLabel} onClick={this.toggleMenu} />
+      </div>
       <div className={menuClass}>
-        <div className="pane pane_main">
+        <div className="pane pane-main">
           <ConferenceSelector
             conferences={this.props.conferences}
             divisions={this.props.divisions}
@@ -38,7 +41,7 @@ export default class SettingsMenu extends React.Component {
             onExpansion={this.props.onExpansion}
           />
         </div>
-        <div className="pane pane_secondary">
+        <div className="pane pane-secondary">
           <ChangeView
             relocatedTeams={this.props.relocatedTeams}
             expansionTeams={this.props.expansionTeams}

@@ -67,6 +67,7 @@ input[type=text] {
 	min-height: 44px;
 
 	@media (min-width: 1025px) {
-		min-height: none;
+		font-size: 14px;
+		min-height: auto;
 	}
 }

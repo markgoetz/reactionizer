@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import ChangedTeamView from './changedteamview';
+import HeaderWithButton from '../global/HeaderWithButton';
 import Team from '../league/team.model';
 
 require('./_changeview.scss');
@@ -36,14 +37,12 @@ export default class ChangeView extends React.Component {
     const stateModifier = this.state.open ? 'open' : 'closed';
     const className = `changedteams_list changedteams_list-${stateModifier}`;
     const buttonLabel = this.state.open ? 'close' : 'open';
-    const changeCountIndicator = (changeCount > 0) ? <span className="changeCount">{changeCount}</span> : '';
+    const changeCountIndicator = (changeCount > 0) ? <span className="changedteams_count">{changeCount}</span> : '';
 
     return (<div className="changed_teams">
-      <h3 className="changedteams_title">
-        <span>Changes</span>
-        {changeCountIndicator}
-        <div className="button_container"><button onClick={this.toggle} disabled={changeCount === 0}>{buttonLabel}</button></div>
-      </h3>
+      <div className="changedteams_title">
+        <HeaderWithButton title={['Changes', changeCountIndicator]} buttonLabel={buttonLabel} onClick={this.toggle} />
+      </div>
 
       <div id="changelist" className={className}>
         {relocatedNodes}

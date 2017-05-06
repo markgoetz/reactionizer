@@ -12,6 +12,14 @@
 	}
 }
 
+.menuheader {
+	font-size: 24px;
+
+	@media (min-width: 900px) {
+		display: none;
+	}
+}
+
 .menu {
 	transition: .4s;
 	position: absolute;

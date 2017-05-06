@@ -33,7 +33,7 @@ export default function Divisionizer(props) {
               <div id="mapcontainer" />
             }
             mapElement={
-              <div id="map" />
+              <div id="map" className="map" />
             }
           />
           <LeagueDisplay league={props.league} onDrag={props.onDrag} />

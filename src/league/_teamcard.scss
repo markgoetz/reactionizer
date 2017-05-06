@@ -80,7 +80,6 @@
 
 .team_city, .team_name {
 	font-size: 18px;
-	color: $black;
 
 	@include media-league-teamgrid {
 		display: none;

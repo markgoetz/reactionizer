@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import Team from '../league/team.model';
 import City from '../containers/city.model';
 
+require('./_actionbutton.scss');
 require('./_relocationizer.scss');
 
 export default class Relocationizer extends React.Component {
@@ -75,7 +76,7 @@ export default class Relocationizer extends React.Component {
             {cityNodes}
           </select>
         </div>
-        <div className="form">
+        <div className="field">
           <label htmlFor="expand_name" className="field_label">name</label>
           <input id="expand_name" type="text" value={this.state.expansionName} onChange={this.onExpansionNameChange} className="field_item" />
         </div>

@@ -25,16 +25,16 @@ class TeamCard extends React.Component {
 
     let additionalClass = '';
     if (this.props.team.relocated) {
-      additionalClass = ' moved';
+      additionalClass = ' team-moved';
     }
     if (this.props.team.expansion) {
-      additionalClass = ' created';
+      additionalClass = ' team-created';
     }
 
     return this.props.connectDragSource(<div className={`team${additionalClass}`}>
-      <TeamLogoComponent className="team-logo" id={source} />
-      <span className="city">{this.props.team.city}</span>
-      <span className="name">&nbsp;{this.props.team.name}</span>
+      <TeamLogoComponent className="team_logo" id={source} />
+      <span className="team_city">{this.props.team.city}</span>
+      <span className="team_name">&nbsp;{this.props.team.name}</span>
     </div>);
   }
 }

@@ -1,7 +1,18 @@
 @import "../global/_variables";
 
+.selectorcontainer {
+	display: flex;
+	width: 100%;
+
+	button {
+		flex-grow: 1;
+		flex-basis: 44px;
+	}
+}
+
 .selectorbutton {
 	border-radius: 0;
+  min-width: 44px;
 
 	&.selected {
 		background: $primary-red;

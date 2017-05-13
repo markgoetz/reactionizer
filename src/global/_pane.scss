@@ -6,7 +6,12 @@
 }
 
 @media (min-width: $breakpoint-tablethd) {
+  .pane {
+    display: flex;
+    flex-direction: row;
+  }
+
 	.pane-secondary {
 		position: relative;
-	}	
+	}
 }

@@ -39,15 +39,17 @@ export default class SettingsMenu extends React.Component {
       </div>
       <div className={menuClass}>
         <div className="pane pane-main">
-          <ConferenceSelector
-            conferences={this.props.conferences}
-            onConferenceChange={this.conferenceChange}
-          />
-          <DivisionSelector
-            conferences={this.props.conferences}
-            divisions={this.props.divisions}
-            onDivisionChange={this.divisionChange}
-          />
+          <div className="formgroup">
+            <ConferenceSelector
+              conferences={this.props.conferences}
+              onConferenceChange={this.conferenceChange}
+            />
+            <DivisionSelector
+              conferences={this.props.conferences}
+              divisions={this.props.divisions}
+              onDivisionChange={this.divisionChange}
+            />
+          </div>
           <div className="formgroup">
             <Relocationizer
               teams={this.props.teams}

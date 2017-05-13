@@ -6,9 +6,7 @@
 	color: $lightest-blue;
 	@media (min-width: 900px) {
 		display: flex;
-		flex-direction: column;
-		min-width: 44px * 4 + 30px;
-		max-width: 44px * 4 + 30px;
+		flex-direction: row;
 	}
 }
 
@@ -61,25 +59,12 @@
 	}
 }
 
-.selectorcontainer {
-	display: flex;
-	width: 100%;
-
-	button {
-		flex-grow: 1;
-		flex-basis: 44px;
-	}
-}
-
 .formgroup {
 	display: flex;
 	flex-direction: column;
 	@media (min-width: 700px) {
 		flex-direction: row;
-	}
-
-	@media (min-width: 900px) {
-		flex-direction: column;
+    flex-grow: 1;
 	}
 }
 
@@ -87,10 +72,7 @@
 	margin: 15px;
 	@media (min-width: 700px) {
 		flex-grow: 1;
-	}
-
-	@media (min-width: 900px) {
-		flex-grow: 0;
+    width: 100%;
 	}
 }
 

@@ -37,11 +37,14 @@ export default class ChangeView extends React.Component {
     const stateModifier = this.state.open ? 'open' : 'closed';
     const className = `changedteams_list changedteams_list-${stateModifier}`;
     const buttonLabel = this.state.open ? 'close' : 'open';
+
+    const titleLabel = 'Changes';
     const changeCountIndicator = (changeCount > 0) ? <span className="changedteams_count">{changeCount}</span> : '';
+    const title = <span>{titleLabel}{changeCountIndicator}</span>;
 
     return (<div className="changed_teams">
       <div className="changedteams_title">
-        <HeaderWithButton title={['Changes', changeCountIndicator]} buttonLabel={buttonLabel} onClick={this.toggle} />
+        <HeaderWithButton title={title} buttonLabel={buttonLabel} onClick={this.toggle} />
       </div>
 
       <div id="changelist" className={className}>

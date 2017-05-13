@@ -13,8 +13,5 @@ export default function HeaderWithButton(props) {
 HeaderWithButton.propTypes = {
   onClick: PropTypes.func,
   buttonLabel: PropTypes.string.isRequired,
-  title: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string),
-  ]).isRequired,
+  title: PropTypes.node.isRequired,
 };

@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react';
 import HeaderWithButton from '../global/HeaderWithButton';
 import ConferenceSelector from './conferenceselector';
+import DivisionSelector from './DivisionSelector';
 import Relocationizer from './relocationizer';
+import Expansionizer from './Expansionizer';
 import ChangeView from './changeview';
 import Team from '../league/team.model';
 import City from '../containers/city.model';
@@ -18,6 +20,14 @@ export default class SettingsMenu extends React.Component {
     this.setState({ menuOpen: !this.state.menuOpen });
   }
 
+  conferenceChange = (c) => {
+    this.props.onConferenceChange(c, this.props.divisions);
+  }
+
+  divisionChange = (d) => {
+    this.props.onConferenceChange(this.props.conferences, d);
+  }
+
   render() {
     const modifier = (this.state.menuOpen) ? 'open' : 'closed';
     const buttonLabel = (this.state.menuOpen) ? 'Close' : 'Open';
@@ -31,15 +41,24 @@ export default class SettingsMenu extends React.Component {
         <div className="pane pane-main">
           <ConferenceSelector
             conferences={this.props.conferences}
+            onConferenceChange={this.conferenceChange}
+          />
+          <DivisionSelector
+            conferences={this.props.conferences}
             divisions={this.props.divisions}
-            onConferenceChange={this.props.onConferenceChange}
+            onDivisionChange={this.divisionChange}
           />
-          <Relocationizer
-            teams={this.props.teams}
-            cities={this.props.cities}
-            onRelocate={this.props.onRelocate}
-            onExpansion={this.props.onExpansion}
-          />
+          <div className="formgroup">
+            <Relocationizer
+              teams={this.props.teams}
+              cities={this.props.cities}
+              onRelocate={this.props.onRelocate}
+            />
+            <Expansionizer
+              cities={this.props.cities}
+              onExpansion={this.props.onExpansion}
+            />
+          </div>
         </div>
         <div className="pane pane-secondary">
           <ChangeView

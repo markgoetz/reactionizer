@@ -65,7 +65,11 @@ class DivisionizerController extends React.Component {
   }
 
   onConferenceChange = (c, d) => {
-    this._updateLeague(c, d);
+    let divCount = d;
+    if (divCount % c !== 0) {
+      divCount = 6;
+    }
+    this._updateLeague(c, divCount);
   }
 
   // The optional parameters are a hack to fix scenarios where you have to call React.setState()

@@ -21,9 +21,10 @@ export default class SettingsMenu extends React.Component {
   render() {
     const modifier = (this.state.menuOpen) ? 'open' : 'closed';
     const buttonLabel = (this.state.menuOpen) ? 'Close' : 'Open';
+    const menuContainerClass = `menucontainer menucontainer-${modifier}`;
     const menuClass = `menu menu-${modifier}`;
 
-    return (<div className="menucontainer">
+    return (<div className={menuContainerClass}>
       <div className="menuheader">
         <HeaderWithButton title="Settings" buttonLabel={buttonLabel} onClick={this.toggleMenu} />
       </div>

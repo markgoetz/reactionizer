@@ -2,53 +2,35 @@
 @import "../global/_pane";
 
 .menucontainer {
-	display: flex;
-	flex-direction: column;
-
+	background: $primary-blue;
+	color: $lightest-blue;
 	@media (min-width: 900px) {
-		flex-direction: row-reverse;
-		align-items: flex-start;
-		position: absolute;
-	}
-}
-
-.menucontainer-closed {
-	@media(min-width: 900px) {
-		left: -206px;
-	}
-}
-
-.menucontainer-open {
-	@media(min-width: 900px) {
-		left: 0px;
+		display: flex;
+		flex-direction: column;
+		min-width: 44px * 4 + 30px;
+		max-width: 44px * 4 + 30px;
 	}
 }
 
 .menuheader {
-	background: $primary-blue;
-	color: $lightest-blue;
 	font-size: 24px;
-	width: 100%;
 
-	@media(min-width: 900px) {
-		width: auto;
-		z-index: 19000000000001;
+	@media (min-width: 900px) {
+		display: none;
 	}
 }
 
 .menu {
-	background: $primary-blue;
-	color: $lightest-blue;
-
 	transition: .4s;
+	position: absolute;
 	display: flex;
 	flex-grow: 1;
 	flex-direction: column;
 	width: 100%;
+	background: $primary-blue;
 
 	@media (min-width: 900px) {
-		min-width: 206px;
-		max-width: 206px;
+		position: static;
 	}
 }
 
@@ -56,17 +38,26 @@
 	max-height: 0px;
 	opacity: 0;
 	z-index: -1000;
+
+	@media (min-width: 900px) {
+		display: flex;
+		align-self: stretch;
+		position: static;
+		max-height: none;
+		opacity: 1;
+		z-index: 1;
+	}
 }
 
 .menu-open {
 	max-height: auto;
 	align-self: stretch;
 	opacity: 1;
-	z-index: 19000000000001;
+	z-index: 9000000000001;
 	box-shadow: 0px 3px 2px 0px $black;
 
 	@media (min-width: 900px) {
-		left: 0px;
+		box-shadow: none;
 	}
 }
 

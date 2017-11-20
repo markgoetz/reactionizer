@@ -1,38 +1,46 @@
 var PATHS = {
 	src: "./src/",
-	dist: "./dist/",
-	dist_js: "./dist/js/",
-	dist_css: "./dist/css/",
+	dist: "dist/",
+	dist_js: "dist/js/",
+	dist_css: "dist/css/",
 	exclude: [/node_modules/, /\.spec\.js/]
 };
 
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	entry: PATHS.src + "entry.jsx",
 	output: {
-		path: PATHS.dist,
+		path: path.resolve(__dirname, PATHS.dist),
 		filename: "js/reactionizer.js"
 	},
 	module: {
-		loaders: [{
+		rules: [{
 			test: /\.jsx?$/,
 			exclude: PATHS.exclude,
-			loaders: ["babel"]
+			use: {
+				loader: "babel-loader"
+			}
 		},
 		{
 			test: /\.scss$/,
 			exclude: PATHS.exclude,
-			loader: ExtractTextPlugin.extract("css!sass")
-		},
-		{
-			test: /\.json$/,
-			exclude: PATHS.exclude,
-			loader: "json"
+			use: ExtractTextPlugin.extract({
+				use: [
+					"css-loader",
+					"sass-loader"
+				]
+			})
 		},
 		{
 			test: /\.svg$/,
-			loader: "svg-sprite?name=logo-[name]"
+			use: {
+				loader: "svg-sprite-loader",
+				options: {
+					symbolId: "logo-[name]"
+				}
+			}
 		}]
 	},
 	devtool: "source-map",
@@ -40,7 +48,7 @@ module.exports = {
 		new ExtractTextPlugin("css/reactionizer.css")
 	],
 	resolve: {
-		extensions: ["", ".js", ".jsx"]
+		extensions: [".js", ".jsx"]
 	},
 	devServer: {
 		contentBase: "./dist/"

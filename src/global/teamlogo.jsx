@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const logos = require.context('../logos/');
 logos.keys().forEach(logos);
@@ -10,8 +11,8 @@ export function TeamLogoComponent(props) {
   </svg>);
 }
 TeamLogoComponent.propTypes = {
-  className: React.PropTypes.string,
-  id: React.PropTypes.string.isRequired,
+  className: PropTypes.string,
+  id: PropTypes.string.isRequired,
 };
 
 

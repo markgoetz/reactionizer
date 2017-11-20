@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withGoogleMap, GoogleMap } from 'react-google-maps';
 import MarkerIcon from './markericon';
 import MarkerBackground from './markerbackground';
@@ -50,7 +51,7 @@ const Map = withGoogleMap(props => (
 ));
 
 Map.propTypes = {
-  league: React.PropTypes.arrayOf(Array),
+  league: PropTypes.arrayOf(Array),
 };
 
 export default Map;

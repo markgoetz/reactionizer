@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd';
 import DragTypes from '../global/dragtypes';
 import Team from './team.model';

@@ -1,19 +1,20 @@
-var PATHS = {
+const PATHS = {
 	src: "./src/",
 	dist: "./dist/",
 	dist_js: "./dist/js/",
 	dist_css: "./dist/css/",
-	exclude: [/node_modules/, /\.spec\.js/]
+	exclude: [/node_modules/, /\.test\.js/]
 };
 
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var webpack = require("webpack");
+const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
 	devtools: "",
 	entry: PATHS.src + "entry.jsx",
 	output: {
-		path: PATHS.dist,
+		path: path.resolve(__dirname, PATHS.dist),
 		filename: "js/reactionizer.js"
 	},
 	module: {
@@ -25,18 +26,28 @@ module.exports = {
 		{
 			test: /\.scss$/,
 			exclude: PATHS.exclude,
-			loader: ExtractTextPlugin.extract("css!sass")
-		},
-		{
-			test: /\.json$/,
-			exlude: PATHS.exclude,
-			loader: "json"
+			use: ExtractTextPlugin.extract({
+				use: [
+					"css-loader",
+					"sass-loader"
+				]
+			})
 		},
 		{
 			test: /\.svg$/,
-			loaders: [
-				"svg-sprite?name=logo-[name]",
-				"svgo-loader?config=svgoConfig1"
+			use: [
+				{
+					loader: "svg-sprite-loader",
+					options: {
+						symbolId: "logo-[name]"
+					}
+				},
+				{
+					loader: 'svgo-loader',
+					options: {
+						config: 'svgoConfig1'
+					}
+				}
 			]
 		}]
 	},
@@ -54,7 +65,7 @@ module.exports = {
 		})
 	],
 	resolve: {
-		extensions: ["", ".js", ".jsx"]
+		extensions: [".js", ".jsx"]
 	},
 	svgoConfig1: {
 		plugins:[

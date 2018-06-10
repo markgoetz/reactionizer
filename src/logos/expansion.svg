@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
-    <title>Artboard 2</title>
+    <title>expansion</title>
     <desc>Created with Sketch.</desc>
     <defs>
         <linearGradient x1="-9.36363954%" y1="49.9993695%" x2="117.786036%" y2="49.9993695%" id="linearGradient-1">
@@ -69,7 +69,7 @@
             <stop stop-color="#949CA1" offset="86.52%"></stop>
         </linearGradient>
     </defs>
-    <g id="Artboard-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="expansion" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Group" transform="translate(2.000000, 0.000000)" fill-rule="nonzero">
             <g transform="translate(0.870968, 10.673077)" fill="#FFFFFF" id="Shape">
                 <path d="M0.551612903,7.5 C0.551612903,4.78846154 1.82903226,3.75 2.11935484,1.15384615 C1.74193548,3.40384615 0.232258065,5.27884615 0.232258065,7.5 C0.232258065,8.36538462 0.348387097,9.14423077 0.580645161,9.83653846 C1.53870968,12.9807692 4.35483871,14.7115385 7.11290323,15.4038462 C2.87419355,14.3653846 0.551612903,10.8461538 0.551612903,7.5 Z"></path>

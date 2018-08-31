@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Marker } from 'react-google-maps';
 import Team from '../league/team.model';
 import GoogleMapTeamIconModel from './googlemapteamiconmodel';
@@ -30,8 +32,8 @@ export default function MarkerBackground(props) {
 }
 
 MarkerBackground.propTypes = {
-  team: React.PropTypes.instanceOf(Team).isRequired,
-  division: React.PropTypes.number.isRequired,
-  conference: React.PropTypes.number.isRequired,
-  singleConference: React.PropTypes.bool.isRequired,
+  team: PropTypes.instanceOf(Team).isRequired,
+  division: PropTypes.number.isRequired,
+  conference: PropTypes.number.isRequired,
+  singleConference: PropTypes.bool.isRequired,
 };

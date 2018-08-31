@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Header from './header';
 import Footer from './footer';
 import SettingsMenu from '../menu/settingsmenu';
@@ -6,6 +7,7 @@ import Map from '../map/map';
 import LeagueDisplay from '../league/leaguedisplay';
 import Team from '../league/team.model';
 import City from './city.model';
+import { API_KEY } from '../env/environment';
 
 export default function Divisionizer(props) {
   return (
@@ -29,12 +31,10 @@ export default function Divisionizer(props) {
         <div className="contentContainer">
           <Map
             league={props.league}
-            containerElement={
-              <div id="mapcontainer" />
-            }
-            mapElement={
-              <div id="map" className="map" />
-            }
+            containerElement={<div id="mapcontainer" />}
+            mapElement={<div id="map" className="map" />}
+            loadingElement={<div />}
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${API_KEY}`}
           />
           <LeagueDisplay league={props.league} onDrag={props.onDrag} />
         </div>

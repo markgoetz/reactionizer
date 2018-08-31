@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import ChangedTeamView from './changedteamview';
 import HeaderWithButton from '../global/HeaderWithButton';
 import Team from '../league/team.model';

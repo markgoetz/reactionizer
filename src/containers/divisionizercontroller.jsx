@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import TouchBackend from 'react-dnd-touch-backend';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -172,8 +173,8 @@ class DivisionizerController extends React.Component {
 }
 
 DivisionizerController.propTypes = {
-  initConferences: React.PropTypes.number,
-  initDivisions: React.PropTypes.number,
+  initConferences: PropTypes.number,
+  initDivisions: PropTypes.number,
 };
 
 export default DragDropContext(DnDBackend)(DivisionizerController);

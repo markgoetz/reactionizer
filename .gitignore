@@ -4,3 +4,4 @@ Sketch
 *.log
 .DS_Store
 dist
+src/env/environment.js

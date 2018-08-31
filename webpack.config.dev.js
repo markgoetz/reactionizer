@@ -1,4 +1,4 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const PATHS = {
   src: './src/',
@@ -11,6 +11,7 @@ module.exports = {
   output: {
     path: PATHS.dist,
     filename: 'js/reactionizer.js',
+    publicPath: '/',
   },
   module: {
     loaders: [{
@@ -31,6 +32,13 @@ module.exports = {
     {
       test: /\.svg$/,
       loader: 'svg-sprite?name=logo-[name]',
+    },
+    {
+      test: /\.png$|\.jpg$|\.woff2?$/,
+      loader: 'file',
+      options: {
+        name: '[name].[ext]',
+      },
     }],
   },
   devtool: 'source-map',

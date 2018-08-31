@@ -1,5 +1,7 @@
 import React from 'react';
-import { withGoogleMap, GoogleMap } from 'react-google-maps';
+import PropTypes from 'prop-types';
+
+import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps';
 import MarkerIcon from './markericon';
 import MarkerBackground from './markerbackground';
 
@@ -37,7 +39,7 @@ function getMarkers(league) {
   return markers;
 }
 
-const Map = withGoogleMap(props => (
+const Map = withScriptjs(withGoogleMap(props => (
   <GoogleMap
     defaultZoom={4}
     maxZoom={6}
@@ -47,10 +49,10 @@ const Map = withGoogleMap(props => (
   >
     {getMarkers(props.league)}
   </GoogleMap>
-));
+)));
 
 Map.propTypes = {
-  league: React.PropTypes.arrayOf(Array),
+  league: PropTypes.arrayOf(Array),
 };
 
 export default Map;

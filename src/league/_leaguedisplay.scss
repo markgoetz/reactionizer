@@ -1,7 +1,7 @@
 @import '../global/variables';
 
 .league {
-	background: url("/images/ice.jpg");
+	background: url("../assets/images/ice.jpg");
 
 	@include media-league-teamlist {
 		display: flex;

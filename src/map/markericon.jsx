@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Marker } from 'react-google-maps';
 import Team from '../league/team.model';
 import { TeamLogoInline } from '../global/teamlogo';
@@ -18,5 +19,5 @@ export default function MarkerIcon(props) {
 }
 
 MarkerIcon.propTypes = {
-  team: React.PropTypes.instanceOf(Team).isRequired,
+  team: PropTypes.instanceOf(Team).isRequired,
 };

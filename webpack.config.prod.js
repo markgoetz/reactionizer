@@ -4,8 +4,8 @@ const PATHS = {
   exclude: [/node_modules/, /\.spec\.js/],
 };
 
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
-let webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   devtools: '',
@@ -13,6 +13,7 @@ module.exports = {
   output: {
     path: PATHS.dist,
     filename: 'js/reactionizer.js',
+    publicPath: '/',
   },
   module: {
     loaders: [{
@@ -36,6 +37,13 @@ module.exports = {
         'svg-sprite?name=logo-[name]',
         'svgo-loader?config=svgoConfig1',
       ],
+    },
+    {
+      test: /\.png$|\.jpg$|\.woff2?$/,
+      loader: 'file',
+      options: {
+        name: '[name].[ext]',
+      },
     }],
   },
   plugins: [

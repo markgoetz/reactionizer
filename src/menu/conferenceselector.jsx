@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import SelectorButton from './selectorbutton';
 
 export default class ConferenceSelector extends React.Component {
@@ -71,7 +73,7 @@ export default class ConferenceSelector extends React.Component {
 }
 
 ConferenceSelector.propTypes = {
-  conferences: React.PropTypes.number.isRequired,
-  divisions: React.PropTypes.number.isRequired,
-  onConferenceChange: React.PropTypes.func,
+  conferences: PropTypes.number.isRequired,
+  divisions: PropTypes.number.isRequired,
+  onConferenceChange: PropTypes.func,
 };

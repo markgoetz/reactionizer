@@ -26,6 +26,7 @@
 	{"city": "New York","name":"Rangers","lat":40.750556, "lon":-73.993611},	
 	{"city": "Detroit","name":"Red Wings","lat":42.325278, "lon":-83.051389},
 	{"city": "Buffalo","name":"Sabres","lat":42.875, "lon":-78.876389},	
+	{"city": "Seattle", "name": "Seattles", "lat":47.622, "lon":-122.354},
 	{"city": "Ottawa","name":"Senators","lat":45.296944, "lon":-75.927222},	
 	{"city": "San Jose","name":"Sharks","lat":37.332778, "lon":-121.901111},
 	{"city": "Dallas","name":"Stars","lat":32.790556, "lon":-96.810278},

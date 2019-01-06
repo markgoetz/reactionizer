@@ -1,52 +1,63 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
 
 const PATHS = {
-  src: './src/',
-  dist: './dist/',
+  src: path.join(__dirname, 'src'),
+  dist: path.join(__dirname, 'dist'),
   exclude: [/node_modules/, /\.spec\.js/],
 };
 
 module.exports = {
-  entry: `${PATHS.src}entry.jsx`,
+  entry: `${PATHS.src}/entry.jsx`,
+  mode: 'development',
   output: {
     path: PATHS.dist,
     filename: 'js/reactionizer.js',
     publicPath: '/',
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.jsx?$/,
       exclude: PATHS.exclude,
-      loaders: ['babel'],
+      use: { loader: 'babel-loader' },
     },
     {
       test: /\.scss$/,
       exclude: PATHS.exclude,
-      loader: ExtractTextPlugin.extract('css!sass'),
-    },
-    {
-      test: /\.json$/,
-      exclude: PATHS.exclude,
-      loader: 'json',
+      use: [
+        MiniCSSExtractPlugin.loader,
+        {
+          loader: 'css-loader',
+        },
+        {
+          loader: 'sass-loader',
+          options: { sourceMap: true },
+        },
+      ],
     },
     {
       test: /\.svg$/,
-      loader: 'svg-sprite?name=logo-[name]',
+      use: {
+        loader: 'svg-sprite-loader',
+        options: { symbolId: 'logo-[name]' },
+      },
     },
     {
       test: /\.png$|\.jpg$|\.woff2?$/,
-      loader: 'file',
-      options: {
-        name: '[name].[ext]',
+      use: {
+        loader: 'file-loader',
+        options: { name: '[name].[ext]' },
       },
     }],
   },
   devtool: 'source-map',
   plugins: [
-    new ExtractTextPlugin('css/reactionizer.css'),
+    new MiniCSSExtractPlugin({
+      filename: 'css/reactionizer.css',
+    }),
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
   },
   devServer: {
     contentBase: './dist/',

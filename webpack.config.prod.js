@@ -1,70 +1,65 @@
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const PATHS = {
-  src: './src/',
-  dist: './dist/',
+  src: path.join(__dirname, 'src'),
+  dist: path.join(__dirname, 'dist'),
   exclude: [/node_modules/, /\.spec\.js/],
 };
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const webpack = require('webpack');
-
 module.exports = {
-  devtools: '',
-  entry: `${PATHS.src}entry.jsx`,
+  entry: `${PATHS.src}/entry.jsx`,
+  mode: 'production',
   output: {
     path: PATHS.dist,
     filename: 'js/reactionizer.js',
     publicPath: '/',
   },
+  optimization: {
+    minimize: true,
+  },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.jsx?$/,
       exclude: PATHS.exclude,
-      loader: 'babel',
+      use: { loader: 'babel-loader' },
     },
     {
       test: /\.scss$/,
       exclude: PATHS.exclude,
-      loader: ExtractTextPlugin.extract('css!sass'),
-    },
-    {
-      test: /\.json$/,
-      exlude: PATHS.exclude,
-      loader: 'json',
-    },
-    {
-      test: /\.svg$/,
-      loaders: [
-        'svg-sprite?name=logo-[name]',
-        'svgo-loader?config=svgoConfig1',
+      use: [
+        MiniCSSExtractPlugin.loader,
+        { loader: 'css-loader' },
+        { loader: 'sass-loader' },
       ],
     },
     {
-      test: /\.png$|\.jpg$|\.woff2?$/,
-      loader: 'file',
-      options: {
-        name: '[name].[ext]',
+      test: /\.svg$/,
+      use: [{
+        loader: 'svg-sprite-loader',
+        options: { symbolId: 'logo-[name]' },
       },
+      {
+        loader: 'svgo-loader',
+        options: {
+          plugins: [{ removeTitle: true }],
+        },
+      }],
+    },
+    {
+      test: /\.png$|\.jpg$|\.woff2?$/,
+      loader: 'file-loader',
+      options: { name: '[name].[ext]' },
     }],
   },
   plugins: [
-    new ExtractTextPlugin('css/reactionizer.css'),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
+    new MiniCSSExtractPlugin({
+      filename: 'css/reactionizer.css',
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      mangle: {
-        except: ['module', 'exports', 'require'],
-      },
-    }),
+    new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
-  },
-  svgoConfig1: {
-    plugins: [
-      { removeTitle: true },
-    ],
+    extensions: ['.js', '.jsx'],
   },
 };

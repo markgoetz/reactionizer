@@ -6,7 +6,7 @@ import Team from '../league/team.model';
 import GoogleMapTeamIconModel from './googlemapteamiconmodel';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
-const conferenceColors = require('!!sass-variables!../global/_conferencecolors.scss');
+const conferenceColors = require('!!sass-variables-loader!../global/_conferencecolors.scss');
 
 function getColor(conference, division) {
   return conferenceColors[`c${conference}d${division}color`];

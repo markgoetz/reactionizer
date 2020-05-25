@@ -3,6 +3,7 @@ const path = require('path');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Dotenv = require('dotenv-webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 /* eslint-enable */
 
 
@@ -63,6 +64,7 @@ module.exports = {
     }),
     new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
     new Dotenv(),
+    new HtmlWebpackPlugin({ title: 'Divisionizer' }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],

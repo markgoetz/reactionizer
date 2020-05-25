@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './_footer.scss';
+import './_footer.scss';
 
 export default function Footer() {
   const year = new Date().getYear() + 1900;

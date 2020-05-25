@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './_headerwithbutton.scss';
+import './_headerwithbutton.scss';
 
 export default function HeaderWithButton(props) {
   return (<div className="headerwithbutton">

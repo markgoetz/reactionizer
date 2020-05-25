@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Division from './divisiondisplay';
-import styles from './_conferencedisplay.scss';
+import './_conferencedisplay.scss';
 
 export default class ConferenceDisplay extends React.Component {
   onDrag = (teamId, divId) => {

@@ -5,7 +5,7 @@ import TeamCard from './teamcard';
 import DragTypes from '../global/dragtypes';
 import Team from './team.model';
 
-import styles from './_divisiondisplay.scss';
+import './_divisiondisplay.scss';
 
 const spec = {
   drop(props, monitor, component) {

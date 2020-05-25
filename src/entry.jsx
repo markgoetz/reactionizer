@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactGA from 'react-ga';
 
-import styles from './global/_global.scss';
+import './global/_global.scss';
 
 import DivisionizerController from './containers/divisionizercontroller';
+
+ReactGA.initialize(process.env.GOOGLE_ANALYTICS_KEY);
 
 function initialize(containerId, conferences, divisions) {
   ReactDOM.render(

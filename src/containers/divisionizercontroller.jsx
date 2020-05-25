@@ -15,7 +15,7 @@ import jsonTeams from '../data/teams.json';
 import jsonCities from '../data/cities.json';
 import jsonDefaultLeagues from '../data/defaultleagues.json';
 
-import styles from './_divisionizer.scss';
+import './_divisionizer.scss';
 
 const DnDBackend = ('ontouchstart' in document.documentElement) ? TouchBackend : HTML5Backend;
 

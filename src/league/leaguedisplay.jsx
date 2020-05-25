@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import ConferenceDisplay from './conferencedisplay';
 
-import styles from './_leaguedisplay.scss';
+import './_leaguedisplay.scss';
 
 export default class LeagueDisplay extends React.Component {
   onDrag = (teamId, divId) => {

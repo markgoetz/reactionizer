@@ -1,17 +1,19 @@
 const path = require('path');
 /* eslint-disable */
+const dotenv = require('dotenv');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 /* eslint-enable */
 
-
 const PATHS = {
   src: path.join(__dirname, 'src'),
   dist: path.join(__dirname, 'dist'),
   exclude: [/node_modules/, /\.spec\.js/],
 };
+
+const env = dotenv.config().parsed;
 
 module.exports = {
   entry: `${PATHS.src}/entry.jsx`,
@@ -64,7 +66,17 @@ module.exports = {
     }),
     new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
     new Dotenv(),
-    new HtmlWebpackPlugin({ title: 'Divisionizer' }),
+    new HtmlWebpackPlugin({
+      title: 'Divisionizer',
+      template: 'src/index.ejs',
+      templateParameters: {
+        analyticsKey: env.GOOGLE_ANALYTICS_KEY,
+      },
+      meta: {
+        viewport: 'user-scalable=0, width=device-width, initial-scale=1.0',
+        'theme-color': '#ffffff',
+      },
+    }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],

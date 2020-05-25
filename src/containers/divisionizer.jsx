@@ -7,9 +7,10 @@ import Map from '../map/map';
 import LeagueDisplay from '../league/leaguedisplay';
 import Team from '../league/team.model';
 import City from './city.model';
-import { API_KEY } from '../env/environment';
 
 export default function Divisionizer(props) {
+  const API_KEY = process.env.API_KEY;
+
   return (
     <div className="page">
       <Header />

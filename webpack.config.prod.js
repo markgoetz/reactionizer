@@ -1,6 +1,10 @@
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+/* eslint-disable */
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const Dotenv = require('dotenv-webpack');
+/* eslint-enable */
+
 
 const PATHS = {
   src: path.join(__dirname, 'src'),
@@ -58,6 +62,7 @@ module.exports = {
       filename: 'css/reactionizer.css',
     }),
     new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
+    new Dotenv(),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],

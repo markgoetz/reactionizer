@@ -1,4 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
+/* eslint-enable import/no-extraneous-dependencies */
 const path = require('path');
 
 const PATHS = {
@@ -55,6 +58,7 @@ module.exports = {
     new MiniCSSExtractPlugin({
       filename: 'css/reactionizer.css',
     }),
+    new Dotenv(),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],

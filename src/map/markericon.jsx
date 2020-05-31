@@ -9,7 +9,7 @@ export default function MarkerIcon(props) {
   return (<Marker
     position={{ lat: props.team.lat, lng: props.team.lon }}
     icon={{
-      url: `data:image/svg+xml;utf-8,${TeamLogoInline(teamId)}`,
+      url: `data:image/svg+xml;utf-8,${encodeURIComponent(TeamLogoInline(teamId))}`,
       anchor: { x: 15, y: 15 },
       size: { height: 30, width: 30 },
     }}

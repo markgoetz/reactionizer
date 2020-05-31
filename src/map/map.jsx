@@ -6,7 +6,7 @@ import MarkerIcon from './markericon';
 import MarkerBackground from './markerbackground';
 
 import mapStyle from './mapstyle.json';
-import style from './_map.scss';
+import './_map.scss';
 
 function getMarkers(league) {
   const markers = [];

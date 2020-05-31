@@ -62,7 +62,7 @@ module.exports = {
       filename: 'css/reactionizer.css',
     }),
     new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
-    new Dotenv(),
+    new Dotenv({ systemvars: true }),
     new HtmlWebpackPlugin({
       title: 'Divisionizer',
       template: 'src/index.ejs',

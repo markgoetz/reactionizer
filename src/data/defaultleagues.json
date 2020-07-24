@@ -1,6 +1,6 @@
 {
-	"2": {"string": "11010010101101001100100100010111", "names": ["Eastern", "Western"]},
-	"3": {"string": "21110020202202102210210101020211", "names": ["Eastern", "Central", "Western"]},
-	"4": {"string": "22120031213313112300301210030322", "names": ["Atlantic", "Metropolitan", "Central", "Pacific"]},
-	"6": {"string": "43330051415415214520421213050523", "names": ["Northeast", "Atlantic", "Southeast", "Central", "Northwest", "Pacific"]}
+	"2": {"string": "11010010101101001110010010000111", "names": ["Eastern", "Western"]},
+	"3": {"string": "21110020202202102221021010100211", "names": ["Eastern", "Central", "Western"]},
+	"4": {"string": "22120031213313112330030121000322", "names": ["Atlantic", "Metropolitan", "Central", "Pacific"]},
+	"6": {"string": "43330051415415214552042121300523", "names": ["Northeast", "Atlantic", "Southeast", "Central", "Northwest", "Pacific"]}
 }

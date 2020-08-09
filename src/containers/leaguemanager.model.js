@@ -1,7 +1,7 @@
 import League from '../league/league.model';
 import getMinValueIndex from '../global/getminvalueindex-polyfill';
 
-function getInitLeagues(initLeagues) {
+function getInitLeagues(initLeagues, initConferences) {
   const leagues = [null, [], [], []];
 
   for (let c = 1; c < leagues.length; c++) {
@@ -9,7 +9,7 @@ function getInitLeagues(initLeagues) {
       if (divCount % c !== 0) return;
 
       const initLeague = initLeagues[divCount];
-      leagues[c][divCount] = new League(initLeague, c, divCount);
+      leagues[c][divCount] = new League(initLeague, initConferences[c.toString()], c, divCount);
     });
   }
 
@@ -17,8 +17,8 @@ function getInitLeagues(initLeagues) {
 }
 
 export default class LeagueManager {
-  constructor(defaultleagues) {
-    this.defaultleagues = getInitLeagues(defaultleagues);
+  constructor(defaultleagues, conferences) {
+    this.defaultleagues = getInitLeagues(defaultleagues, conferences);
   }
 
   getLeague(conferences, divisions) {

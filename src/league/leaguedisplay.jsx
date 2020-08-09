@@ -13,7 +13,7 @@ const LeagueDisplay = (props) => {
   const nodes = props.league.map((conference, index) => (
     <ConferenceDisplay
       conference={conference}
-      key={index}
+      key={conference.name}
       number={index}
       count={props.league.length}
       onDrag={onDrag}

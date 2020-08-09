@@ -13,7 +13,7 @@ const ConferenceDisplay = (props) => {
     <Division
       division={division}
       id={index + previousDivisions}
-      key={index}
+      key={division.name}
       count={props.conference.length * props.count}
       conference={props.number}
       number={index}

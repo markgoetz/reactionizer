@@ -14,6 +14,7 @@ import Divisionizer from './divisionizer';
 import jsonTeams from '../data/teams.json';
 import jsonCities from '../data/cities.json';
 import jsonDefaultLeagues from '../data/defaultleagues.json';
+import jsonConferences from '../data/conferences.json';
 
 import './_divisionizer.scss';
 
@@ -24,7 +25,7 @@ class DivisionizerController extends React.Component {
     super(props);
     this.teammanager = new TeamManager(jsonTeams);
     this.citymanager = new CityManager(jsonCities);
-    this.leaguemanager = new LeagueManager(jsonDefaultLeagues);
+    this.leaguemanager = new LeagueManager(jsonDefaultLeagues, jsonConferences);
 
     this.initConferences = this.props.initConferences;
     this.initDivisions = this.props.initDivisions;

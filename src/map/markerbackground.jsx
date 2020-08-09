@@ -23,12 +23,14 @@ export default function MarkerBackground(props) {
 
   const iconBackground = new GoogleMapTeamIconModel(color);
 
-  return (<Marker
-    position={{ lat: props.team.lat, lng: props.team.lon }}
-    icon={iconBackground}
-    title={props.team.name}
-    zIndex={-99}
-  />);
+  return (
+    <Marker
+      position={{ lat: props.team.lat, lng: props.team.lon }}
+      icon={iconBackground}
+      title={props.team.name}
+      zIndex={-99}
+    />
+  );
 }
 
 MarkerBackground.propTypes = {

@@ -16,7 +16,6 @@ function getInitLeagues(initLeagues) {
   return leagues;
 }
 
-
 export default class LeagueManager {
   constructor(defaultleagues) {
     this.defaultleagues = getInitLeagues(defaultleagues);

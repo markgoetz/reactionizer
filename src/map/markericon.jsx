@@ -6,16 +6,18 @@ import { TeamLogoInline } from '../global/teamlogo';
 
 export default function MarkerIcon(props) {
   const teamId = props.team.getLogoID();
-  return (<Marker
-    position={{ lat: props.team.lat, lng: props.team.lon }}
-    icon={{
-      url: `data:image/svg+xml;utf-8,${encodeURIComponent(TeamLogoInline(teamId))}`,
-      anchor: { x: 15, y: 15 },
-      size: { height: 30, width: 30 },
-    }}
-    title={props.team.name}
-    zIndex={2}
-  />);
+  return (
+    <Marker
+      position={{ lat: props.team.lat, lng: props.team.lon }}
+      icon={{
+        url: `data:image/svg+xml;utf-8,${encodeURIComponent(TeamLogoInline(teamId))}`,
+        anchor: { x: 15, y: 15 },
+        size: { height: 30, width: 30 },
+      }}
+      title={props.team.name}
+      zIndex={2}
+    />
+  );
 }
 
 MarkerIcon.propTypes = {

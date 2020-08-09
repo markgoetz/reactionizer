@@ -1,56 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import SelectorButton from './selectorbutton';
 
-export default class ConferenceSelector extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      conferences: props.conferences,
-      divisions: props.divisions,
-    };
-  }
+const ConferenceSelector = (props) => {
+  const [conferences, setConferences] = useState(props.conferences);
+  const [divisions, setDivisions] = useState(props.divisions);
 
-  conferenceUpdate = (c) => {
-    this.setState({ conferences: c });
-    let d = this.state.divisions;
+  const conferenceUpdate = (c) => {
+    setConferences(c);
+    let d = divisions;
 
-    if (this.state.divisions % c !== 0) {
+    if (divisions % c !== 0) {
       d = 6;
-      this.setState({ divisions: d });
+      setDivisions(d);
     }
 
-    this.props.onConferenceChange(c, d);
-  }
-  divisionUpdate = (d) => {
-    this.setState({ divisions: d });
-    this.props.onConferenceChange(this.state.conferences, d);
-  }
-  render() {
-    const conferenceNodes = [3, 2, 1].map(
-      conference => (<SelectorButton
+    props.onConferenceChange(c, d);
+  };
+
+  const divisionUpdate = (d) => {
+    setDivisions(d);
+    props.onConferenceChange(conferences, d);
+  };
+
+  const conferenceNodes = [3, 2, 1].map(
+    conference => (
+      <SelectorButton
         type="conference"
         key={`conference${conference}`}
         value={conference}
-        selected={conference === this.state.conferences}
+        selected={conference === conferences}
         disabled={false}
-        onButtonClick={this.conferenceUpdate}
-      />),
-    );
+        onButtonClick={conferenceUpdate}
+      />
+    ),
+  );
 
-    const divisionNodes = [6, 4, 3, 2].map(
-      division => (<SelectorButton
+  const divisionNodes = [6, 4, 3, 2].map(
+    division => (
+      <SelectorButton
         type="division"
         key={`division${division}`}
         value={division}
-        selected={division === this.state.divisions}
-        disabled={division % this.state.conferences !== 0}
-        onButtonClick={this.divisionUpdate}
-      />),
-    );
+        selected={division === divisions}
+        disabled={division % conferences !== 0}
+        onButtonClick={divisionUpdate}
+      />
+    ),
+  );
 
-    return (<div className="formgroup">
+  return (
+    <div className="formgroup">
       <div className="form">
         <h3 className="form_heading">Conferences</h3>
         <div className="form_field">
@@ -59,7 +60,6 @@ export default class ConferenceSelector extends React.Component {
           </div>
         </div>
       </div>
-
       <div className="form">
         <h3 className="form_heading">Divisions</h3>
         <div className="form_field">
@@ -68,12 +68,14 @@ export default class ConferenceSelector extends React.Component {
           </div>
         </div>
       </div>
-    </div>);
-  }
-}
+    </div>
+  );
+};
+
+export default ConferenceSelector;
 
 ConferenceSelector.propTypes = {
   conferences: PropTypes.number.isRequired,
   divisions: PropTypes.number.isRequired,
-  onConferenceChange: PropTypes.func,
+  onConferenceChange: PropTypes.func.isRequired,
 };

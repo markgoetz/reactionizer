@@ -8,9 +8,11 @@ export default class CityManager {
       return new City(newCity);
     });
   }
+
   getCity(cityid) {
     return this.cities.find(c => (c.id.toString() === cityid.toString()));
   }
+
   getCities() {
     return this.cities;
   }

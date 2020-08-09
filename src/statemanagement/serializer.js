@@ -20,8 +20,7 @@ export function deserialize(string) {
 
   const response = {};
 
-  response.conferences = data[0];
-  response.divisions = data[1];
+  [response.conferences, response.divisions] = data;
   response.league = decompress(data[2], response.divisions);
 
   response.relocations = data[3].map(d => ({ id: d[0], city: d[1] }));

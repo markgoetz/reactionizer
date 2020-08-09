@@ -4,17 +4,18 @@ import PropTypes from 'prop-types';
 const logos = require.context('../logos/');
 logos.keys().forEach(logos);
 
-
 export function TeamLogoComponent(props) {
-  return (<svg className={props.className}>
-    <use xlinkHref={`#${props.id}`} />
-  </svg>);
+  return (
+    <svg className={props.className}>
+      <use xlinkHref={`#${props.id}`} />
+    </svg>
+  );
 }
+
 TeamLogoComponent.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
 };
-
 
 export function TeamLogoInline(id) {
   const svgElement = document.getElementById(id);

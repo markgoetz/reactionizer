@@ -41,12 +41,12 @@ const ChangeView = (props) => {
   const stateModifier = open ? 'open' : 'closed';
   const className = `changedteams_list changedteams_list-${stateModifier}`;
   const buttonLabel = open ? 'close' : 'open';
-  const changeCountIndicator = (changeCount > 0) ? <span className="changedteams_count">{changeCount}</span> : '';
+  const changeCountIndicator = (changeCount > 0) ? changeCount.toString() : '';
 
   return (
     <div className="changed_teams">
       <div className="changedteams_title">
-        <HeaderWithButton title={['Changes', changeCountIndicator]} buttonLabel={buttonLabel} onClick={toggle} />
+        <HeaderWithButton title="Changes" bubbleText={changeCountIndicator} buttonLabel={buttonLabel} onClick={toggle} />
       </div>
 
       <div id="changelist" className={className}>

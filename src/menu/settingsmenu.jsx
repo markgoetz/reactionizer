@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import HeaderWithButton from '../global/HeaderWithButton';
@@ -10,52 +10,51 @@ import City from '../containers/city.model';
 
 import './_settingsmenu.scss';
 
-export default class SettingsMenu extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { menuOpen: false };
-  }
+const SettingsMenu = (props) => {
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  toggleMenu = () => {
-    this.setState({ menuOpen: !this.state.menuOpen });
-  }
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
-  render() {
-    const modifier = (this.state.menuOpen) ? 'open' : 'closed';
-    const buttonLabel = (this.state.menuOpen) ? 'Close' : 'Open';
-    const menuContainerClass = `menucontainer menucontainer-${modifier}`;
-    const menuClass = `menu menu-${modifier}`;
+  const modifier = (menuOpen) ? 'open' : 'closed';
+  const buttonLabel = (menuOpen) ? 'Close' : 'Open';
+  const menuContainerClass = `menucontainer menucontainer-${modifier}`;
+  const menuClass = `menu menu-${modifier}`;
 
-    return (<div className={menuContainerClass}>
+  return (
+    <div className={menuContainerClass}>
       <div className="menuheader">
-        <HeaderWithButton title="Settings" buttonLabel={buttonLabel} onClick={this.toggleMenu} />
+        <HeaderWithButton title="Settings" buttonLabel={buttonLabel} onClick={toggleMenu} />
       </div>
       <div className={menuClass}>
         <div className="pane pane-main">
           <ConferenceSelector
-            conferences={this.props.conferences}
-            divisions={this.props.divisions}
-            onConferenceChange={this.props.onConferenceChange}
+            conferences={props.conferences}
+            divisions={props.divisions}
+            onConferenceChange={props.onConferenceChange}
           />
           <Relocationizer
-            teams={this.props.teams}
-            cities={this.props.cities}
-            onRelocate={this.props.onRelocate}
-            onExpansion={this.props.onExpansion}
+            teams={props.teams}
+            cities={props.cities}
+            onRelocate={props.onRelocate}
+            onExpansion={props.onExpansion}
           />
         </div>
         <div className="pane pane-secondary">
           <ChangeView
-            relocatedTeams={this.props.relocatedTeams}
-            expansionTeams={this.props.expansionTeams}
-            onUndoRelocation={this.props.onUndoRelocation}
-            onUndoExpansion={this.props.onUndoExpansion}
+            relocatedTeams={props.relocatedTeams}
+            expansionTeams={props.expansionTeams}
+            onUndoRelocation={props.onUndoRelocation}
+            onUndoExpansion={props.onUndoExpansion}
           />
         </div>
       </div>
-    </div>);
-  }
-}
+    </div>
+  );
+};
+
+export default SettingsMenu;
 
 SettingsMenu.propTypes = {
   conferences: PropTypes.number.isRequired,
@@ -69,4 +68,9 @@ SettingsMenu.propTypes = {
   onExpansion: PropTypes.func.isRequired,
   onUndoRelocation: PropTypes.func.isRequired,
   onUndoExpansion: PropTypes.func.isRequired,
+};
+
+SettingsMenu.defaultProps = {
+  relocatedTeams: [],
+  expansionTeams: [],
 };

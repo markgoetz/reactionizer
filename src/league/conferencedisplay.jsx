@@ -3,32 +3,33 @@ import PropTypes from 'prop-types';
 import Division from './divisiondisplay';
 import './_conferencedisplay.scss';
 
-export default class ConferenceDisplay extends React.Component {
-  onDrag = (teamId, divId) => {
-    this.props.onDrag(teamId, divId);
-  }
-  render() {
-    const previousDivisions = this.props.number * this.props.conference.length;
-    const divisionNodes = this.props.conference.map((division, index) =>
-      (<Division
-        division={division}
-        id={index + previousDivisions}
-        key={index}
-        count={this.props.conference.length * this.props.count}
-        conference={this.props.number}
-        number={index}
-        onDrag={this.onDrag}
-      />),
-    );
+const ConferenceDisplay = (props) => {
+  const onDrag = (teamId, divId) => {
+    props.onDrag(teamId, divId);
+  };
 
-    const className = `conference conference-number${this.props.number}`;
-    return <div className={className}>{divisionNodes}</div>;
-  }
-}
+  const previousDivisions = props.number * props.conference.length;
+  const divisionNodes = props.conference.map((division, index) => (
+    <Division
+      division={division}
+      id={index + previousDivisions}
+      key={division.name}
+      count={props.conference.length * props.count}
+      conference={props.number}
+      number={index}
+      onDrag={onDrag}
+    />
+  ));
+
+  const className = `conference conference-number${props.number}`;
+  return <div className={className}>{divisionNodes}</div>;
+};
+
+export default ConferenceDisplay;
 
 ConferenceDisplay.propTypes = {
-  conference: PropTypes.arrayOf(PropTypes.array),
-  count: PropTypes.number,
-  number: PropTypes.number,
-  onDrag: PropTypes.func,
+  conference: PropTypes.arrayOf(PropTypes.array).isRequired,
+  count: PropTypes.number.isRequired,
+  number: PropTypes.number.isRequired,
+  onDrag: PropTypes.func.isRequired,
 };

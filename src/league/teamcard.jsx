@@ -33,18 +33,23 @@ class TeamCard extends React.Component {
       additionalClass = ' team-created';
     }
 
-    return this.props.connectDragSource(<div className={`team${additionalClass}`}>
-      <TeamLogoComponent className="team_logo" id={source} />
-      <span className="team_city">{this.props.team.city}</span>
-      <span className="team_name">&nbsp;{this.props.team.name}</span>
-    </div>);
+    return this.props.connectDragSource(
+      <div className={`team${additionalClass}`}>
+        <TeamLogoComponent className="team_logo" id={source} />
+        <span className="team_city">{this.props.team.city}</span>
+        <span className="team_name">
+          &nbsp;
+          {this.props.team.name}
+        </span>
+      </div>,
+    );
   }
 }
 
 export default (DragSource(DragTypes.TEAM, dragSpec, collect)(TeamCard));
 
 TeamCard.propTypes = {
-  team: PropTypes.instanceOf(Team),
+  team: PropTypes.instanceOf(Team).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,

@@ -1,11 +1,12 @@
 import stringSetCharAt from '../global/setcharat-polyfill';
 
 export default class LeagueModel {
-  constructor(league, conferenceCount, divisionCount) {
+  constructor(league, conferenceNames, conferenceCount, divisionCount) {
     this.divisionCount = divisionCount;
     this.conferenceCount = conferenceCount;
     this.divString = league.string;
     this.divNames = league.names;
+    this.confNames = conferenceNames;
   }
 
   getString() {
@@ -49,7 +50,9 @@ export default class LeagueModel {
     let divInitNumber = 0;
 
     for (let c = 0; c < this.conferenceCount; c++) {
-      leagueArray.push([]);
+      const conf = [];
+      conf.name = this.confNames[c];
+      leagueArray.push(conf);
 
       for (let d = 0; d < this.divisionCount / this.conferenceCount; d++) {
         const a = [];

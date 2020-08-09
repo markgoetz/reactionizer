@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import ChangedTeamView from './changedteamview';
@@ -7,56 +7,61 @@ import Team from '../league/team.model';
 
 require('./_changeview.scss');
 
-export default class ChangeView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { open: false };
-  }
-  toggle = () => {
-    this.setState({ open: !this.state.open });
-  }
-  render() {
-    const changeCount = this.props.relocatedTeams.length + this.props.expansionTeams.length;
+const ChangeView = (props) => {
+  const [open, setOpen] = useState(false);
 
-    const relocatedNodes = this.props.relocatedTeams.map(
-      team => (<ChangedTeamView
+  const toggle = () => {
+    setOpen(!open);
+  };
+
+  const changeCount = props.relocatedTeams.length + props.expansionTeams.length;
+
+  const relocatedNodes = props.relocatedTeams.map(
+    team => (
+      <ChangedTeamView
         key={team.id}
         team={team}
-        onClick={this.props.onUndoRelocation}
-        type={'relocation'}
-      />),
-    );
+        onClick={props.onUndoRelocation}
+        type="relocation"
+      />
+    ),
+  );
 
-    const expansionNodes = this.props.expansionTeams.map(
-      team => (<ChangedTeamView
+  const expansionNodes = props.expansionTeams.map(
+    team => (
+      <ChangedTeamView
         key={team.id}
         team={team}
-        onClick={this.props.onUndoExpansion}
-        type={'expansion'}
-      />),
-    );
+        onClick={props.onUndoExpansion}
+        type="expansion"
+      />
+    ),
+  );
 
-    const stateModifier = this.state.open ? 'open' : 'closed';
-    const className = `changedteams_list changedteams_list-${stateModifier}`;
-    const buttonLabel = this.state.open ? 'close' : 'open';
-    const changeCountIndicator = (changeCount > 0) ? <span className="changedteams_count">{changeCount}</span> : '';
+  const stateModifier = open ? 'open' : 'closed';
+  const className = `changedteams_list changedteams_list-${stateModifier}`;
+  const buttonLabel = open ? 'close' : 'open';
+  const changeCountIndicator = (changeCount > 0) ? <span className="changedteams_count">{changeCount}</span> : '';
 
-    return (<div className="changed_teams">
+  return (
+    <div className="changed_teams">
       <div className="changedteams_title">
-        <HeaderWithButton title={['Changes', changeCountIndicator]} buttonLabel={buttonLabel} onClick={this.toggle} />
+        <HeaderWithButton title={['Changes', changeCountIndicator]} buttonLabel={buttonLabel} onClick={toggle} />
       </div>
 
       <div id="changelist" className={className}>
         {relocatedNodes}
         {expansionNodes}
       </div>
-    </div>);
-  }
-}
+    </div>
+  );
+};
+
+export default ChangeView;
 
 ChangeView.propTypes = {
-  relocatedTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
-  expansionTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
+  relocatedTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
+  expansionTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
   onUndoRelocation: PropTypes.func.isRequired,
   onUndoExpansion: PropTypes.func.isRequired,
 };

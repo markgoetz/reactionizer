@@ -4,9 +4,9 @@ import { DragDropContext } from 'react-dnd';
 import TouchBackend from 'react-dnd-touch-backend';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import LeagueManager from '../containers/leaguemanager.model';
-import TeamManager from '../containers/teammanager.model';
-import CityManager from '../containers/citymanager.model';
+import LeagueManager from './leaguemanager.model';
+import TeamManager from './teammanager.model';
+import CityManager from './citymanager.model';
 import { serialize, deserialize } from '../statemanagement/serializer';
 import QueryString from '../statemanagement/querystring';
 import Divisionizer from './divisionizer';
@@ -14,6 +14,7 @@ import Divisionizer from './divisionizer';
 import jsonTeams from '../data/teams.json';
 import jsonCities from '../data/cities.json';
 import jsonDefaultLeagues from '../data/defaultleagues.json';
+import jsonConferences from '../data/conferences.json';
 
 import './_divisionizer.scss';
 
@@ -24,7 +25,7 @@ class DivisionizerController extends React.Component {
     super(props);
     this.teammanager = new TeamManager(jsonTeams);
     this.citymanager = new CityManager(jsonCities);
-    this.leaguemanager = new LeagueManager(jsonDefaultLeagues);
+    this.leaguemanager = new LeagueManager(jsonDefaultLeagues, jsonConferences);
 
     this.initConferences = this.props.initConferences;
     this.initDivisions = this.props.initDivisions;
@@ -78,14 +79,15 @@ class DivisionizerController extends React.Component {
   ) {
     return this._leagueToArray(
       this.leaguemanager.getLeague(conferenceCount, divisionCount),
-      teams);
+      teams,
+    );
   }
 
   _updateLeague(
     conferenceCount = this.state.conferenceCount,
     divisionCount = this.state.divisionCount,
   ) {
-    const teams = this.teammanager.teams;
+    const { teams } = this.teammanager;
 
     const queryString = serialize(
       conferenceCount,
@@ -101,8 +103,6 @@ class DivisionizerController extends React.Component {
       conferenceCount,
       divisionCount,
       league: this._getLeague(conferenceCount, divisionCount, teams),
-      teams,
-      queryString,
     });
   }
 
@@ -153,28 +153,29 @@ class DivisionizerController extends React.Component {
   }
 
   render() {
-    return (<Divisionizer
-      conferences={this.state.conferenceCount}
-      divisions={this.state.divisionCount}
-      teams={this.teammanager.teams}
-      cities={this.citymanager.getCities()}
-      league={this.state.league}
-      relocatedTeams={this.teammanager.getRelocatedTeams()}
-      expansionTeams={this.teammanager.getExpansionTeams()}
-      onRelocate={this.onRelocateTeam}
-      onExpansion={this.onAddTeam}
-      onUndoRelocation={this.onUndoRelocate}
-      onUndoExpansion={this.onUndoExpansion}
-      onConferenceChange={this.onConferenceChange}
-      onDrag={this.onDrag}
-      queryString={this.state.querystring}
-    />);
+    return (
+      <Divisionizer
+        conferences={this.state.conferenceCount}
+        divisions={this.state.divisionCount}
+        teams={this.teammanager.teams}
+        cities={this.citymanager.getCities()}
+        league={this.state.league}
+        relocatedTeams={this.teammanager.getRelocatedTeams()}
+        expansionTeams={this.teammanager.getExpansionTeams()}
+        onRelocate={this.onRelocateTeam}
+        onExpansion={this.onAddTeam}
+        onUndoRelocation={this.onUndoRelocate}
+        onUndoExpansion={this.onUndoExpansion}
+        onConferenceChange={this.onConferenceChange}
+        onDrag={this.onDrag}
+      />
+    );
   }
 }
 
 DivisionizerController.propTypes = {
-  initConferences: PropTypes.number,
-  initDivisions: PropTypes.number,
+  initConferences: PropTypes.number.isRequired,
+  initDivisions: PropTypes.number.isRequired,
 };
 
 export default DragDropContext(DnDBackend)(DivisionizerController);

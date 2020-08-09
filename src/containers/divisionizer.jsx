@@ -9,7 +9,7 @@ import Team from '../league/team.model';
 import City from './city.model';
 
 export default function Divisionizer(props) {
-  const API_KEY = process.env.API_KEY;
+  const { API_KEY } = process.env;
 
   return (
     <div className="page">
@@ -51,8 +51,8 @@ Divisionizer.propTypes = {
   teams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
   cities: PropTypes.arrayOf(PropTypes.instanceOf(City)).isRequired,
   league: PropTypes.arrayOf(PropTypes.array).isRequired,
-  relocatedTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
-  expansionTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
+  relocatedTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
+  expansionTeams: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
   onRelocate: PropTypes.func.isRequired,
   onExpansion: PropTypes.func.isRequired,
   onConferenceChange: PropTypes.func.isRequired,

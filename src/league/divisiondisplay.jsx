@@ -9,7 +9,7 @@ import './_divisiondisplay.scss';
 
 const spec = {
   drop(props, monitor, component) {
-    const team = monitor.getItem().team;
+    const { team } = monitor.getItem();
     component.props.onDrag(team.id, props.id);
   },
 };
@@ -27,12 +27,14 @@ class DivisionDisplay extends React.Component {
     const divisionClass = `division division-conf${this.props.conference} division-number${this.props.number}`;
     const nameClass = `division_name division_name-conf${this.props.conference}div${this.props.number}`;
 
-    return this.props.connectDropTarget(<div className={divisionClass}>
-      <div className={nameClass}>{this.props.division.name}</div>
-      <div className="division_list">
-        {teamNodes}
-      </div>
-    </div>);
+    return this.props.connectDropTarget(
+      <div className={divisionClass}>
+        <div className={nameClass}>{this.props.division.name}</div>
+        <div className="division_list">
+          {teamNodes}
+        </div>
+      </div>,
+    );
   }
 }
 
@@ -40,14 +42,14 @@ DivisionDisplay.propTypes = {
   // The ID prop is used in the drag/drop code.
   // eslint-disable-next-line react/no-unused-prop-types
   id: PropTypes.number.isRequired,
-  division: PropTypes.arrayOf(PropTypes.instanceOf(Team)),
-  conference: PropTypes.number,
-  number: PropTypes.number,
+  division: PropTypes.arrayOf(PropTypes.instanceOf(Team)).isRequired,
+  conference: PropTypes.number.isRequired,
+  number: PropTypes.number.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  onDrag: PropTypes.func,
-  connectDropTarget: PropTypes.func,
+  onDrag: PropTypes.func.isRequired,
+  connectDropTarget: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  canDrop: PropTypes.func,
+  canDrop: PropTypes.func.isRequired,
 };
 
 module.exports = DropTarget(DragTypes.TEAM, spec, collect)(DivisionDisplay);

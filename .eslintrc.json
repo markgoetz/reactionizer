@@ -8,8 +8,10 @@
   },
   "extends": ["airbnb"],
   "rules": {
+    "arrow-parens": "off",
     "no-underscore-dangle": [ "error", { "allowAfterThis": true } ],
     "no-plusplus": [ "error", { "allowForLoopAfterthoughts": true } ],
+    "react/destructuring-assignment": "off",
     "camelcase": ["error", { "properties": "always" }]
   },
   "parserOptions": {

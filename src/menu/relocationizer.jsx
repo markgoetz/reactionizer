@@ -52,39 +52,41 @@ export default class Relocationizer extends React.Component {
       city => <option key={city.id} value={city.id}>{city.name}</option>,
     );
 
-    return (<div className="formgroup">
-      <div className="form">
-        <h3 className="form_heading">Relocate team</h3>
-        <div className="field">
-          <label htmlFor="relocate_team" className="field_label">team</label>
-          <select id="relocate_team" value={this.state.relocateTeam} onChange={this.onRelocateTeamSelect} className="field_item">
-            {teamNodes}
-          </select>
-        </div>
-        <div className="field">
-          <label htmlFor="relocate_city" className="field_label">to</label>
-          <select id="relocate_city" value={this.state.relocateCity} onChange={this.onRelocateCitySelect} className="field_item">
-            {cityNodes}
-          </select>
-        </div>
-        <div><button className="actionbutton" onClick={this.onRelocate}>Relocate Team</button></div>
-      </div>
+    return (
+      <div className="formgroup">
+        <form className="form">
+          <h3 className="form_heading">Relocate team</h3>
+          <label htmlFor="relocate_team" className="field">
+            <span className="field_label">team</span>
+            <select id="relocate_team" value={this.state.relocateTeam} onChange={this.onRelocateTeamSelect} className="field_item">
+              {teamNodes}
+            </select>
+          </label>
+          <label htmlFor="relocate_city" className="field">
+            <span className="field_label">to</span>
+            <select id="relocate_city" value={this.state.relocateCity} onChange={this.onRelocateCitySelect} className="field_item">
+              {cityNodes}
+            </select>
+          </label>
+          <div><button className="actionbutton" onClick={this.onRelocate} type="button">Relocate Team</button></div>
+        </form>
 
-      <div className="form">
-        <h3 className="form_heading">Expansion team</h3>
-        <div className="field">
-          <label htmlFor="expand_city" className="field_label">city</label>
-          <select id="expand_city" value={this.state.expansionCity} onChange={this.onExpansionCitySelect} className="field_item">
-            {cityNodes}
-          </select>
-        </div>
-        <div className="field">
-          <label htmlFor="expand_name" className="field_label">name</label>
-          <input id="expand_name" type="text" value={this.state.expansionName} onChange={this.onExpansionNameChange} className="field_item" />
-        </div>
-        <div><button className="actionbutton" onClick={this.onExpand}>Create Team</button></div>
+        <form className="form">
+          <h3 className="form_heading">Expansion team</h3>
+          <label htmlFor="expand_city" className="field">
+            <span className="field_label">city</span>
+            <select id="expand_city" value={this.state.expansionCity} onChange={this.onExpansionCitySelect} className="field_item">
+              {cityNodes}
+            </select>
+          </label>
+          <label htmlFor="expand_name" className="field">
+            <span className="field_label">name</span>
+            <input id="expand_name" type="text" value={this.state.expansionName} onChange={this.onExpansionNameChange} className="field_item" />
+          </label>
+          <div><button className="actionbutton" onClick={this.onExpand} type="button">Create Team</button></div>
+        </form>
       </div>
-    </div>);
+    );
   }
 }
 

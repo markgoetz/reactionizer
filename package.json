@@ -56,7 +56,7 @@
     "style-loader": "^0.13.1",
     "svg-sprite-loader": "^4.3.0",
     "svgo": "^1.3.2",
-    "svgo-loader": "^1.1.2",
+    "svgo-loader": "^2.1.0",
     "uglify-loader": "^1.3.0",
     "watchify": "^3.11.1",
     "webpack": "^4.44.1",
@@ -68,7 +68,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/*/**.js src/*/**.jsx",
     "lint --fix": "eslint src/*/**.js src/*/**.jsx --fix",
-    "build": "webpack --config webpack.config.prod.js -p",
-    "start": "webpack-dev-server --config webpack.config.dev.js"
+    "build": "webpack --config ./webpack.config.prod.js",
+    "start": "webpack-dev-server --config ./webpack.config.dev.js"
   }
 }

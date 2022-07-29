@@ -24,20 +24,20 @@ const ConferenceSelector = (props) => {
     props.onConferenceChange(conferences, d);
   };
 
-  const conferenceNodes = [3, 2, 1].map(
+  const conferenceNodes = [4, 3, 2, 1].map(
     conference => (
       <SelectorButton
         type="conference"
         key={`conference${conference}`}
         value={conference}
         selected={conference === conferences}
-        disabled={false}
+        disabled={divisions % conference !== 0}
         onButtonClick={conferenceUpdate}
       />
     ),
   );
 
-  const divisionNodes = [6, 4, 3, 2].map(
+  const divisionNodes = [8, 6, 4, 3, 2].map(
     division => (
       <SelectorButton
         type="division"

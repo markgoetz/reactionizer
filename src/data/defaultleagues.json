@@ -3,5 +3,5 @@
 	"3": {"string": "21110020202202102221021010100211", "names": ["Eastern", "Central", "Western"]},
 	"4": {"string": "22120031213313112330030121000322", "names": ["Atlantic", "Metropolitan", "Central", "Pacific"]},
 	"6": {"string": "43330051415415214552042121300523", "names": ["Northeast", "Atlantic", "Southeast", "Central", "Northwest", "Pacific"]},
-	"8": {"string": "54340062517617215762062341330754", "names": ["Northeast", "Metropolitan", "Southeast", "Great lakes", "Midwest", "Central", "Northwest", "Pacific"]}
+	"8": {"string": "54340062517617215762062341330754", "names": ["Northeast", "Metropolitan", "Southeast", "Great Lakes", "Midwest", "Central", "Northwest", "Pacific"]}
 }

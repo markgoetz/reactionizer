@@ -20,6 +20,10 @@
 	background: rgba($c2d0color, .1);
 }
 
+.division-conf3 {
+	background: rgba($c3d0color, .1);
+}
+
 .division_list {
 	@include media-league-teamlist {
 		display: flex;
@@ -67,6 +71,11 @@
 	border-color: $c0d2color;
 }
 
+.division_name-conf0div3 {
+	color: $c0d3color;
+	border-color: $c0d3color;
+}
+
 .division_name-conf1div0 {
 	color: $c1d0color;
 	border-color: $c1d0color;
@@ -80,6 +89,11 @@
 .division_name-conf1div2 {
 	color: $c1d2color;
 	border-color: $c1d2color;
+}
+
+.division_name-conf1div3 {
+	color: $c1d3color;
+	border-color: $c1d3color;
 }
 
 .division_name-conf2div0 {

@@ -98,14 +98,17 @@
 }
 
 .league-3div .team_name, .league-6div .team_name,
-.league-3div .team_city, .league-6div .team_city, {
+.league-3div .team_city, .league-6div .team_city,
+.league-4div .team_name, .league-8div .team_name,
+.league-4div .team_city, .league-8div .team_city {
 	@media (min-width: $breakpoint-desktophd) {
 		font-size: 18px;
 		line-height: 18px;
 	}
 }
 
-.league-3div .team_name, .league-6div .team_name {
+.league-3div .team_name, .league-6div .team_name
+.league-4div .team_name, .league-8div .team_name {
 	@media (max-width: $breakpoint-desktophd) {
 		display: none;
 	}

@@ -2,7 +2,7 @@ import League from '../league/league.model';
 import getMinValueIndex from '../global/getminvalueindex-polyfill';
 
 function getInitLeagues(initLeagues, initConferences) {
-  const leagues = [null, [], [], []];
+  const leagues = [null, [], [], [], []];
 
   for (let c = 1; c < leagues.length; c++) {
     Object.keys(initLeagues).forEach((divCount) => {
@@ -40,7 +40,7 @@ export default class LeagueManager {
   }
 
   setString(string, divCount) {
-    for (let c = 1; c <= 3; c++) {
+    for (let c = 1; c <= 4; c++) {
       if (this.defaultleagues[c][divCount] != null) {
         this.defaultleagues[c][divCount].setString(string);
       }
@@ -49,8 +49,8 @@ export default class LeagueManager {
 
   addTeam() {
     // Put the new team in the division with the lowest number of teams.
-    for (let c = 1; c <= 3; c++) {
-      for (let d = 1; d <= 6; d++) {
+    for (let c = 1; c <= 4; c++) {
+      for (let d = 1; d <= 8; d++) {
         if (this.defaultleagues[c][d] != null) {
           const teamCounts = this.defaultleagues[c][d].getDivisionCounts();
           this.defaultleagues[c][d].addTeam(getMinValueIndex(teamCounts));
@@ -60,7 +60,7 @@ export default class LeagueManager {
   }
 
   removeTeam(id) {
-    for (let c = 1; c <= 3; c++) {
+    for (let c = 1; c <= 4; c++) {
       for (let d = 1; d < this.defaultleagues[c].length; d++) {
         if (this.defaultleagues[c][d] != null) {
           this.defaultleagues[c][d].removeTeam(id);
@@ -70,7 +70,7 @@ export default class LeagueManager {
   }
 
   changeTeamDivision(team, division, divisionCount) {
-    for (let c = 1; c <= 3; c++) {
+    for (let c = 1; c <= 4; c++) {
       if (this.defaultleagues[c][divisionCount] != null) {
         this.defaultleagues[c][divisionCount].setTeamDivision(team, division);
       }

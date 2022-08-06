@@ -20,6 +20,10 @@
 	background: rgba($c2d0color, .1);
 }
 
+.division-conf3 {
+	background: rgba($c3d0color, .1);
+}
+
 .division_list {
 	@include media-league-teamlist {
 		display: flex;
@@ -67,6 +71,11 @@
 	border-color: $c0d2color;
 }
 
+.division_name-conf0div3 {
+	color: $c0d3color;
+	border-color: $c0d3color;
+}
+
 .division_name-conf1div0 {
 	color: $c1d0color;
 	border-color: $c1d0color;
@@ -82,6 +91,11 @@
 	border-color: $c1d2color;
 }
 
+.division_name-conf1div3 {
+	color: $c1d3color;
+	border-color: $c1d3color;
+}
+
 .division_name-conf2div0 {
 	color: $c2d0color;
 	border-color: $c2d0color;
@@ -90,6 +104,16 @@
 .division_name-conf2div1 {
 	color: $c2d1color;
 	border-color: $c2d1color;
+}
+
+.division_name-conf3div0 {
+	color: $c3d0color;
+	border-color: $c3d0color;
+}
+
+.division_name-conf3div1 {
+	color: $c3d1color;
+	border-color: $c3d1color;
 }
 
 .league-1conf .division-number0 {
@@ -114,6 +138,14 @@
 
 .league-1conf .division-number5 {
 	background: rgba($c5d0color, .1);
+}
+
+.league-1conf .division-number6 {
+	background: rgba($c6d0color, .1);
+}
+
+.league-1conf .division-number7 {
+	background: rgba($c7d0color, .1);
 }
 
 .league-1conf .division_name-conf0div0 {
@@ -144,4 +176,14 @@
 .league-1conf .division_name-conf0div5 {
 	color: $c5d0color;
 	border-color: $c5d0color;
+}
+
+.league-1conf .division_name-conf0div6 {
+	color: $c6d0color;
+	border-color: $c6d0color;
+}
+
+.league-1conf .division_name-conf0div7 {
+	color: $c7d0color;
+	border-color: $c7d0color;
 }

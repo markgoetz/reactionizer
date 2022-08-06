@@ -1,5 +1,6 @@
 {
     "1": ["Conference"],
     "2": ["Eastern", "Western"],
-    "3": ["Eastern", "Central", "Western"]
+    "3": ["Eastern", "Central", "Western"],
+    "4": ["Eastern", "Midwest", "Central", "Western"]
 }

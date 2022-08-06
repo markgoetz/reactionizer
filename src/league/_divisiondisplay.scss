@@ -106,6 +106,16 @@
 	border-color: $c2d1color;
 }
 
+.division_name-conf3div0 {
+	color: $c3d0color;
+	border-color: $c3d0color;
+}
+
+.division_name-conf3div1 {
+	color: $c3d1color;
+	border-color: $c3d1color;
+}
+
 .league-1conf .division-number0 {
 	background: rgba($c0d0color, .1);
 }
@@ -128,6 +138,14 @@
 
 .league-1conf .division-number5 {
 	background: rgba($c5d0color, .1);
+}
+
+.league-1conf .division-number6 {
+	background: rgba($c6d0color, .1);
+}
+
+.league-1conf .division-number7 {
+	background: rgba($c7d0color, .1);
 }
 
 .league-1conf .division_name-conf0div0 {
@@ -158,4 +176,14 @@
 .league-1conf .division_name-conf0div5 {
 	color: $c5d0color;
 	border-color: $c5d0color;
+}
+
+.league-1conf .division_name-conf0div6 {
+	color: $c6d0color;
+	border-color: $c6d0color;
+}
+
+.league-1conf .division_name-conf0div7 {
+	color: $c7d0color;
+	border-color: $c7d0color;
 }

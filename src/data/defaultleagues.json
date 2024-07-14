@@ -1,7 +1,7 @@
 {
-	"2": {"string": "11010010101101001110010010000111", "names": ["Eastern", "Western"]},
-	"3": {"string": "21110020202202102221021010100211", "names": ["Eastern", "Central", "Western"]},
-	"4": {"string": "22120031213313112330030121000322", "names": ["Atlantic", "Metropolitan", "Central", "Pacific"]},
-	"6": {"string": "43330041515415214542042121300523", "names": ["Northeast", "Atlantic", "Southeast", "Central", "Northwest", "Pacific"]},
-	"8": {"string": "54340062517617215762062341330754", "names": ["Northeast", "Metropolitan", "Southeast", "Great Lakes", "Midwest", "Central", "Northwest", "Pacific"]}
+	"2": {"string": "11010010011011001110010010000111", "names": ["Eastern", "Western"]},
+	"3": {"string": "21110020022022102221021010100211", "names": ["Eastern", "Central", "Western"]},
+	"4": {"string": "22120031133132112330030121000322", "names": ["Atlantic", "Metropolitan", "Central", "Pacific"]},
+	"6": {"string": "43330041154155214542042121300523", "names": ["Northeast", "Atlantic", "Southeast", "Central", "Northwest", "Pacific"]},
+	"8": {"string": "54340062176175215762062341330754", "names": ["Northeast", "Metropolitan", "Southeast", "Great Lakes", "Midwest", "Central", "Northwest", "Pacific"]}
 }

@@ -6,5 +6,6 @@
 	{"name": "Houston",     "lat":29.762778,  "lon":-95.383056},
 	{"name": "Kansas City", "lat":39.109722,  "lon":-94.588611},
 	{"name": "Milwaukee",   "lat":43.0522222, "lon":-87.955833},
+	{"name": "Phoenix",     "lat":33.531944,  "lon":-112.261111},
 	{"name": "Quebec City", "lat":46.816667,  "lon":-71.216667}
 ]
